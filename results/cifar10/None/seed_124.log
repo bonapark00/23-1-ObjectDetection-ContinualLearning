@@ -1,0 +1,13 @@
+[INFO] main.py:40 > Namespace(agem_batch=240, batchsize=16, data_dir=None, dataset='cifar10', debug=False, distilling=True, eval_period=100, gpu_transform=False, imp_update_period=1, init_model=False, init_opt=False, log_path='results', lr=0.05, lr_length=10, lr_period=10, lr_step=0.95, m=10, memory_epoch=256, memory_size=500, mir_cands=50, mode='er', model_name='resnet18', n=50, n_tasks=5, n_worker=0, note=None, num_gpus=1, online_iter=1, opt_name='sgd', reg_coef=100, rnd_seed=124, sched_name='default', temp_batchsize=None, topk=1, transforms=['cutmix', 'autoaug'], use_amp=False, workers_per_gpu=1)
+[INFO] main.py:49 > Set the device (cuda)
+[INFO] main.py:95 > Using train-transforms Compose(
+    Resize(size=(32, 32), interpolation=bilinear, max_size=None, antialias=None)
+    RandomCrop(size=(32, 32), padding=4)
+    RandomHorizontalFlip(p=0.5)
+    AutoAugment(policy=AutoAugmentPolicy.CIFAR10, fill=None)
+    ToTensor()
+    Normalize(mean=(0.4914, 0.4822, 0.4465), std=(0.2023, 0.1994, 0.201))
+)
+[INFO] main.py:105 > [1] Select a CIL method (er)
+[INFO] main.py:111 > [2] Incrementally training 5 tasks
+[INFO] main.py:124 > [2-1] Prepare a datalist for the current task

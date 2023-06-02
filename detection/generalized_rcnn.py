@@ -32,11 +32,14 @@ class GeneralizedRCNN(nn.Module):
         self._has_warned = False
 
     @torch.jit.unused
-    def eager_outputs(self, losses, detections, proposals_logits, z_logits):
+    def eager_outputs(self, losses, detections, proposals_logits, z_logits, for_distillation=False):
         # type: (Dict[str, Tensor], List[Dict[str, Tensor]]) -> Union[Dict[str, Tensor], List[Dict[str, Tensor]]]
         if self.training:
-            return losses, proposals_logits, z_logits, 
-
+            if for_distillation:
+                z_logits = z_logits if len(z_logits) else None
+                return losses, proposals_logits, z_logits
+            return losses
+    
         return detections
 
     def forward(self, images, targets=None, distill_proposals=None):
@@ -53,6 +56,11 @@ class GeneralizedRCNN(nn.Module):
                 like `scores`, `labels` and `mask` (for Mask R-CNN models).
 
         """
+        #dongjae edit
+        if distill_proposals:
+            assert self.roi_heads.for_distillation == True, "3rd argument is available only when 'for_distillation=True' in model initilaization"
+
+
         if self.training and targets is None:
             raise ValueError("In training mode, targets should be passed")
         if self.training:
@@ -102,11 +110,14 @@ class GeneralizedRCNN(nn.Module):
         losses.update(detector_losses)
         losses.update(proposal_losses)
 
-        #distillation
+        #z_logits are generated if there are distill_proposals. 
+        #Z_logits are returned classification, regression logits
         z_logits = []
         if distill_proposals:
+            #use same rpn feature with the original model, but proposals are switched to distill_proposals.
+            #distill_mode returns z_logits which are new logits according to distill_proposals.
             _, _, z_logits = self.roi_heads(features, distill_proposals, images.image_sizes, targets, distill_mode = True)
-            
+            del z_logits['proposals']
 
         if torch.jit.is_scripting():
             if not self._has_warned:
@@ -114,4 +125,4 @@ class GeneralizedRCNN(nn.Module):
                 self._has_warned = True
             return losses, detections
         else:
-            return self.eager_outputs(losses, detections, proposals_logits, z_logits)
+            return self.eager_outputs(losses, detections, proposals_logits, z_logits= z_logits, for_distillation= self.roi_heads.for_distillation)

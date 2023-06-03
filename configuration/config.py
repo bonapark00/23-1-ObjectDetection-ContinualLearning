@@ -11,6 +11,17 @@ def base_parser():
         default="clad_er",
         help="Select DIL method",
     )
+    parser.add_argument(
+        "--memory_size", type=int, default=150, help="Episodic memory size"
+    )
+    parser.add_argument(
+        "--model_name", type=str, default="resnet18", help="Model name"
+    )
+    parser.add_argument("--batchsize", type=int, default=4, help="batch size")
+    parser.add_argument("--n_worker", type=int, default=0, help="The number of workers")
+    parser.add_argument("--temp_batchsize", type=int, default=2, help="temporary batch size, for true online")
+    parser.add_argument("--online_iter", type=float, default=2, help="number of model updates per samples seen.")
+
     # parser.add_argument(
     #     "--dataset",
     #     type=str,
@@ -22,9 +33,7 @@ def base_parser():
     # parser.add_argument("--n", type=int, default=50, help="The percentage of disjoint split. Disjoint=100, Blurry=0")
     # parser.add_argument("--m", type=int, default=10, help="The percentage of blurry samples in blurry split. Uniform split=100, Disjoint=0")
     # parser.add_argument("--rnd_seed", type=int, help="Random seed number.")
-    parser.add_argument(
-        "--memory_size", type=int, default=150, help="Episodic memory size"
-    )
+    
     # Dataset
     # parser.add_argument(
     #     "--log_path",
@@ -33,16 +42,12 @@ def base_parser():
     #     help="The path logs are saved.",
     # )
     # Model
-    parser.add_argument(
-        "--model_name", type=str, default="resnet18", help="Model name"
-    )
+    
 
     # Train
     # parser.add_argument("--opt_name", type=str, default="sgd", help="Optimizer name")
     # parser.add_argument("--sched_name", type=str, default="default", help="Scheduler name")
-    parser.add_argument("--batchsize", type=int, default=4, help="batch size")
-
-    parser.add_argument("--n_worker", type=int, default=0, help="The number of workers")
+    
 
     # parser.add_argument("--lr", type=float, default=0.05, help="learning rate")
     # parser.add_argument(
@@ -86,13 +91,12 @@ def base_parser():
     # Debug
     # parser.add_argument("--debug", action="store_true", help="Turn on Debug mode")
     # Note
-    parser.add_argument("--note", type=str, help="Short description of the exp")
+    # parser.add_argument("--note", type=str, help="Short description of the exp")
 
     # Eval period
-    parser.add_argument("--eval_period", type=int, default=100, help="evaluation period for true online setup")
+    # parser.add_argument("--eval_period", type=int, default=100, help="evaluation period for true online setup")
 
-    parser.add_argument("--temp_batchsize", type=int, default=2, help="temporary batch size, for true online")
-    parser.add_argument("--online_iter", type=float, default=2, help="number of model updates per samples seen.")
+    
 
     # GDumb
     parser.add_argument('--num_gpus', type=int, default=1, help='number of GPUs, for GDumb eval')

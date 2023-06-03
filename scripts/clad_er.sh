@@ -22,6 +22,5 @@ do
     python train.py --mode $MODE \
     --model_name $MODEL_NAME \
     --batchsize $BATCHSIZE \
-    --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-    --note $NOTE --eval_period $EVAL_PERIOD $USE_AMP
+    --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER
 done

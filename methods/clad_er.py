@@ -22,7 +22,7 @@ class CLAD_ER(ER):
         self.imp_update_counter = 0
         self.n_classes = n_classes
         self.memory = CladMemoryDataset(dataset='SSLAD-2D', device=None)
-        self.imp_update_period = kwargs['imp_update_period']
+        # self.imp_update_period = kwargs['imp_update_period']
         
         self.current_trained_images = []
         self.exposed_classes = []

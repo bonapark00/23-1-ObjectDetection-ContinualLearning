@@ -189,7 +189,8 @@ class FILOD_DJ(ER):
     def samplewise_loss_update(self, ema_ratio=0.90, batchsize=512):
         # Updates the loss of the model based on the sample data.
         pass
-        
+    
+
     def samplewise_importance_memory(self, sample):
         # Updates the memory of the model based on the importance of the samples.
         if len(self.memory.images) >= self.memory_size:

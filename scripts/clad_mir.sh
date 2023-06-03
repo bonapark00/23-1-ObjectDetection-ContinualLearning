@@ -1,8 +1,8 @@
 #/bin/bash
 
 # CIL CONFIG
-NOTE="clad_er" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
-MODE="clad_er"
+NOTE="clad_mir" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+MODE="clad_mir"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
 SEEDS="1"
 

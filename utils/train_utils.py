@@ -1,6 +1,7 @@
 import torch_optimizer
 from easydict import EasyDict as edict
 from torch import optim
+import torchvision
 
 from models import mnist, cifar, imagenet
 
@@ -53,52 +54,52 @@ def select_scheduler(sched_name, opt, hparam=None):
         scheduler = optim.lr_scheduler.LambdaLR(opt, lambda iter: 1)
     return scheduler
 
-#method to initiliaize the model. model_class is dependend to dataset
+# Method to initiliaize the model. model_class is dependend to dataset
 #e.g) cifer, imagenet -> Resnet, mnist -> MLP
 def select_model(model_name, dataset, num_classes=None):
-    #opt is initial paramemeters which goes into 
-    #model_class. model_class is selected by dataset
-    opt = edict(
-        {
-            "depth": 18,
-            "num_classes": num_classes,
-            "in_channels": 3,
-            "bn": True,
-            "normtype": "BatchNorm",
-            "activetype": "ReLU",
-            "pooltype": "MaxPool2d",
-            "preact": False,
-            "affine_bn": True,
-            "bn_eps": 1e-6,
-            "compression": 0.5,
-        }
-    )
+    # #opt is initial paramemeters which goes into 
+    # #model_class. model_class is selected by dataset
+    # opt = edict(
+    #     {
+    #         "depth": 18,
+    #         "num_classes": num_classes,
+    #         "in_channels": 3,
+    #         "bn": True,
+    #         "normtype": "BatchNorm",
+    #         "activetype": "ReLU",
+    #         "pooltype": "MaxPool2d",
+    #         "preact": False,
+    #         "affine_bn": True,
+    #         "bn_eps": 1e-6,
+    #         "compression": 0.5,
+    #     }
+    # )
 
-    if "mnist" in dataset:
-        model_class = getattr(mnist, "MLP")
-    elif "cifar" in dataset:
-        model_class = getattr(cifar, "ResNet")
-    elif "imagenet" in dataset:
-        model_class = getattr(imagenet, "ResNet")
-    else:
-        raise NotImplementedError(
-            "Please select the appropriate datasets (mnist, cifar10, cifar100, imagenet)"
-        )
+    # if "mnist" in dataset:
+    #     model_class = getattr(mnist, "MLP")
+    # elif "cifar" in dataset:
+    #     model_class = getattr(cifar, "ResNet")
+    # elif "imagenet" in dataset:
+    #     model_class = getattr(imagenet, "ResNet")
+    # else:
+    #     raise NotImplementedError(
+    #         "Please select the appropriate datasets (mnist, cifar10, cifar100, imagenet)"
+    #     )
     
-    #extend the model depth
-    if model_name == "resnet18":
-        opt["depth"] = 18
-    elif model_name == "resnet32":
-        opt["depth"] = 32
-    elif model_name == "resnet34":
-        opt["depth"] = 34
-    elif model_name == "mlp400":
-        opt["width"] = 400
-    else:
-        raise NotImplementedError(
-            "Please choose the model name in [resnet18, resnet32, resnet34]"
-        )
+    # #extend the model depth
+    # if model_name == "resnet18":
+    #     opt["depth"] = 18
+    # elif model_name == "resnet32":
+    #     opt["depth"] = 32
+    # elif model_name == "resnet34":
+    #     opt["depth"] = 34
+    # elif model_name == "mlp400":
+    #     opt["width"] = 400
+    # else:
+    #     raise NotImplementedError(
+    #         "Please choose the model name in [resnet18, resnet32, resnet34]"
+    #     )
 
-    model = model_class(opt)
-
+    # model = model_class(opt)
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=num_classes)
     return model

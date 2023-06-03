@@ -17,19 +17,22 @@ def base_parser():
     parser.add_argument(
         "--model_name", type=str, default="resnet18", help="Model name"
     )
-    
+
     parser.add_argument("--batchsize", type=int, default=4, help="batch size")
     parser.add_argument("--n_worker", type=int, default=0, help="The number of workers")
     parser.add_argument("--temp_batchsize", type=int, default=2, help="temporary batch size, for true online")
     parser.add_argument("--online_iter", type=float, default=2, help="number of model updates per samples seen.")
     parser.add_argument("--rnd_seed", type=int, help="Random seed number.")
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default="clad",
+        help="[clad, shift]",
+    )
+    # MIR
+    parser.add_argument('--mir_cands', type=int, default=20, help='# candidates to use for MIR')
 
-    # parser.add_argument(
-    #     "--dataset",
-    #     type=str,
-    #     default="cifar10",
-    #     help="[mnist, cifar10, cifar100, imagenet]",
-    # )
+
     
     # parser.add_argument("--n_tasks", type=int, default=4, help="The number of tasks")
     # parser.add_argument("--n", type=int, default=50, help="The percentage of disjoint split. Disjoint=100, Blurry=0")
@@ -100,33 +103,32 @@ def base_parser():
 
     
 
-    # GDumb
-    parser.add_argument('--num_gpus', type=int, default=1, help='number of GPUs, for GDumb eval')
-    parser.add_argument('--workers_per_gpu', type=int, default=1, help='number of workers per GPU, for GDumb eval')
+    # # GDumb
+    # parser.add_argument('--num_gpus', type=int, default=1, help='number of GPUs, for GDumb eval')
+    # parser.add_argument('--workers_per_gpu', type=int, default=1, help='number of workers per GPU, for GDumb eval')
 
-    # CLIB
-    parser.add_argument("--imp_update_period", type=int, default=1,
-                        help="period between importance update, in units of model updates (increase for heavy datasets like ImageNet)")
-    parser.add_argument('--lr_step', type=float, default=0.95, help='step of iterating lr for adaptive LR')
-    parser.add_argument('--lr_length', type=int, default=10, help='period of iterating lr for adaptive LR')
-    parser.add_argument('--lr_period', type=int, default=10, help='period of iterating lr for adaptive LR')
+    # # CLIB
+    # parser.add_argument("--imp_update_period", type=int, default=1,
+    #                     help="period between importance update, in units of model updates (increase for heavy datasets like ImageNet)")
+    # parser.add_argument('--lr_step', type=float, default=0.95, help='step of iterating lr for adaptive LR')
+    # parser.add_argument('--lr_length', type=int, default=10, help='period of iterating lr for adaptive LR')
+    # parser.add_argument('--lr_period', type=int, default=10, help='period of iterating lr for adaptive LR')
 
-    # RM & GDumb
-    parser.add_argument("--memory_epoch", type=int, default=256, help="number of training epochs after task for Rainbow Memory")
+    # # RM & GDumb
+    # parser.add_argument("--memory_epoch", type=int, default=256, help="number of training epochs after task for Rainbow Memory")
 
-    # BiC
-    parser.add_argument("--distilling", type=bool, default=True, help="use distillation for BiC.")
+    # # BiC
+    # parser.add_argument("--distilling", type=bool, default=True, help="use distillation for BiC.")
 
-    # AGEM
-    parser.add_argument('--agem_batch', type=int, default=240, help='A-GEM batch size for calculating gradient')
+    # # AGEM
+    # parser.add_argument('--agem_batch', type=int, default=240, help='A-GEM batch size for calculating gradient')
 
-    # MIR
-    parser.add_argument('--mir_cands', type=int, default=50, help='# candidates to use for MIR')
+    
 
-    #FILOD
-    parser.add_argument('--replay_method', type=str, default='base', help='# candidates to use for FILOD')
-    parser.add_argument('--er_num', type=str, default=2, help='# use it for batch er_num')
-    parser.add_argument('--seed_num', type=str, default=1, help='# seed num of the running model')
+    # #FILOD
+    # parser.add_argument('--replay_method', type=str, default='base', help='# candidates to use for FILOD')
+    # parser.add_argument('--er_num', type=str, default=2, help='# use it for batch er_num')
+    # parser.add_argument('--seed_num', type=str, default=1, help='# seed num of the running model')
     args = parser.parse_args()
     
     return args

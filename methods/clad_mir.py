@@ -1,53 +1,20 @@
 import logging
-import sys
-import random
 import copy
-import torchvision
-import os 
+import torchvision 
 import numpy as np
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import pandas as pd
-from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from methods.er_baseline import ER
+from methods.clad_er import CLAD_ER
 from utils.data_loader_clad import CladMemoryDataset
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
 
-class CLAD_MIR(ER):
+class CLAD_MIR(CLAD_ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-        self.memory_size = 150 #kwargs["memory_size"]
-        self.batch_size = 4
-
-        # Samplewise importance variables
-        self.loss = np.array([])
-        self.dropped_idx = []
-        self.memory_dropped_idx = []
-        self.imp_update_counter = 0
-        self.n_classes = n_classes
-        self.memory = CladMemoryDataset(dataset='SSLAD-2D', device=None)
-        self.imp_update_period = kwargs['imp_update_period']
-        
-        self.current_trained_images = []
-        self.exposed_classes = []
-        self.exposed_tasks = []
-        
-        
-        self.count_log = 0
-        
-        self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=n_classes).to(self.device)
-        self.params =[p for p in self.model.parameters() if p.requires_grad]
-        self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
-        self.task_num = 0
-        self.writer = SummaryWriter("tensorboard")
-        self.replay_method = 'er'
-        self.ismir = True
-        self.mir_cands = 20
-        self.er_num = 2
-        self.current_batch = []
+        # self.imp_update_counter = 0
+        # self.imp_update_period = kwargs['imp_update_period']
+        self.mir_cands = kwargs['mir_cands']
     
 
     def online_step(self, sample, sample_num, n_worker):
@@ -68,18 +35,11 @@ class CLAD_MIR(ER):
             
         self.update_memory(sample)
         self.num_updates += self.online_iter
-        if sample['task_num'] != self.task_num:
-            self.writer.close()
-        
-            num = self.er_num if self.replay_method == 'er' else 0            
-            self.writer = SummaryWriter(f"tensorboard/task{self.task_num+1}{self.replay_method}{num}_memory")
-        
-        self.task_num = sample['task_num']
 
-        if len(self.current_batch) == self.er_num:
+        if len(self.current_batch) == self.temp_batchsize:
             train_loss = self.online_train(sample, self.batch_size, n_worker,
                                                     iterations=int(self.num_updates),
-                                                    stream_batch_size=self.er_num)
+                                                    stream_batch_size=self.temp_batchsize)
             self.num_updates -= int(self.num_updates)
             self.current_batch.clear()
     
@@ -89,10 +49,9 @@ class CLAD_MIR(ER):
         
         """
         self.model.train()
-        total_loss, correct, num_data = 0.0, 0.0, 0.0
+        total_loss, num_data = 0.0, 0.0
 
         for i in range(iterations):
-            breakpoint()
             stream_data = self.memory.get_batch(concat_idx=self.current_batch, batch_size=batch_size)
             # self.count_log += memory_batch_size
             
@@ -207,7 +166,7 @@ class CLAD_MIR(ER):
             self.dropped_idx.append(target_idx)
             self.memory_dropped_idx.append(target_idx)
             
-            if len(self.current_batch) < self.er_num:
+            if len(self.current_batch) < self.temp_batchsize:
                 self.current_batch.append(target_idx)
                 
         else:
@@ -215,7 +174,7 @@ class CLAD_MIR(ER):
             self.dropped_idx.append(len(self.memory)- 1)
             self.memory_dropped_idx.append(len(self.memory) - 1)
             
-            if len(self.current_batch) < self.er_num:
+            if len(self.current_batch) < self.temp_batchsize:
                 self.current_batch.append(len(self.memory)- 1)
         
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):

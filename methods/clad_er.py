@@ -3,6 +3,7 @@ import torchvision
 import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
+from utils.train_utils import select_model
 from utils.data_loader_clad import CladMemoryDataset
 
 logger = logging.getLogger()
@@ -17,6 +18,7 @@ class CLAD_ER:
         self.exposed_classes = []
         self.seen = 0
 
+        self.dataset = kwargs["dataset"]
         self.device = device
         self.model_name = kwargs["model_name"]
         self.memory_size = kwargs["memory_size"]
@@ -39,8 +41,8 @@ class CLAD_ER:
         self.current_trained_images = []
         self.exposed_tasks = []
         self.count_log = 0
-
-        self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=n_classes).to(self.device)
+        
+        self.model = select_model(model_name=None, dataset="clad", num_classes=n_classes).to(self.device)
         self.params =[p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0

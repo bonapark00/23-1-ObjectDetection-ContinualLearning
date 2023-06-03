@@ -3,7 +3,6 @@ import torchvision
 import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
-from methods.er_baseline import ER
 from utils.data_loader_clad import CladMemoryDataset
 
 logger = logging.getLogger()

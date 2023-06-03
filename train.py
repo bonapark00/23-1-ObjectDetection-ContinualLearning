@@ -4,10 +4,6 @@ from torchvision import transforms
 import os
 from tqdm import tqdm
 import logging
-from methods.clad_der import CLAD_DER
-from methods.clad_mir import CLAD_MIR
-from methods.clad_er import CLAD_ER
-# from methods.er_clad import ER_CLAD
 from utils.preprocess_clad import get_clad_datalist
 from utils.method_manager import select_method
 

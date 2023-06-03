@@ -17,10 +17,12 @@ def base_parser():
     parser.add_argument(
         "--model_name", type=str, default="resnet18", help="Model name"
     )
+    
     parser.add_argument("--batchsize", type=int, default=4, help="batch size")
     parser.add_argument("--n_worker", type=int, default=0, help="The number of workers")
     parser.add_argument("--temp_batchsize", type=int, default=2, help="temporary batch size, for true online")
     parser.add_argument("--online_iter", type=float, default=2, help="number of model updates per samples seen.")
+    parser.add_argument("--rnd_seed", type=int, help="Random seed number.")
 
     # parser.add_argument(
     #     "--dataset",
@@ -32,7 +34,7 @@ def base_parser():
     # parser.add_argument("--n_tasks", type=int, default=4, help="The number of tasks")
     # parser.add_argument("--n", type=int, default=50, help="The percentage of disjoint split. Disjoint=100, Blurry=0")
     # parser.add_argument("--m", type=int, default=10, help="The percentage of blurry samples in blurry split. Uniform split=100, Disjoint=0")
-    # parser.add_argument("--rnd_seed", type=int, help="Random seed number.")
+    # 
     
     # Dataset
     # parser.add_argument(

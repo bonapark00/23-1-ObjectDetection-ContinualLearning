@@ -5,12 +5,14 @@ import time
 import datetime
 
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
+from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torch import optim
 
-from utils.data_loader import StreamDataset, cutmix_data
+from utils.data_loader import StreamDataset, MemoryDataset, cutmix_data
 from utils.train_utils import select_model, select_optimizer, select_scheduler
 
 logger = logging.getLogger()
@@ -33,25 +35,71 @@ class ER:
         self.n_classes = n_classes
         self.exposed_classes = []
         self.seen = 0
+        # self.topk = kwargs["topk"]
 
         self.device = device
+        # self.dataset = kwargs["dataset"]
         self.model_name = kwargs["model_name"]
+        # self.opt_name = kwargs["opt_name"]
+        # self.sched_name = kwargs["sched_name"]
+        # if self.sched_name == "default":
+        #     self.sched_name = 'exp_reset'
+        # self.lr = kwargs["lr"]
+
+        # self.train_transform = train_transform
+        # self.cutmix = "cutmix" in kwargs["transforms"]
+        # self.test_transform = test_transform
+
         self.memory_size = kwargs["memory_size"]
+        # self.data_dir = kwargs["data_dir"]
 
         self.online_iter = kwargs["online_iter"]
         self.batch_size = kwargs["batchsize"]
         self.temp_batchsize = kwargs["temp_batchsize"]
+        # if self.temp_batchsize is None:
+        #     self.temp_batchsize = self.batch_size//2
+        # if self.temp_batchsize > self.batch_size:
+        #     self.temp_batchsize = self.batch_size
+        # self.memory_size -= self.temp_batchsize
+
+        # self.gpu_transform = kwargs["gpu_transform"]
+        # self.use_amp = kwargs["use_amp"]
+        # if self.use_amp:
+        #     self.scaler = torch.cuda.amp.GradScaler()
+
+        # model is initialized with 1 class output
+        # self.model = select_model(self.model_name, self.dataset, 1).to(self.device)
+        # self.optimizer = select_optimizer(self.opt_name, self.lr, self.model)
+
+        #lr_gamma is needed in ExponentialLR (LR scheduler)
+        # if 'imagenet' in self.dataset:
+        #     self.lr_gamma = 0.99995
+        # else:
+        #     self.lr_gamma = 0.9999
+        # self.scheduler = select_scheduler(self.sched_name, self.optimizer, self.lr_gamma)
+        
+        # self.criterion = criterion.to(self.device) if criterion else None
+
+
+        # self.memory = MemoryDataset(self.dataset, self.train_transform, self.exposed_classes,
+        #                             test_transform=self.test_transform, data_dir=self.data_dir, device=self.device,
+        #                             transform_on_gpu=self.gpu_transform)
         self.temp_batch = []
         self.num_updates = 0
         self.train_count = 0
         self.batch_size = kwargs["batchsize"]
 
+        # self.start_time = time.time()
+        # num_samples = {'cifar10': 50000, 'cifar100': 50000, 'tinyimagenet': 100000, 'imagenet': 1281167}
+        # self.total_samples = num_samples[self.dataset]
+
+
     def online_step(self, sample, sample_num, n_worker):
-        # update if the class of data appeared for the first time
+        #update if the class of data appeared for the first time
         if sample['klass'] not in self.exposed_classes:
             self.add_new_class(sample['klass'])
 
-        # new sample is in temp_batch
+        #new sample is in temp_batch
         self.temp_batch.append(sample) 
         self.num_updates += self.online_iter
 
@@ -64,7 +112,8 @@ class ER:
             self.temp_batch = []
             self.num_updates -= int(self.num_updates)
 
-    # Not used (intended to be overridden in subclasses)
+    #method operated when new class appeared in online_step
+    #1) fc layer head 추가, 2) memory cls list 업데이트 (하나 증가), 3) sched_name에 따라 scheduler reset
     def add_new_class(self, class_name):
         #1)
         self.exposed_classes.append(class_name)

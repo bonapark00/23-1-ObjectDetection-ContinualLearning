@@ -49,7 +49,6 @@ def fastrcnn_loss(class_logits, box_regression, labels, regression_targets, for_
         box_regressions = list(box_regression.split(split_arr))
         regression_targets = list(regression_targets.split(split_arr))
 
-
         for i in range(batch_size):
             sampled_pos_inds_subset = torch.where(labels[i] > 0)[0]
             labels_pos = labels[i][sampled_pos_inds_subset]
@@ -66,7 +65,6 @@ def fastrcnn_loss(class_logits, box_regression, labels, regression_targets, for_
             box_regression_loss.append(box_loss)
 
     else:
-
         #<original code>
         sampled_pos_inds_subset = torch.where(labels > 0)[0]
         labels_pos = labels[sampled_pos_inds_subset]
@@ -762,7 +760,7 @@ class RoIHeads(nn.Module):
                 proposals,     # type: List[Tensor]
                 image_shapes,  # type: List[Tuple[int, int]]
                 targets=None,   # type: Optional[List[Dict[str, Tensor]]]
-                distill_mode= False  # only used in distillation (get logits)
+                distill_mode= False  # only used in distillation (get logits from previous proposals)
                 ):
         # type: (...) -> Tuple[List[Dict[str, Tensor]], Dict[str, Tensor]]
         """
@@ -794,27 +792,24 @@ class RoIHeads(nn.Module):
         box_features = self.box_head(box_features)
         class_logits, box_regression = self.box_predictor(box_features)
 
+        #dongjae edit
         proposals_logits = {}
         if self.training:
-            batch_num = (box_features.shape[0]//512)
-            batch_num_arr = [512]*batch_num
+            if self.for_distillation:
+                batch_num = (box_features.shape[0]//512)
+                batch_num_arr = [512]*batch_num
 
-            class_logits_pl = list(torch.split(class_logits, batch_num_arr))
-            box_regression_pl = list(torch.split(box_regression, batch_num_arr))
-
-            #for updating proposals_logits
-            #Dongjae edit
-
-            proposals_logits['proposals'] = proposals
-            proposals_logits['class_logits'] = class_logits_pl
-            proposals_logits['box_regression'] = box_regression_pl 
+                class_logits_pl = list(torch.split(class_logits, batch_num_arr))
+                box_regression_pl = list(torch.split(box_regression, batch_num_arr))
+                proposals_logits['proposals'] = proposals
+                proposals_logits['class_logits'] = class_logits_pl
+                proposals_logits['box_regression'] = box_regression_pl 
 
         result: List[Dict[str, torch.Tensor]] = []
         losses = {}
         if self.training:
-            if distill_mode:
-                losses = {}
-            else:
+            if not distill_mode:
+                #if distill_mode, we only give z_logits (no losses, no proposals_logits)
                 assert labels is not None and regression_targets is not None
                 loss_classifier, loss_box_reg = fastrcnn_loss(
                     class_logits, box_regression, labels, regression_targets, for_distillation = self.for_distillation)

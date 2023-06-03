@@ -3,26 +3,17 @@ import torchvision
 import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
-
 from methods.er_baseline import ER
-from utils.data_loader import cutmix_data, ImageDataset, StreamDataset, MemoryDataset
 from utils.data_loader_clad import CladMemoryDataset
-from clad_utils import CladDataset, visualize_and_save, data_transform
-
-from torchvision.ops import box_iou
-from sklearn.metrics import average_precision_score
-from engine import evaluate
-from utils.soda import SODADataset
-
 
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
 
-class FILOD_DJ(ER):
+class CLAD_ER(ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-        self.memory_size = 150 #kwargs["memory_size"]
-        self.batch_size = 4
+        self.memory_size = kwargs['memory_size']
+        self.batch_size = kwargs['batchsize']
         
         # Samplewise importance variables
         self.loss = np.array([])
@@ -31,36 +22,18 @@ class FILOD_DJ(ER):
         self.imp_update_counter = 0
         self.n_classes = n_classes
         self.memory = CladMemoryDataset(dataset='SSLAD-2D', device=None)
-        self.imp_update_period = kwargs['imp_update_period']
-        if kwargs["sched_name"] == 'default':
-            self.sched_name = 'adaptive_lr'
+        # self.imp_update_period = kwargs['imp_update_period']
         
         self.current_trained_images = []
         self.exposed_classes = []
         self.exposed_tasks = []
-        
-        
-        # Adaptive LR variables
-        self.lr_step = kwargs["lr_step"]
-        self.lr_length = kwargs["lr_length"]
-        self.lr_period = kwargs["lr_period"]
-        self.prev_loss = None
-        self.lr_is_high = True
-        self.high_lr = self.lr
-        self.low_lr = self.lr_step * self.lr
-        self.high_lr_loss = []
-        self.low_lr_loss = []
-        self.current_lr = self.lr
         self.count_log = 0
-        
+
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=n_classes).to(self.device)
         self.params =[p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0
         self.writer = SummaryWriter("tensorboard")
-        self.replay_method = kwargs['replay_method'] #base, er
-        self.seed_num = kwargs['seed_num']
-        self.er_num = 2
         self.current_batch = []
     
     def online_step(self, sample, sample_num, n_worker):
@@ -83,33 +56,16 @@ class FILOD_DJ(ER):
         # self.memory.replace_sample(sample)
         self.update_memory(sample)
         self.num_updates += self.online_iter
-        
-            
-        if sample['task_num'] != self.task_num:
-            self.writer.close()
-        
-            num = self.er_num if self.replay_method == 'er' else 0            
-            self.writer = SummaryWriter(f"tensorboard/task{self.task_num+1}{self.replay_method}{num}_memory")
-        
-        self.task_num = sample['task_num']
-        
-        if self.num_updates >=1:
-            if self.replay_method == 'er':
-                if len(self.current_batch) == self.er_num:
-                    self.num_updates = (self.num_updates//self.er_num)
-                    for i in range(self.er_num):
-                        train_loss = self.online_train(sample, self.batch_size, n_worker, 
-                                            iterations=int(self.num_updates))
-                        print(f"Train_loss: {train_loss}")
-                      
-                    self.num_updates -= int(self.num_updates)
-                    self.current_batch.clear()  
-            else:
-                train_loss = self.online_train(sample, self.batch_size, n_worker, 
-                                           iterations=int(self.num_updates))
-                print(f"Train_loss: {train_loss}")
+        if self.num_updates >= 1:
+            if len(self.current_batch) == self.temp_batchsize:
+                self.num_updates = (self.num_updates // self.temp_batchsize)
+                for i in range(self.temp_batchsize):
+                    train_loss = self.online_train(sample, self.batch_size, n_worker, 
+                                        iterations=int(self.num_updates))
+                    print(f"Train_loss: {train_loss}")
+                    
                 self.num_updates -= int(self.num_updates)
-                #self.scheduler.step()
+                self.current_batch.clear()
     
     def online_train(self, sample, batch_size, n_worker, iterations=1):
         """Trains the model using both memory data and new data.
@@ -184,13 +140,12 @@ class FILOD_DJ(ER):
         self.exposed_classes.append(class_name)
         self.num_learned_class = len(self.exposed_classes)
         self.memory.add_new_class(cls_list=self.exposed_classes)
-        
+
 
     def samplewise_loss_update(self, ema_ratio=0.90, batchsize=512):
         # Updates the loss of the model based on the sample data.
         pass
-    
-
+        
     def samplewise_importance_memory(self, sample):
         # Updates the memory of the model based on the importance of the samples.
         if len(self.memory.images) >= self.memory_size:
@@ -199,7 +154,9 @@ class FILOD_DJ(ER):
             self.dropped_idx.append(target_idx)
             self.memory_dropped_idx.append(target_idx)
             
-            if self.replay_method == 'er' and len(self.current_batch) < self.er_num:
+            print("#" * 100)
+            print(self.temp_batchsize)
+            if len(self.current_batch) < self.temp_batchsize:
                 self.current_batch.append(target_idx)
                 
         else:
@@ -207,7 +164,7 @@ class FILOD_DJ(ER):
             self.dropped_idx.append(len(self.memory)- 1)
             self.memory_dropped_idx.append(len(self.memory) - 1)
             
-            if self.replay_method == 'er' and len(self.current_batch) < self.er_num:
+            if len(self.current_batch) < self.temp_batchsize:
                 self.current_batch.append(len(self.memory)- 1)
         
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):

@@ -1,1 +1,9 @@
+# Ignore Python compiled files
+*.pyc
+__pycache__/
+
+# Ignore TensorBoard files
+tensorboard/
+
+# Ignore dataset files
 dataset/

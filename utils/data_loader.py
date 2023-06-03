@@ -1,7 +1,6 @@
 import logging.config
 import os
 from typing import List
-import time
 
 import PIL
 import numpy as np
@@ -9,10 +8,8 @@ import pandas as pd
 import torch
 from torchvision import transforms
 from torch.utils.data import Dataset
-from time import perf_counter
 
 logger = logging.getLogger()
-
 
 class ImageDataset(Dataset):
     def __init__(self, data_frame: pd.DataFrame, dataset: str, transform=None, cls_list=None, data_dir=None,
@@ -177,8 +174,7 @@ class StreamDataset(Dataset):
         data['image'] = torch.stack(images)
         data['label'] = torch.LongTensor(labels)
         return data
-
-
+    
 class MemoryDataset(Dataset):
     def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
                  data_dir=None, transform_on_gpu=True, save_test=None, keep_history=False):
@@ -428,123 +424,6 @@ def get_test_datalist(dataset) -> List:
     return pd.read_json(f"collections/{dataset}/{dataset}_val.json").to_dict(orient="records")
 
 
-def get_statistics(dataset: str):
-    """
-    Returns statistics of the dataset given a string of dataset name. To add new dataset, please add required statistics here
-    """
-    if dataset == 'imagenet':
-        dataset = 'imagenet1000'
-    assert dataset in [
-        "mnist",
-        "KMNIST",
-        "EMNIST",
-        "FashionMNIST",
-        "SVHN",
-        "cifar10",
-        "cifar100",
-        "CINIC10",
-        "imagenet100",
-        "imagenet1000",
-        "tinyimagenet",
-        
-        #CLAD dataset
-        "SSLAD-2D"
-    ]
-    mean = {
-        "mnist": (0.1307,),
-        "KMNIST": (0.1307,),
-        "EMNIST": (0.1307,),
-        "FashionMNIST": (0.1307,),
-        "SVHN": (0.4377, 0.4438, 0.4728),
-        "cifar10": (0.4914, 0.4822, 0.4465),
-        "cifar100": (0.5071, 0.4867, 0.4408),
-        "CINIC10": (0.47889522, 0.47227842, 0.43047404),
-        "tinyimagenet": (0.4802, 0.4481, 0.3975),
-        "imagenet100": (0.485, 0.456, 0.406),
-        "imagenet1000": (0.485, 0.456, 0.406),
-        
-        #not calculated yet. Same as imagenet1000
-        "CLAD": (0.485, 0.456, 0.406)
-    
-    }
-
-    std = {
-        "mnist": (0.3081,),
-        "KMNIST": (0.3081,),
-        "EMNIST": (0.3081,),
-        "FashionMNIST": (0.3081,),
-        "SVHN": (0.1969, 0.1999, 0.1958),
-        "cifar10": (0.2023, 0.1994, 0.2010),
-        "cifar100": (0.2675, 0.2565, 0.2761),
-        "CINIC10": (0.24205776, 0.23828046, 0.25874835),
-        "tinyimagenet": (0.2302, 0.2265, 0.2262),
-        "imagenet100": (0.229, 0.224, 0.225),
-        "imagenet1000": (0.229, 0.224, 0.225),
-        
-        #not calculated yet. Same as imagenet1000 
-        "CLAD": (0.229, 0.224, 0.225),
-    }
-
-    classes = {
-        "mnist": 10,
-        "KMNIST": 10,
-        "EMNIST": 49,
-        "FashionMNIST": 10,
-        "SVHN": 10,
-        "cifar10": 10,
-        "cifar100": 100,
-        "CINIC10": 10,
-        "tinyimagenet": 200,
-        "imagenet100": 100,
-        "imagenet1000": 1000,
-        
-        #CLAD dataset
-        "CLAD": 6
-    }
-
-    in_channels = {
-        "mnist": 1,
-        "KMNIST": 1,
-        "EMNIST": 1,
-        "FashionMNIST": 1,
-        "SVHN": 3,
-        "cifar10": 3,
-        "cifar100": 3,
-        "CINIC10": 3,
-        "tinyimagenet": 3,
-        "imagenet100": 3,
-        "imagenet1000": 3,
-        
-        #CLAD dataset
-        "CLAD": 3
-        
-    }
-
-    inp_size = {
-        "mnist": 28,
-        "KMNIST": 28,
-        "EMNIST": 28,
-        "FashionMNIST": 28,
-        "SVHN": 32,
-        "cifar10": 32,
-        "cifar100": 32,
-        "CINIC10": 32,
-        "tinyimagenet": 64,
-        "imagenet100": 224,
-        "imagenet1000": 224,
-        
-        #CLAD dataset. input size differs
-        "CLAD": None
-    }
-    return (
-        mean[dataset],
-        std[dataset],
-        classes[dataset],
-        inp_size[dataset],
-        in_channels[dataset],
-    )
-
-
 class DistillationMemory(MemoryDataset):
     def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
                  data_dir=None, transform_on_gpu=True, save_test=None, keep_history=False, use_logit=True, use_feature=False, use_kornia=True):
@@ -714,3 +593,120 @@ def rand_bbox(size, lam):
     bby2 = np.clip(cy + cut_h // 2, 0, H)
 
     return bbx1, bby1, bbx2, bby2
+
+
+def get_statistics(dataset: str):
+    """
+    Returns statistics of the dataset given a string of dataset name. To add new dataset, please add required statistics here
+    """
+    if dataset == 'imagenet':
+        dataset = 'imagenet1000'
+    assert dataset in [
+        "mnist",
+        "KMNIST",
+        "EMNIST",
+        "FashionMNIST",
+        "SVHN",
+        "cifar10",
+        "cifar100",
+        "CINIC10",
+        "imagenet100",
+        "imagenet1000",
+        "tinyimagenet",
+        
+        #CLAD dataset
+        "SSLAD-2D"
+    ]
+    mean = {
+        "mnist": (0.1307,),
+        "KMNIST": (0.1307,),
+        "EMNIST": (0.1307,),
+        "FashionMNIST": (0.1307,),
+        "SVHN": (0.4377, 0.4438, 0.4728),
+        "cifar10": (0.4914, 0.4822, 0.4465),
+        "cifar100": (0.5071, 0.4867, 0.4408),
+        "CINIC10": (0.47889522, 0.47227842, 0.43047404),
+        "tinyimagenet": (0.4802, 0.4481, 0.3975),
+        "imagenet100": (0.485, 0.456, 0.406),
+        "imagenet1000": (0.485, 0.456, 0.406),
+        
+        #not calculated yet. Same as imagenet1000
+        "CLAD": (0.485, 0.456, 0.406)
+    
+    }
+
+    std = {
+        "mnist": (0.3081,),
+        "KMNIST": (0.3081,),
+        "EMNIST": (0.3081,),
+        "FashionMNIST": (0.3081,),
+        "SVHN": (0.1969, 0.1999, 0.1958),
+        "cifar10": (0.2023, 0.1994, 0.2010),
+        "cifar100": (0.2675, 0.2565, 0.2761),
+        "CINIC10": (0.24205776, 0.23828046, 0.25874835),
+        "tinyimagenet": (0.2302, 0.2265, 0.2262),
+        "imagenet100": (0.229, 0.224, 0.225),
+        "imagenet1000": (0.229, 0.224, 0.225),
+        
+        #not calculated yet. Same as imagenet1000 
+        "CLAD": (0.229, 0.224, 0.225),
+    }
+
+    classes = {
+        "mnist": 10,
+        "KMNIST": 10,
+        "EMNIST": 49,
+        "FashionMNIST": 10,
+        "SVHN": 10,
+        "cifar10": 10,
+        "cifar100": 100,
+        "CINIC10": 10,
+        "tinyimagenet": 200,
+        "imagenet100": 100,
+        "imagenet1000": 1000,
+        
+        #CLAD dataset
+        "CLAD": 6
+    }
+
+    in_channels = {
+        "mnist": 1,
+        "KMNIST": 1,
+        "EMNIST": 1,
+        "FashionMNIST": 1,
+        "SVHN": 3,
+        "cifar10": 3,
+        "cifar100": 3,
+        "CINIC10": 3,
+        "tinyimagenet": 3,
+        "imagenet100": 3,
+        "imagenet1000": 3,
+        
+        #CLAD dataset
+        "CLAD": 3
+        
+    }
+
+    inp_size = {
+        "mnist": 28,
+        "KMNIST": 28,
+        "EMNIST": 28,
+        "FashionMNIST": 28,
+        "SVHN": 32,
+        "cifar10": 32,
+        "cifar100": 32,
+        "CINIC10": 32,
+        "tinyimagenet": 64,
+        "imagenet100": 224,
+        "imagenet1000": 224,
+        
+        #CLAD dataset. input size differs
+        "CLAD": None
+    }
+    return (
+        mean[dataset],
+        std[dataset],
+        classes[dataset],
+        inp_size[dataset],
+        in_channels[dataset],
+    )

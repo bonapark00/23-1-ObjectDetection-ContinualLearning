@@ -3,26 +3,19 @@ import torchvision
 import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
-
-from methods.er_baseline import ER
-from utils.data_loader import cutmix_data, ImageDataset, StreamDataset, MemoryDataset
 from utils.data_loader_clad import CladMemoryDataset
-from clad_utils import CladDataset, visualize_and_save, data_transform
 
 from torchvision.ops import box_iou
 from sklearn.metrics import average_precision_score
-from engine import evaluate
-from utils.soda import SODADataset
 
 
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
 
-class FILOD_DJ(ER):
+class CLAD_ER:
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
-        super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-        self.memory_size = 150 #kwargs["memory_size"]
-        self.batch_size = 4
+        self.memory_size = kwargs["memory_size"]
+        self.batch_size = kwargs["batchsize"]
         
         # Samplewise importance variables
         self.loss = np.array([])
@@ -32,27 +25,13 @@ class FILOD_DJ(ER):
         self.n_classes = n_classes
         self.memory = CladMemoryDataset(dataset='SSLAD-2D', device=None)
         self.imp_update_period = kwargs['imp_update_period']
-        if kwargs["sched_name"] == 'default':
-            self.sched_name = 'adaptive_lr'
         
         self.current_trained_images = []
         self.exposed_classes = []
         self.exposed_tasks = []
-        
-        
-        # Adaptive LR variables
-        self.lr_step = kwargs["lr_step"]
-        self.lr_length = kwargs["lr_length"]
-        self.lr_period = kwargs["lr_period"]
-        self.prev_loss = None
-        self.lr_is_high = True
-        self.high_lr = self.lr
-        self.low_lr = self.lr_step * self.lr
-        self.high_lr_loss = []
-        self.low_lr_loss = []
-        self.current_lr = self.lr
         self.count_log = 0
         
+        self.device = device
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=n_classes).to(self.device)
         self.params =[p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
@@ -60,7 +39,9 @@ class FILOD_DJ(ER):
         self.writer = SummaryWriter("tensorboard")
         self.replay_method = kwargs['replay_method'] #base, er
         self.seed_num = kwargs['seed_num']
+        self.num_updates = 0
         self.er_num = 2
+        self.online_iter = 2
         self.current_batch = []
     
     def online_step(self, sample, sample_num, n_worker):
@@ -147,7 +128,7 @@ class FILOD_DJ(ER):
                     d['labels'] = memory_data['labels'][i].to(self.device)
                     targets.append(d)
          
-                loss_dict = self.model(images, targets) 
+                loss_dict = self.model(images, targets)
                 losses = sum(loss for loss in loss_dict.values())
 
                 
@@ -189,8 +170,7 @@ class FILOD_DJ(ER):
     def samplewise_loss_update(self, ema_ratio=0.90, batchsize=512):
         # Updates the loss of the model based on the sample data.
         pass
-    
-
+        
     def samplewise_importance_memory(self, sample):
         # Updates the memory of the model based on the importance of the samples.
         if len(self.memory.images) >= self.memory_size:
@@ -213,7 +193,3 @@ class FILOD_DJ(ER):
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.
         pass
-    
-            
-def collate_fn(batch):
-    return tuple(zip(*batch))

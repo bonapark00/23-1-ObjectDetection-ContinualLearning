@@ -1,10 +1,9 @@
 import torch
 import torchvision
-import argparse
 from PIL import Image
-from soda import SODADataset
-from clad_utils import get_model_instance_segmentation,collate_fn, visualize_and_save, apply_nms, data_transform
-from engine import train_one_epoch, evaluate
+from utils.soda import SODADataset
+from clad_utils import collate_fn, data_transform
+from engine import evaluate
 
 test_loader_list = []
 

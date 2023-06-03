@@ -183,6 +183,7 @@ class FasterRCNN(GeneralizedRCNN):
 
         out_channels = backbone.out_channels
 
+        #rpn modules
         if rpn_anchor_generator is None:
             anchor_sizes = ((32,), (64,), (128,), (256,), (512,))
             aspect_ratios = ((0.5, 1.0, 2.0),) * len(anchor_sizes)
@@ -204,6 +205,8 @@ class FasterRCNN(GeneralizedRCNN):
             rpn_pre_nms_top_n, rpn_post_nms_top_n, rpn_nms_thresh,
             score_thresh=rpn_score_thresh)
 
+
+        #ROI modules
         if box_roi_pool is None:
             box_roi_pool = MultiScaleRoIAlign(
                 featmap_names=['0', '1', '2', '3'],
@@ -223,7 +226,6 @@ class FasterRCNN(GeneralizedRCNN):
                 representation_size,
                 num_classes)
 
-
         roi_heads = RoIHeads(
             # Box
             box_roi_pool, box_head, box_predictor,
@@ -232,10 +234,11 @@ class FasterRCNN(GeneralizedRCNN):
             bbox_reg_weights,
             box_score_thresh, box_nms_thresh, box_detections_per_img,
 
-            #model used for distillation
+            #used for distillation,
+            #if it is True, it returns seperate ROI head losses for each sample,
+            #dongjae edit
             for_distillation = for_distillation
             )
-
 
         if image_mean is None:
             image_mean = [0.485, 0.456, 0.406]
@@ -377,6 +380,8 @@ def fasterrcnn_resnet50_fpn(pretrained=False, progress=True,
     if pretrained:
         # no need to download the backbone if pretrained is set
         pretrained_backbone = False
+    
+    #pretrained_backbone == True by default. 3 layers from last are trainable
     backbone = resnet_fpn_backbone('resnet50', pretrained_backbone, trainable_layers=trainable_backbone_layers)
     model = FasterRCNN(backbone, num_classes, for_distillation=for_distillation, **kwargs)
 

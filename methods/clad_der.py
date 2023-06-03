@@ -1,29 +1,13 @@
 import logging
-import sys
-import random
-import copy
 import torchvision
 import os 
 import numpy as np
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import pandas as pd
-from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from scipy.stats import ttest_ind
-
 from methods.er_baseline import ER
-from utils.data_loader import cutmix_data, ImageDataset, StreamDataset, MemoryDataset
-from clad_memory import CladDistillationMemory
-from clad_utils import CladDataset, visualize_and_save, data_transform
+from utils.data_loader_clad import CladDistillationMemory
 import PIL
-from torchvision.ops import box_iou
-from sklearn.metrics import average_precision_score
-from engine import evaluate
-from soda import SODADataset
 from torchvision import transforms
-
 
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
@@ -47,7 +31,7 @@ class CLAD_DER(ER):
         if kwargs["sched_name"] == 'default':
             self.sched_name = 'adaptive_lr'
         
-        # Exposed objects, tasks
+        # Exposed classes
         self.current_trained_images = []
         self.exposed_classes = []
         self.exposed_tasks = []

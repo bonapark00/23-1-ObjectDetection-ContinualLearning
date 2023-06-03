@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torch import optim
 
-from utils.data_loader import ImageDataset, StreamDataset, MemoryDataset, cutmix_data, get_statistics
+from utils.data_loader import StreamDataset, MemoryDataset, cutmix_data
 from utils.train_utils import select_model, select_optimizer, select_scheduler
 
 logger = logging.getLogger()
@@ -35,63 +35,63 @@ class ER:
         self.n_classes = n_classes
         self.exposed_classes = []
         self.seen = 0
-        self.topk = kwargs["topk"]
+        # self.topk = kwargs["topk"]
 
         self.device = device
-        self.dataset = kwargs["dataset"]
+        # self.dataset = kwargs["dataset"]
         self.model_name = kwargs["model_name"]
-        self.opt_name = kwargs["opt_name"]
-        self.sched_name = kwargs["sched_name"]
-        if self.sched_name == "default":
-            self.sched_name = 'exp_reset'
-        self.lr = kwargs["lr"]
+        # self.opt_name = kwargs["opt_name"]
+        # self.sched_name = kwargs["sched_name"]
+        # if self.sched_name == "default":
+        #     self.sched_name = 'exp_reset'
+        # self.lr = kwargs["lr"]
 
-        self.train_transform = train_transform
-        self.cutmix = "cutmix" in kwargs["transforms"]
-        self.test_transform = test_transform
+        # self.train_transform = train_transform
+        # self.cutmix = "cutmix" in kwargs["transforms"]
+        # self.test_transform = test_transform
 
         self.memory_size = kwargs["memory_size"]
-        self.data_dir = kwargs["data_dir"]
+        # self.data_dir = kwargs["data_dir"]
 
         self.online_iter = kwargs["online_iter"]
         self.batch_size = kwargs["batchsize"]
         self.temp_batchsize = kwargs["temp_batchsize"]
-        if self.temp_batchsize is None:
-            self.temp_batchsize = self.batch_size//2
-        if self.temp_batchsize > self.batch_size:
-            self.temp_batchsize = self.batch_size
-        self.memory_size -= self.temp_batchsize
+        # if self.temp_batchsize is None:
+        #     self.temp_batchsize = self.batch_size//2
+        # if self.temp_batchsize > self.batch_size:
+        #     self.temp_batchsize = self.batch_size
+        # self.memory_size -= self.temp_batchsize
 
-        self.gpu_transform = kwargs["gpu_transform"]
-        self.use_amp = kwargs["use_amp"]
-        if self.use_amp:
-            self.scaler = torch.cuda.amp.GradScaler()
+        # self.gpu_transform = kwargs["gpu_transform"]
+        # self.use_amp = kwargs["use_amp"]
+        # if self.use_amp:
+        #     self.scaler = torch.cuda.amp.GradScaler()
 
-        #model is initialized with 1 class output
-        self.model = select_model(self.model_name, self.dataset, 1).to(self.device)
-        self.optimizer = select_optimizer(self.opt_name, self.lr, self.model)
+        # model is initialized with 1 class output
+        # self.model = select_model(self.model_name, self.dataset, 1).to(self.device)
+        # self.optimizer = select_optimizer(self.opt_name, self.lr, self.model)
 
         #lr_gamma is needed in ExponentialLR (LR scheduler)
-        if 'imagenet' in self.dataset:
-            self.lr_gamma = 0.99995
-        else:
-            self.lr_gamma = 0.9999
-        self.scheduler = select_scheduler(self.sched_name, self.optimizer, self.lr_gamma)
+        # if 'imagenet' in self.dataset:
+        #     self.lr_gamma = 0.99995
+        # else:
+        #     self.lr_gamma = 0.9999
+        # self.scheduler = select_scheduler(self.sched_name, self.optimizer, self.lr_gamma)
         
-        self.criterion = criterion.to(self.device) if criterion else None
+        # self.criterion = criterion.to(self.device) if criterion else None
 
 
-        self.memory = MemoryDataset(self.dataset, self.train_transform, self.exposed_classes,
-                                    test_transform=self.test_transform, data_dir=self.data_dir, device=self.device,
-                                    transform_on_gpu=self.gpu_transform)
+        # self.memory = MemoryDataset(self.dataset, self.train_transform, self.exposed_classes,
+        #                             test_transform=self.test_transform, data_dir=self.data_dir, device=self.device,
+        #                             transform_on_gpu=self.gpu_transform)
         self.temp_batch = []
         self.num_updates = 0
         self.train_count = 0
         self.batch_size = kwargs["batchsize"]
 
-        self.start_time = time.time()
-        num_samples = {'cifar10': 50000, 'cifar100': 50000, 'tinyimagenet': 100000, 'imagenet': 1281167}
-        self.total_samples = num_samples[self.dataset]
+        # self.start_time = time.time()
+        # num_samples = {'cifar10': 50000, 'cifar100': 50000, 'tinyimagenet': 100000, 'imagenet': 1281167}
+        # self.total_samples = num_samples[self.dataset]
 
 
     def online_step(self, sample, sample_num, n_worker):
@@ -245,25 +245,25 @@ class ER:
         else:
             self.scheduler.step()
 
-    def online_evaluate(self, test_list, sample_num, batch_size, n_worker):
-        test_df = pd.DataFrame(test_list)
-        exp_test_df = test_df[test_df['klass'].isin(self.exposed_classes)]
-        test_dataset = ImageDataset(
-            exp_test_df,
-            dataset=self.dataset,
-            transform=self.test_transform,
-            cls_list=self.exposed_classes,
-            data_dir=self.data_dir
-        )
-        test_loader = DataLoader(
-            test_dataset,
-            shuffle=True,
-            batch_size=batch_size,
-            num_workers=n_worker,
-        )
-        eval_dict = self.evaluation(test_loader, self.criterion)
-        self.report_test(sample_num, eval_dict["avg_loss"], eval_dict["avg_acc"])
-        return eval_dict
+    # def online_evaluate(self, test_list, sample_num, batch_size, n_worker):
+    #     test_df = pd.DataFrame(test_list)
+    #     exp_test_df = test_df[test_df['klass'].isin(self.exposed_classes)]
+    #     test_dataset = ImageDataset(
+    #         exp_test_df,
+    #         dataset=self.dataset,
+    #         transform=self.test_transform,
+    #         cls_list=self.exposed_classes,
+    #         data_dir=self.data_dir
+    #     )
+    #     test_loader = DataLoader(
+    #         test_dataset,
+    #         shuffle=True,
+    #         batch_size=batch_size,
+    #         num_workers=n_worker,
+    #     )
+    #     eval_dict = self.evaluation(test_loader, self.criterion)
+    #     self.report_test(sample_num, eval_dict["avg_loss"], eval_dict["avg_acc"])
+    #     return eval_dict
 
     def online_before_task(self, cur_iter):
         # Task-Free

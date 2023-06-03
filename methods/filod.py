@@ -1,27 +1,18 @@
 import logging
-import sys
-import random
-import copy
 import torchvision
-import os 
 import numpy as np
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import pandas as pd
-from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from scipy.stats import ttest_ind
 
 from methods.er_baseline import ER
 from utils.data_loader import cutmix_data, ImageDataset, StreamDataset, MemoryDataset
-from clad_memory import CladMemoryDataset
+from utils.data_loader_clad import CladMemoryDataset
 from clad_utils import CladDataset, visualize_and_save, data_transform
 
 from torchvision.ops import box_iou
 from sklearn.metrics import average_precision_score
 from engine import evaluate
-from soda import SODADataset
+from utils.soda import SODADataset
 
 
 logger = logging.getLogger()
@@ -222,130 +213,6 @@ class FILOD_DJ(ER):
         # Adjusts the learning rate of the optimizer based on the learning history.
         pass
     
-    def online_evaluate_clad(self, test_list, batch_size, n_worker):
-        test_dataset = CladDataset(test_list)
-        test_loader = DataLoader(
-            test_dataset,
-            shuffle=True,
-            batch_size=batch_size,
-            num_workers=n_worker,
-            collate_fn=collate_fn
-        )
-        eval_dict = self.evaluation(test_loader)
-        return eval_dict
-
-    def evaluation(self, test_loader, criterion=None):
-        self.model.eval()
-        with torch.no_grad():
-            for i, data in enumerate(test_loader):
-                images = [img.to(self.device) for img in data[0]]
-                targets = []
-                for i in range(len(images)):
-                    d = {}
-                    d['boxes'] = data[1][i]['boxes'].to(self.device)
-                    d['labels'] = data[1][i]['labels'].to(self.device)
-                    targets.append(d)
-                outputs = self.model(images)
-                
-                for i, output in enumerate(outputs):
-                    # For each image in batched outputs
-                    # Get the predicted boxes and scores
-                    boxes_pred = output['boxes']
-                    scores = output['scores']
-                    labels_pred = output['labels']
-
-                    boxes_gt = targets[i]['boxes']
-                    labels_gt = targets[i]['labels']
-                    
-                    # Apply the detection threshold
-                    mask = scores >= 0.18
-                    boxes_pred = boxes_pred[mask]
-                    labels_pred = labels_pred[mask]
-                    
-                    for cls in range(self.n_classes):
-                        # Get the ground-truth and prediction data for this class
-                        gt_mask = labels_gt == cls
-                        boxes_gt_cls = boxes_gt[gt_mask]
-                        pred_mask = labels_pred == cls
-                        boxes_pred_cls = boxes_pred[pred_mask]
-                        
-                        # Calculate IoU
-                        iou = box_iou(boxes_pred_cls, boxes_gt_cls)
-                        breakpoint()
-                        # Calculate the prediction and ground-truth labels based on IoU threshold
-                        iou_mask = iou > 0.5
-                        
-                        # preds_c: whether predicted box matches any of the gt boxes
-                        # gts_c: whether gt-box matches any of the predicted boxes
-                        preds_c = iou_mask.any(dim=1).float().cpu().numpy()
-                        gts_c = iou_mask.any(dim=0).float().cpu().numpy()
-                        breakpoint()
-                        # Calculate AP
-                        AP = average_precision_score(gts_c, preds_c)
-                        # print(f"Class {cls}: AP = {AP}")
-                        breakpoint()
-                pass
             
 def collate_fn(batch):
     return tuple(zip(*batch))
-
-
-def calc_accuracy(boxes_gt, labels_gt, boxes_pred, labels_pred):
-    """
-    Summary: Calculate appropriate metric for object detection, given bounding box and label information
-    Args:
-        boxes_gt (torch.Size([n_boxes, 4])): Ground-truth bounding boxes
-        labels_gt (torch.Size([n_boxes])): Ground-truth labels corresponding to each box
-        boxes_pred (torch.Size([n_boxes, 4])): Predicted bounding boxes
-        labels_pred (torch.Size([n_boxes])): Predicted labels corresponding to each box
-    """
-
-    # Initialize the total number of correct predictions
-    total_correct = 0
-
-    # Loop over all the ground truth boxes
-    for idx, (box_gt, label_gt) in enumerate(zip(boxes_gt, labels_gt)):
-
-        # Find the predicted box with the highest IoU with the current ground truth box
-        ious = [get_iou(box_gt, box_pred) for box_pred in boxes_pred]
-        best_pred_idx = np.argmax(ious)
-
-        # Check if the label of the best predicted box matches the ground truth label
-        if labels_pred[best_pred_idx] == label_gt:
-            total_correct += 1
-
-    # Calculate the accuracy
-    accuracy = total_correct / len(boxes_gt)
-
-    return accuracy
-
-
-def get_iou(box1, box2):
-    """
-    Calculate the Intersection over Union (IoU) of two bounding boxes.
-
-    Args:
-        box1 (tensor): A bounding box in format (x1, y1, x2, y2)
-        box2 (tensor): The other bounding box, in the same format
-    """
-
-    # Calculate the (x, y)-coordinates of the intersection rectangle
-    x1 = max(box1[0], box2[0])
-    y1 = max(box1[1], box2[1])
-    x2 = min(box1[2], box2[2])
-    y2 = min(box1[3], box2[3])
-
-    # Calculate the area of intersection rectangle
-    inter_area = max(0, x2 - x1 + 1) * max(0, y2 - y1 + 1)
-
-    # Calculate the area of both the prediction and ground-truth rectangles
-    box1_area = (box1[2] - box1[0] + 1) * (box1[3] - box1[1] + 1)
-    box2_area = (box2[2] - box2[0] + 1) * (box2[3] - box2[1] + 1)
-
-    # Compute the union
-    union_area = box1_area + box2_area - inter_area
-
-    # Compute the IoU
-    iou = inter_area / union_area
-
-    return iou

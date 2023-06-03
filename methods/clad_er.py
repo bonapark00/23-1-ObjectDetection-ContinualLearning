@@ -9,23 +9,35 @@ from utils.data_loader_clad import CladMemoryDataset
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
 
-class CLAD_ER(ER):
+class CLAD_ER:
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
-        super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-        self.memory_size = kwargs['memory_size']
-        self.batch_size = kwargs['batchsize']
+        # Member variables from original er_baseline - ER class
+        self.num_learned_class = 0
+        self.num_learning_class = 1
+        self.n_classes = n_classes
+        self.exposed_classes = []
+        self.seen = 0
+
+        self.device = device
+        self.model_name = kwargs["model_name"]
+        self.memory_size = kwargs["memory_size"]
+
+        self.online_iter = kwargs["online_iter"]
+        self.batch_size = kwargs["batchsize"]
+        self.temp_batchsize = kwargs["temp_batchsize"]
+        self.temp_batch = []
+        self.num_updates = 0
+        self.train_count = 0
         
         # Samplewise importance variables
         self.loss = np.array([])
         self.dropped_idx = []
         self.memory_dropped_idx = []
         self.imp_update_counter = 0
-        self.n_classes = n_classes
         self.memory = CladMemoryDataset(dataset='SSLAD-2D', device=None)
         # self.imp_update_period = kwargs['imp_update_period']
         
         self.current_trained_images = []
-        self.exposed_classes = []
         self.exposed_tasks = []
         self.count_log = 0
 
@@ -35,6 +47,7 @@ class CLAD_ER(ER):
         self.task_num = 0
         self.writer = SummaryWriter("tensorboard")
         self.current_batch = []
+
     
     def online_step(self, sample, sample_num, n_worker):
         """Updates the model based on new data samples. If the sample's class is new, 

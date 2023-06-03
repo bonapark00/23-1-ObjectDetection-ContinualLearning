@@ -7,3 +7,6 @@ tensorboard/
 
 # Ignore dataset files
 dataset/
+
+# Log files
+*.log

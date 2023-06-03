@@ -19,7 +19,7 @@ fi
 
 for RND_SEED in $SEEDS
 do
-    python train.py --mode $MODE \
+    python main.py --mode $MODE \
     --model_name $MODEL_NAME \
     --batchsize $BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER

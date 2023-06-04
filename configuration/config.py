@@ -29,6 +29,8 @@ def base_parser():
         default="clad",
         help="[clad, shift]",
     )
+    parser.add_argument('--seed_num', type=str, default=1, help='# seed num of the running model')
+    
     # MIR
     parser.add_argument('--mir_cands', type=int, default=20, help='# candidates to use for MIR')
 
@@ -128,7 +130,7 @@ def base_parser():
     # #FILOD
     # parser.add_argument('--replay_method', type=str, default='base', help='# candidates to use for FILOD')
     # parser.add_argument('--er_num', type=str, default=2, help='# use it for batch er_num')
-    # parser.add_argument('--seed_num', type=str, default=1, help='# seed num of the running model')
+    
     args = parser.parse_args()
     
     return args

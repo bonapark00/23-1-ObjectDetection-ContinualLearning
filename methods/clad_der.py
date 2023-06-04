@@ -4,7 +4,7 @@ import os
 import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
-from methods.er_baseline import ER
+from methods.clad_er import CLAD_ER
 from utils.data_loader_clad import CladDistillationMemory
 import PIL
 from torchvision import transforms

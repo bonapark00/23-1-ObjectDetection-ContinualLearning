@@ -25,7 +25,19 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             n_classes=n_classes,
             **kwargs,
         )
+
+    elif args.mode == "clad_der":
+        method = CLAD_DER(
+            criterion=None,
+            device=device,
+            train_transform=train_transform,
+            test_transform=test_transform,
+            n_classes=n_classes,
+            **kwargs,
+        )
     else:
         raise NotImplementedError("Choose the args.mode in [er, gdumb, rm, bic, ewc++, mir, clib]")
 
     return method
+
+def 

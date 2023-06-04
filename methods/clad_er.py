@@ -42,7 +42,7 @@ class CLAD_ER:
         self.exposed_tasks = []
         self.count_log = 0
         
-        self.model = select_model(model_name=None, dataset="clad", num_classes=n_classes).to(self.device)
+        self.model = select_model(model_name=None, dataset="clad", num_classes=n_classes, for_distillation=False).to(self.device)
         self.params =[p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0
@@ -66,20 +66,19 @@ class CLAD_ER:
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
             
+
         # update_memory 호출 -> samplewise_importance_memory 호출 -> 여기에서 memory.replace_sample 호출
         # self.memory.replace_sample(sample)
         self.update_memory(sample)
         self.num_updates += self.online_iter
         if self.num_updates >= 1:
-            if len(self.current_batch) == self.temp_batchsize:
-                self.num_updates = (self.num_updates // self.temp_batchsize)
-                for i in range(self.temp_batchsize):
+            if len(self.temp_batch) == self.temp_batchsize:
                     train_loss = self.online_train(sample, self.batch_size, n_worker, 
                                         iterations=int(self.num_updates))
                     print(f"Train_loss: {train_loss}")
                     
                 self.num_updates -= int(self.num_updates)
-                self.current_batch.clear()
+                self.temp_batch.clear()
     
     def online_train(self, sample, batch_size, n_worker, iterations=1):
         """Trains the model using both memory data and new data.
@@ -103,7 +102,7 @@ class CLAD_ER:
             
             if len(self.memory) > 0 and batch_size > 0:
                 
-                memory_data = self.memory.get_batch(memory_batch_size, concat_idx=self.current_batch)
+                memory_data = self.memory.get_batch(memory_batch_size, concat_idx=self.temp_batch)
                 self.count_log += memory_batch_size
                 
                 self.current_trained_images = list(set(self.current_trained_images + memory_data['images']))
@@ -170,16 +169,16 @@ class CLAD_ER:
             
             print("#" * 100)
             print(self.temp_batchsize)
-            if len(self.current_batch) < self.temp_batchsize:
-                self.current_batch.append(target_idx)
+            if len(self.temp_batch) < self.temp_batchsize:
+                self.temp_batch.append(target_idx)
                 
         else:
             self.memory.replace_sample(sample)
             self.dropped_idx.append(len(self.memory)- 1)
             self.memory_dropped_idx.append(len(self.memory) - 1)
             
-            if len(self.current_batch) < self.temp_batchsize:
-                self.current_batch.append(len(self.memory)- 1)
+            if len(self.temp_batch) < self.temp_batchsize:
+                self.temp_batch.append(len(self.memory)- 1)
         
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.

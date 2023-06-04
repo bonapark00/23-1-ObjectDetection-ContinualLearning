@@ -12,7 +12,7 @@ from torchvision import transforms
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
 
-class CLAD_DER(ER):
+class CLAD_DER(CLAD_ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
         self.memory_size = 150 #kwargs["memory_size"]

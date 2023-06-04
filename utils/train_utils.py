@@ -56,7 +56,7 @@ def select_scheduler(sched_name, opt, hparam=None):
 
 # Method to initiliaize the model. model_class is dependend to dataset
 #e.g) cifer, imagenet -> Resnet, mnist -> MLP
-def select_model(model_name, dataset, num_classes=None):
+def select_model(model_name, dataset, num_classes=None, for_distillation=False):
     # #opt is initial paramemeters which goes into 
     # #model_class. model_class is selected by dataset
     # opt = edict(
@@ -101,5 +101,5 @@ def select_model(model_name, dataset, num_classes=None):
     #     )
 
     # model = model_class(opt)
-    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=num_classes)
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=num_classes, for_distillation=for_distillation)
     return model

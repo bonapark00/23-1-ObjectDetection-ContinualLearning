@@ -20,12 +20,14 @@ class CLAD_ER:
 
         self.dataset = kwargs["dataset"]
         self.device = device
+
         self.model_name = kwargs["model_name"]
         self.memory_size = kwargs["memory_size"]
 
         self.online_iter = kwargs["online_iter"]
         self.batch_size = kwargs["batchsize"]
         self.temp_batchsize = kwargs["temp_batchsize"]
+        self.seed_num = kwargs['seed_num']
         self.temp_batch = []
         self.num_updates = 0
         self.train_count = 0
@@ -47,7 +49,7 @@ class CLAD_ER:
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0
         self.writer = SummaryWriter("tensorboard")
-        self.current_batch = []
+        self.tensorboard_pth = f"{kwargs['mode']}_{self.model_name}_{self.dataset}_b_size{self.batch_size}_tb_size{self.temp_batchsize}__sd_{self.seed_num}"
 
     
     def online_step(self, sample, sample_num, n_worker):
@@ -66,6 +68,7 @@ class CLAD_ER:
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
             
+        write_tensorboard(sample)
 
         # update_memory 호출 -> samplewise_importance_memory 호출 -> 여기에서 memory.replace_sample 호출
         # self.memory.replace_sample(sample)
@@ -179,6 +182,15 @@ class CLAD_ER:
             
             if len(self.temp_batch) < self.temp_batchsize:
                 self.temp_batch.append(len(self.memory)- 1)
+
+
+    def write_tensorboard(self, sample, tensorboard_pth=self.tensorboard_pth):
+        if sample['task_num'] != self.task_num:
+            self.writer.close()     
+            self.writer = SummaryWriter(f"tensorboard/{tensorboard_pth}")
+        
+        self.task_num = sample['task_num']
+
         
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.

@@ -39,5 +39,3 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
         raise NotImplementedError("Choose the args.mode in [er, gdumb, rm, bic, ewc++, mir, clib]")
 
     return method
-
-def 

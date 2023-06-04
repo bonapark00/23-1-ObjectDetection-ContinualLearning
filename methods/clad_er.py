@@ -73,9 +73,9 @@ class CLAD_ER:
         self.num_updates += self.online_iter
         if self.num_updates >= 1:
             if len(self.temp_batch) == self.temp_batchsize:
-                    train_loss = self.online_train(sample, self.batch_size, n_worker, 
-                                        iterations=int(self.num_updates))
-                    print(f"Train_loss: {train_loss}")
+                train_loss = self.online_train(sample, self.batch_size, n_worker, 
+                                    iterations=int(self.num_updates))
+                print(f"Train_loss: {train_loss}")
                     
                 self.num_updates -= int(self.num_updates)
                 self.temp_batch.clear()

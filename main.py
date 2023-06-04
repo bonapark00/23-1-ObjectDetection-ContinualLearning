@@ -10,7 +10,6 @@ from utils.method_manager import select_method
 
 def main():
     args = config.base_parser()
-
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     
     # Set up logging
@@ -36,12 +35,12 @@ def main():
     cur_train_datalist = get_clad_datalist('train')
     # cur_test_datalist = get_clad_datalist('val')
     
-    task_1_train = cur_train_datalist[0:4470]
-    task_2_train = cur_train_datalist[4470:5799]
-    task_3_train = cur_train_datalist[5799:7278]
-    task_4_train = cur_train_datalist[7278:7802]
-    
-    train_task = [task_1_train, task_2_train, task_3_train, task_4_train]
+    train_task = [
+        cur_train_datalist[0:4470],
+        cur_train_datalist[4470:5799],
+        cur_train_datalist[5799:7278],
+        cur_train_datalist[7278:7802]
+    ]
     
     # task_1_val = cur_test_datalist[0:4470]
     # task_2_val= cur_test_datalist[4470:5799]
@@ -62,13 +61,14 @@ def main():
     
     #     test_loader_list.append(torch.utils.data.DataLoader(data_set, batch_size=4, collate_fn=collate_fn))
     
-    #changed seed order to check training status
-    task_list = [[2,0,3,1],[0,1,2,3],[1,2,3,0]]
-    seed_num = [2,1,3]
-
+    # Changed seed order to check training status
+    task_seed_list = [[2,0,3,1],[0,1,2,3],[1,2,3,0]]
+    
+    # Train
+    for task in task_seed_list[args.seed_num]:
+    
     for i in range(3):
         for task in task_list[i]:
-            method.seed_num = seed_num[i]
             for data in tqdm(train_task[task], desc=f"Task {task+1}/4"):
                 samples_cnt += 1
                 method.model.train()

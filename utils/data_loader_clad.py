@@ -492,6 +492,7 @@ class SODADataset(Dataset):
             self.objects.append(item['objects'])
     
 
+
     def __len__(self):
         return len(self.img_paths)
     

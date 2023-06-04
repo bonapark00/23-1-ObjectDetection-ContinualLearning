@@ -68,7 +68,7 @@ class CLAD_ER:
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
             
-        write_tensorboard(sample)
+        self.write_tensorboard(sample)
 
         # update_memory 호출 -> samplewise_importance_memory 호출 -> 여기에서 memory.replace_sample 호출
         # self.memory.replace_sample(sample)
@@ -184,10 +184,10 @@ class CLAD_ER:
                 self.temp_batch.append(len(self.memory)- 1)
 
 
-    def write_tensorboard(self, sample, tensorboard_pth=self.tensorboard_pth):
+    def write_tensorboard(self, sample):
         if sample['task_num'] != self.task_num:
             self.writer.close()     
-            self.writer = SummaryWriter(f"tensorboard/{tensorboard_pth}")
+            self.writer = SummaryWriter(f"tensorboard/{self.tensorboard_pth}")
         
         self.task_num = sample['task_num']
 

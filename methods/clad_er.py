@@ -109,7 +109,7 @@ class CLAD_ER:
                 self.count_log += memory_batch_size
                 
                 self.current_trained_images = list(set(self.current_trained_images + memory_data['images']))
-                print("Current trained images:", len(self.current_trained_images))
+                # print("Current trained images:", len(self.current_trained_images))
                 
                 images = [img.to(self.device) for img in memory_data['images']]
                 targets = []

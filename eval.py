@@ -1,12 +1,10 @@
 import torch
-import torchvision
 from torchvision import transforms
-from PIL import Image
 from utils.data_loader_clad import SODADataset
 from utils.method_manager import select_method
-from clad_utils import collate_fn, data_transform
+from utils.preprocess_clad import collate_fn
 from configuration import config
-from engine import evaluate
+from eval_utils.engine import evaluate
 
 
 args = config.base_parser()
@@ -24,14 +22,14 @@ transforms.ToTensor()
 # TODO: make below code as function
 for i in range(4): 
     data_set = SODADataset(path="./dataset/SSLAD-2D", task_id=i+1,
-                                split="val", transforms=data_transform)
+                                split="val")
 
     test_loader_list.append(torch.utils.data.DataLoader(data_set, batch_size=4, collate_fn=collate_fn))
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 task_seed_list = [[2,0,3,1],[0,1,2,3],[1,2,3,0]]
-selected_seed = task_seed_list[args.seed_num - 1]
+selected_seed = task_seed_list[int(args.seed_num) - 1]
 
 for i, task in enumerate(task_seed_list[int(args.seed_num) - 1]):
     print(f"Model for task {task + 1} is on evaluation...")

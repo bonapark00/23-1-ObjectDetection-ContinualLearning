@@ -170,8 +170,6 @@ class CLAD_ER:
             self.dropped_idx.append(target_idx)
             self.memory_dropped_idx.append(target_idx)
                                
-            print("#" * 100)
-            print(self.temp_batchsize)
             if len(self.temp_batch) < self.temp_batchsize:
                 self.temp_batch.append(target_idx)
                 

@@ -65,19 +65,23 @@ def main():
     task_seed_list = [[2,0,3,1],[0,1,2,3],[1,2,3,0]]
     
     # Train
-    for task in task_seed_list[args.seed_num]:
-    
-    for i in range(3):
-        for task in task_list[i]:
-            for data in tqdm(train_task[task], desc=f"Task {task+1}/4"):
-                samples_cnt += 1
-                method.model.train()
-                method.online_step(data, samples_cnt, args.n_worker)
+    for task in task_seed_list[int(args.seed_num) - 1]:
+        for data in tqdm(train_task[task], desc=f"Task {task + 1} / 4"):
+            samples_cnt += 1
+            method.model.train()
+            method.online_step(data, samples_cnt, args.n_worker)
+
+    # for i in range(3):
+    #     for task in task_list[i]:
+    #         for data in tqdm(train_task[task], desc=f"Task {task+1}/4"):
+    #             samples_cnt += 1
+    #             method.model.train()
+    #             method.online_step(data, samples_cnt, args.n_worker)
             
-            # method.model.eval()
-            # evaluate(method.model, test_loader_list[task], device=device)
-            torch.save(method.model.state_dict(), os.path.join('model_checkpoints', f"clad_der_model_task_{task+1}_seed{seed_num[i]}.pth"))
-        method = select_method(args, None, device, train_transform, test_transform, 7)
+    #         # method.model.eval()
+    #         # evaluate(method.model, test_loader_list[task], device=device)
+    #         torch.save(method.model.state_dict(), os.path.join('model_checkpoints', f"clad_der_model_task_{task+1}_seed{seed_num[i]}.pth"))
+    #     method = select_method(args, None, device, train_transform, test_transform, 7)
 
 if __name__ == "__main__":
     main()

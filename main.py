@@ -65,12 +65,14 @@ def main():
     task_seed_list = [[2,0,3,1],[0,1,2,3],[1,2,3,0]]
     
     # Train
-    for task in task_s eed_list[int(args.seed_num) - 1]:
+    for task in task_seed_list[int(args.seed_num) - 1]:
         for data in tqdm(train_task[task], desc=f"Task {task + 1} / 4"):
             samples_cnt += 1
             method.model.train()
             method.online_step(data, samples_cnt, args.n_worker)
-            #TODO: torch.save, method 초기화             
+        
+        # Save trained model
+        torch.save(method.model.state_dict(), os.path.join('model_checkpoints', f"{args.mode}_seed_{args.seed_num}_task{task + 1}.pth"))          
 
     # for i in range(3):
     #     for task in task_list[i]:

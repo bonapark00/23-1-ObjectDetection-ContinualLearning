@@ -1,6 +1,7 @@
 import logging
 from methods.clad_er import CLAD_ER
 from methods.clad_mir import CLAD_MIR
+from methods.clad_der import CLAD_DER
 
 logger = logging.getLogger()
 

@@ -76,9 +76,9 @@ class CLAD_ER:
         self.num_updates += self.online_iter
         if self.num_updates >= 1:
             if len(self.temp_batch) == self.temp_batchsize:
-                    train_loss = self.online_train(sample, self.batch_size, n_worker, 
-                                        iterations=int(self.num_updates))
-                    print(f"Train_loss: {train_loss}")
+                train_loss = self.online_train(sample, self.batch_size, n_worker, 
+                                    iterations=int(self.num_updates))
+                print(f"Train_loss: {train_loss}")
                     
                 self.num_updates -= int(self.num_updates)
                 self.temp_batch.clear()
@@ -184,10 +184,10 @@ class CLAD_ER:
                 self.temp_batch.append(len(self.memory)- 1)
 
 
-    def write_tensorboard(self, sample, tensorboard_pth=self.tensorboard_pth):
+    def write_tensorboard(self, sample):
         if sample['task_num'] != self.task_num:
             self.writer.close()     
-            self.writer = SummaryWriter(f"tensorboard/{tensorboard_pth}")
+            self.writer = SummaryWriter(f"tensorboard/{self.tensorboard_pth}")
         
         self.task_num = sample['task_num']
         

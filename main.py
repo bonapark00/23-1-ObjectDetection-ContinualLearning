@@ -70,6 +70,7 @@ def main():
             samples_cnt += 1
             method.model.train()
             method.online_step(data, samples_cnt, args.n_worker)
+            #TODO: torch.save, method 초기화             
 
     # for i in range(3):
     #     for task in task_list[i]:

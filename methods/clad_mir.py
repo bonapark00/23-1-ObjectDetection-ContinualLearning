@@ -12,8 +12,6 @@ writer = SummaryWriter("tensorboard")
 class CLAD_MIR(CLAD_ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-        # self.imp_update_counter = 0
-        # self.imp_update_period = kwargs['imp_update_period']
         self.mir_cands = kwargs['mir_cands']
     
 
@@ -36,12 +34,12 @@ class CLAD_MIR(CLAD_ER):
         self.update_memory(sample)
         self.num_updates += self.online_iter
 
-        if len(self.current_batch) == self.temp_batchsize:
+        if len(self.temp_batch) == self.temp_batchsize:
             train_loss = self.online_train(sample, self.batch_size, n_worker,
                                                     iterations=int(self.num_updates),
                                                     stream_batch_size=self.temp_batchsize)
             self.num_updates -= int(self.num_updates)
-            self.current_batch.clear()
+            self.temp_batch.clear()
     
     
     def online_train(self, sample, batch_size, n_worker, iterations, stream_batch_size):
@@ -52,7 +50,7 @@ class CLAD_MIR(CLAD_ER):
         total_loss, num_data = 0.0, 0.0
 
         for i in range(iterations):
-            stream_data = self.memory.get_batch(concat_idx=self.current_batch, batch_size=batch_size)
+            stream_data = self.memory.get_batch(concat_idx=self.temp_batch, batch_size=batch_size)
             # self.count_log += memory_batch_size
             
             stream_images = [img.to(self.device) for img in stream_data['images']]
@@ -86,7 +84,7 @@ class CLAD_MIR(CLAD_ER):
 
                 memory_stream_concat_size = min(self.mir_cands + stream_batch_size, len(self.memory))
                 memory_stream_concat = self.memory.get_batch(memory_stream_concat_size,
-                                                             concat_idx=self.current_batch)
+                                                             concat_idx=self.temp_batch)
                 # No longer need streams -> Get only the randomly choosen batch
                 memory_cands = {k:v[:memory_stream_concat_size - stream_batch_size] for k, v in 
                                 memory_stream_concat.items()}
@@ -166,16 +164,16 @@ class CLAD_MIR(CLAD_ER):
             self.dropped_idx.append(target_idx)
             self.memory_dropped_idx.append(target_idx)
             
-            if len(self.current_batch) < self.temp_batchsize:
-                self.current_batch.append(target_idx)
+            if len(self.temp_batch) < self.temp_batchsize:
+                self.temp_batch.append(target_idx)
                 
         else:
             self.memory.replace_sample(sample)
             self.dropped_idx.append(len(self.memory)- 1)
             self.memory_dropped_idx.append(len(self.memory) - 1)
             
-            if len(self.current_batch) < self.temp_batchsize:
-                self.current_batch.append(len(self.memory)- 1)
+            if len(self.temp_batch) < self.temp_batchsize:
+                self.temp_batch.append(len(self.memory)- 1)
         
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.

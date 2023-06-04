@@ -12,6 +12,7 @@ from configuration.clad_meta import SODA_DOMAINS
 from configuration.clad_meta import CLADD_TRAIN_VAL_DOMAINS, SODA_ROOT
 from utils.preprocess_clad import *
 from typing import List, Callable, Dict, Any
+import torch
 
 @lru_cache(4)
 def load_obj_img_dic(annot_file: str):
@@ -245,6 +246,26 @@ def get_clad_trainval(root: str=SODA_ROOT, val_proportion= 0.1):
     
     
     return train_info, val_info
+
+def get_sample_objects(objects: dict):
+            '''
+            save objects from a single data.
+            modify bbox and return target, which can directly put into model. 
+            '''
+            boxes = []
+            for bbox in objects['bbox']:
+                  # Convert from x, y, h, w to x0, y0, x1, y1
+                  boxes.append([bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]])
+                  
+            # Targets should all be tensors
+            target = \
+                  {"boxes": torch.as_tensor(boxes, dtype=torch.float32), 
+                   "labels": torch.as_tensor(objects['category_id'],dtype=torch.int64), 
+                   "image_id": torch.as_tensor(objects['image_id'], dtype=torch.int64),
+                   "area": torch.as_tensor(objects['area']), 
+                   "iscrowd": torch.as_tensor(objects['iscrowd'], dtype=torch.int64)}
+
+            return target
 
         
 def get_clad_datalist(data_type: str='train', val_proportion = 0.1):

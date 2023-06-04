@@ -128,12 +128,25 @@ class CLAD_MIR(CLAD_ER):
 
                 total_loss += losses.item()
                 num_data += len(images)
-
-
-                
         
     def update_memory(self, sample):
-        self.samplewise_importance_memory(sample)
+        # Updates the memory of the model based on the importance of the samples.
+        if len(self.memory.images) >= self.memory_size:
+            target_idx = np.random.randint(len(self.memory.images))
+            self.memory.replace_sample(sample, target_idx)
+            self.dropped_idx.append(target_idx)
+            self.memory_dropped_idx.append(target_idx)
+            
+            if len(self.temp_batch) < self.temp_batchsize:
+                self.temp_batch.append(target_idx)
+                
+        else:
+            self.memory.replace_sample(sample)
+            self.dropped_idx.append(len(self.memory)- 1)
+            self.memory_dropped_idx.append(len(self.memory) - 1)
+            
+            if len(self.temp_batch) < self.temp_batchsize:
+                self.temp_batch.append(len(self.memory) - 1)
         
         
     def add_new_class(self, class_name):
@@ -151,29 +164,6 @@ class CLAD_MIR(CLAD_ER):
         self.num_learned_class = len(self.exposed_classes)
         self.memory.add_new_class(cls_list=self.exposed_classes)
         
-
-    def samplewise_loss_update(self, ema_ratio=0.90, batchsize=512):
-        # Updates the loss of the model based on the sample data.
-        pass
-        
-    def samplewise_importance_memory(self, sample):
-        # Updates the memory of the model based on the importance of the samples.
-        if len(self.memory.images) >= self.memory_size:
-            target_idx = np.random.randint(len(self.memory.images))
-            self.memory.replace_sample(sample, target_idx)
-            self.dropped_idx.append(target_idx)
-            self.memory_dropped_idx.append(target_idx)
-            
-            if len(self.temp_batch) < self.temp_batchsize:
-                self.temp_batch.append(target_idx)
-                
-        else:
-            self.memory.replace_sample(sample)
-            self.dropped_idx.append(len(self.memory)- 1)
-            self.memory_dropped_idx.append(len(self.memory) - 1)
-            
-            if len(self.temp_batch) < self.temp_batchsize:
-                self.temp_batch.append(len(self.memory)- 1)
         
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.

@@ -7,11 +7,61 @@ from torchvision import transforms
 from utils.data_loader import MemoryDataset
 from torch.utils.data import Dataset
 from PIL import Image
-from utils.preprocess_clad import get_clad_datalist
+from utils.preprocess_clad import get_clad_datalist, get_sample_objects
 
 logger = logging.getLogger()
 
 # Incomming input eg: {'img_id': 3, 'annot_file': ~, 'task_num': 2}
+
+class CladStreamDataset(Dataset):
+    def __init__(self, datalist, dataset, transform, cls_list, data_dir=None, device=None, transform_on_gpu=False):
+        self.images = []
+        self.labels = []
+        self.objects = []
+        self.dataset = dataset
+        self.transform = transform
+        self.cls_list = cls_list
+        self.data_dir = data_dir
+        self.device = device
+        self.transform_on_gpu = transform_on_gpu
+        self.transform_gpu = transform
+
+        for data in datalist:
+            try:
+                img_name = data['file_name']
+            except KeyError:
+                img_name = data['filepath']
+            
+            if self.data_dir is None:
+                img_path = os.path.join("dataset", self.dataset, 'labeled', data['split'], img_name)
+            else:
+                 img_path = os.path.join(self.data_dir, data['split'], img_name)
+
+            image = PIL.Image.open(img_path).convert('RGB')
+            image = transforms.ToTensor()(image)
+            target = get_sample_objects(data['objects'])
+
+            # Append new samples
+            self.images.append(image)
+            self.objects.append(target)
+
+    def __len__(self):
+        return len(self.images)
+
+    def __getitem__(self, idx):
+        # Not used
+        sample = None
+        return sample
+    
+    @torch.no_grad()
+    def get_data(self):
+        images = [self.images[idx] for idx in range(len(self.images))]
+        boxes = [self.objects[idx]['boxes'] for idx in range(len(self.images))]
+        labels = [self.objects[idx]['labels'] for idx in range(len(self.images))]
+        
+        return {'images': images, 'boxes': boxes, 'labels': labels}
+
+
 class CladMemoryDataset(MemoryDataset):
       def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
                  data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
@@ -19,7 +69,7 @@ class CladMemoryDataset(MemoryDataset):
         '''
         transform_on_gpu = True -> augmentation and normalize. need dataset info (mean, std, ...)
         '''
-        self.datalist = [] 
+        self.datalist = []
         self.images = []
         self.objects = [] 
         self.dataset = dataset #SSLAD-2D
@@ -68,27 +118,7 @@ class CladMemoryDataset(MemoryDataset):
             extend_length = np.max(obj_cls_list)-len(self.obj_cls_count)
             self.obj_cls_count = np.pad(self.obj_cls_count, (0,extend_length), constant_values=(0)).flatten()
             self.obj_cls_train_cnt = np.pad(self.obj_cls_train_cnt, (0,extend_length), constant_values=(0)).flatten()
-      
 
-      def get_sample_objects(self, objects: dict):
-            '''
-            save objects from a single data.
-            modify bbox and return target, which can directly put into model. 
-            '''
-            boxes = []
-            for bbox in objects['bbox']:
-                  # Convert from x, y, h, w to x0, y0, x1, y1
-                  boxes.append([bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]])
-                  
-            # Targets should all be tensors
-            target = \
-                  {"boxes": torch.as_tensor(boxes, dtype=torch.float32), 
-                   "labels": torch.as_tensor(objects['category_id'],dtype=torch.int64), 
-                   "image_id": torch.as_tensor(objects['image_id'], dtype=torch.int64),
-                   "area": torch.as_tensor(objects['area']), 
-                   "iscrowd": torch.as_tensor(objects['iscrowd'], dtype=torch.int64)}
-
-            return target
             
       def replace_sample(self, sample, idx=None):
             '''
@@ -109,6 +139,7 @@ class CladMemoryDataset(MemoryDataset):
             self.img_location_count[img_info['location']] +=1
             self.img_period_count[img_info['period']] +=1
             self.img_city_count[img_info['city']] +=1
+            
             #objects
             obj_cls_info = np.array(sample['objects']['category_id'])
             obj_cls_id = np.bincount(obj_cls_info)[1:] #from 1 to max. [3,3] -> [0,0,2]
@@ -124,7 +155,7 @@ class CladMemoryDataset(MemoryDataset):
             if self.data_dir is None:
                   img_path = os.path.join("dataset", self.dataset,'labeled',sample['split'],img_name)
             else:
-                  img_path = os.path.join(self.data_dir,sample['split'],img_name)
+                  img_path = os.path.join(self.data_dir, sample['split'],img_name)
             image = PIL.Image.open(img_path).convert('RGB')
             image = transforms.ToTensor()(image)
 
@@ -132,7 +163,7 @@ class CladMemoryDataset(MemoryDataset):
             if self.transform_on_gpu:
                   image = self.transform_cpu(image)'''
             
-            target = self.get_sample_objects(sample['objects'])
+            target = get_sample_objects(sample['objects'])
             
             
             #append new sample at behind(last index)
@@ -199,49 +230,29 @@ class CladMemoryDataset(MemoryDataset):
             pass 
   
       @torch.no_grad()
-      def get_batch(self, batch_size, use_weight=False, concat_idx=[], transform=None):
-            if use_weight:
-                  print('use_weight is not available')
-                  #weight = self.get_weight()
-                  #indices = np.random.choice(range(len(self.images)), size=batch_size, p=weight/np.sum(weight), replace=False)
-            else:
-                  rand_idx_num = batch_size - len(concat_idx)
-                  rand_pool=np.array([k for k in range(len(self.images)) if k not in concat_idx])
-                  indices = np.hstack((np.random.choice(rand_pool, size=rand_idx_num, replace=False), np.array(concat_idx))).astype('int32')
-
-            
-            '''
-            <transformation, not revised yet)>
-            for i in indices:
-                  if transform is None:
-                        if self.transform_on_gpu:
-                          images.append(self.transform_gpu(self.images[i].to(self.device)))
-                        else:
-                          images.append(self.transform(self.images[i]))
-            else:
-                if self.transform_on_gpu:
-                    images.append(transform(self.images[i].to(self.device)))
-                else:
-                    images.append(transform(self.images[i]))'''
+      def get_batch(self, batch_size, use_weight=False, transform=None):
+        rand_pool=np.array([k for k in range(len(self.images))])
+        indices = np.random.choice(rand_pool, size=batch_size, replace=False).astype('int32')
                     
-            images = [self.images[idx] for idx in indices]
-            boxes = [self.objects[idx]['boxes'] for idx in indices]
-            labels = [self.objects[idx]['labels'] for idx in indices]
+        images = [self.images[idx] for idx in indices]
+        boxes = [self.objects[idx]['boxes'] for idx in indices]
+        labels = [self.objects[idx]['labels'] for idx in indices]
             
-            for obj in np.array(self.objects)[indices]:
+        for obj in np.array(self.objects)[indices]:   
+            obj_cls_id = np.bincount(np.array(obj['labels'].tolist()))[1:]
+            #breakpoint()
+            if len(self.obj_cls_train_cnt) > len(obj_cls_id):
+                obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_train_cnt) - len(obj_cls_id)), 
+                                    constant_values=(0)).flatten()
                   
-                  obj_cls_id = np.bincount(np.array(obj['labels'].tolist()))[1:]
-                  #breakpoint()
-                  if len(self.obj_cls_train_cnt) > len(obj_cls_id):
-                    obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_train_cnt)-len(obj_cls_id)), constant_values=(0)).flatten()
-                  
-                  self.obj_cls_train_cnt += obj_cls_id
+            self.obj_cls_train_cnt += obj_cls_id
                   
             if self.keep_history:
                   #total history of indices selected for batch
                   self.previous_idx = np.append(self.previous_idx, indices) 
             
-            return {'images': images, 'boxes': boxes, 'labels': labels}
+        # breakpoint()
+        return {'images': images, 'boxes': boxes, 'labels': labels}
        
             
             
@@ -310,26 +321,6 @@ class CladDistillationMemory(MemoryDataset):
             self.obj_cls_count = np.pad(self.obj_cls_count, (0,extend_length), constant_values=(0)).flatten()
             self.obj_cls_train_cnt = np.pad(self.obj_cls_train_cnt, (0,extend_length), constant_values=(0)).flatten()
       
-
-      def get_sample_objects(self, objects: dict):
-            '''
-            save objects from a single data.
-            modify bbox and return target, which can directly put into model. 
-            '''
-            boxes = []
-            for bbox in objects['bbox']:
-                  # Convert from x, y, h, w to x0, y0, x1, y1
-                  boxes.append([bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]])
-                  
-            # Targets should all be tensors
-            target = \
-                  {"boxes": torch.as_tensor(boxes, dtype=torch.float32), 
-                   "labels": torch.as_tensor(objects['category_id'],dtype=torch.int64), 
-                   "image_id": torch.as_tensor(objects['image_id'], dtype=torch.int64),
-                   "area": torch.as_tensor(objects['area']), 
-                   "iscrowd": torch.as_tensor(objects['iscrowd'], dtype=torch.int64)}
-
-            return target
             
       def replace_sample(self, sample, logit, idx=None):
             '''
@@ -373,7 +364,7 @@ class CladDistillationMemory(MemoryDataset):
             if self.transform_on_gpu:
                   image = self.transform_cpu(image)'''
             
-            target = self.get_sample_objects(sample['objects'])
+            target = get_sample_objects(sample['objects'])
             
             
             #append new sample at behind(last index)

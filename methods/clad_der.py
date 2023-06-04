@@ -26,38 +26,17 @@ class CLAD_DER(CLAD_ER):
         self.n_classes = n_classes
         self.memory = CladDistillationMemory(dataset='SSLAD-2D', device=None)
 
-        #not used currently
-        self.imp_update_period = kwargs['imp_update_period'] 
-        if kwargs["sched_name"] == 'default':
-            self.sched_name = 'adaptive_lr'
-        
         # Exposed classes
         self.current_trained_images = []
         self.exposed_classes = []
         self.exposed_tasks = []
-
-        
-        # Adaptive LR variables
-        self.lr_step = kwargs["lr_step"]
-        self.lr_length = kwargs["lr_length"]
-        self.lr_period = kwargs["lr_period"]
-        self.prev_loss = None
-        self.lr_is_high = True
-        self.high_lr = self.lr
-        self.low_lr = self.lr_step * self.lr
-        self.high_lr_loss = []
-        self.low_lr_loss = []
-        self.current_lr = self.lr
-        self.count_log = 0
         
         #Customized torchvision model. for normal model use for_distillation = False (default)
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=n_classes, for_distillation=True).to(self.device)
         self.params =[p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
-        self.task_num = 0
-        self.writer = SummaryWriter("tensorboard")
+
         self.seed_num = kwargs['seed_num']  #only used for tensorboard
-        self.current_batch_size = 2         #how many samples for stream batch
         self.current_batch = []             #batch for stream
     
     def online_step(self, sample, sample_num, n_worker):
@@ -84,18 +63,18 @@ class CLAD_DER(CLAD_ER):
         #changes tensorboard folder when task changes
         if sample['task_num'] != self.task_num:
             self.writer.close()     
-            self.writer = SummaryWriter(f"tensorboard/task_DER++_{sample['task_num']}task_{self.current_batch_size}stream_{self.seed_num}seed")
+            self.writer = SummaryWriter(f"tensorboard/task_DER++_{sample['task_num']}task_{self.temp_batchsize}stream_{self.seed_num}seed")
         
         self.task_num = sample['task_num']
        
   
-        if len(self.current_batch) == self.current_batch_size:
+        if len(self.current_batch) == self.temp_batchsize:
             
             #make ready for direct training (doesn't go into memory before training)
             current_batch_data= [(self.get_sample_img_tar(item)) for item in self.current_batch]
 
             train_loss, logits= self.online_train(current_batch_data, self.batch_size, n_worker, 
-                                                iterations=int(self.num_updates), stream_batch_size=self.current_batch_size
+                                                iterations=int(self.num_updates), stream_batch_size=self.temp_batchsize
                                                 ,alpha=0.05, beta=0.5, theta=1
                                                 )
             print(f"Train_loss: {train_loss}")

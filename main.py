@@ -65,7 +65,7 @@ def main():
     task_seed_list = [[2,0,3,1],[0,1,2,3],[1,2,3,0]]
     
     # Train
-    for task in task_seed_list[int(args.seed_num) - 1]:
+    for task in task_s eed_list[int(args.seed_num) - 1]:
         for data in tqdm(train_task[task], desc=f"Task {task + 1} / 4"):
             samples_cnt += 1
             method.model.train()

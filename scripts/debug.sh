@@ -1,10 +1,10 @@
 #/bin/bash
 
 # CIL CONFIG
-NOTE="clad_mir" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
-MODE="clad_mir"
+NOTE="clad_er" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+MODE="clad_er"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
-SEEDS="1 2 3"
+SEEDS="1"
 
 
 if [ "$DATASET" == "clad" ]; then
@@ -23,9 +23,5 @@ do
     --model_name $MODEL_NAME --dataset $DATASET \
     --batchsize $BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-    --seed_num $RND_SEED
-     
-    python eval.py --mode $MODE \
-    --dataset $DATASET --batchsize $BATCHSIZE \
     --seed_num $RND_SEED
 done

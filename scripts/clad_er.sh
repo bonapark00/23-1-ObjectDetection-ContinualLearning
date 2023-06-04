@@ -24,7 +24,6 @@ do
     --batchsize $BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
     --seed_num $RND_SEED
-
      
     python eval.py --mode $MODE \
     --dataset $DATASET --batchsize $BATCHSIZE \

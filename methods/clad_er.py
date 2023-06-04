@@ -68,7 +68,7 @@ class CLAD_ER:
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
             
-        write_tensorboard(sample)
+        self.write_tensorboard(sample)
 
         # update_memory 호출 -> samplewise_importance_memory 호출 -> 여기에서 memory.replace_sample 호출
         # self.memory.replace_sample(sample)
@@ -169,7 +169,7 @@ class CLAD_ER:
             self.memory.replace_sample(sample, target_idx)
             self.dropped_idx.append(target_idx)
             self.memory_dropped_idx.append(target_idx)
-            
+                               
             print("#" * 100)
             print(self.temp_batchsize)
             if len(self.temp_batch) < self.temp_batchsize:
@@ -190,7 +190,6 @@ class CLAD_ER:
             self.writer = SummaryWriter(f"tensorboard/{tensorboard_pth}")
         
         self.task_num = sample['task_num']
-
         
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.

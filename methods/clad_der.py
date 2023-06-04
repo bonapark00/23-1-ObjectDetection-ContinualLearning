@@ -56,20 +56,12 @@ class CLAD_DER(CLAD_ER):
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
             
-
+        write_tensorboard(sample)
+       
         self.current_batch.append(sample)
         self.num_updates += self.online_iter
         
-        #changes tensorboard folder when task changes
-        if sample['task_num'] != self.task_num:
-            self.writer.close()     
-            self.writer = SummaryWriter(f"tensorboard/task_DER++_{sample['task_num']}task_{self.temp_batchsize}stream_{self.seed_num}seed")
-        
-        self.task_num = sample['task_num']
-       
-  
         if len(self.current_batch) == self.temp_batchsize:
-            
             #make ready for direct training (doesn't go into memory before training)
             current_batch_data= [(self.get_sample_img_tar(item)) for item in self.current_batch]
 

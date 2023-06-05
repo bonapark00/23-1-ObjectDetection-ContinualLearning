@@ -4,8 +4,8 @@ import os
 import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
-from methods.er_baseline import ER
-from utils.data_loader_clad import CladDistillationMemory
+from methods.clad_er import CLAD_ER
+from utils.data_loader_clad import CladDistillationMemory, CladStreamDataset
 import PIL
 from torchvision import transforms
 
@@ -37,7 +37,7 @@ class CLAD_DER(CLAD_ER):
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
 
         self.seed_num = kwargs['seed_num']  #only used for tensorboard
-        self.current_batch = []             #batch for stream
+        self.temp_batch = []             #batch for stream
     
     def online_step(self, sample, sample_num, n_worker):
         """Updates the model based on new data samples. If the sample's class is new, 
@@ -56,27 +56,27 @@ class CLAD_DER(CLAD_ER):
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
             
-        write_tensorboard(sample)
+        self.write_tensorboard(sample)
        
-        self.current_batch.append(sample)
+        self.temp_batch.append(sample)
         self.num_updates += self.online_iter
         
-        if len(self.current_batch) == self.temp_batchsize:
+        if len(self.temp_batch) == self.temp_batchsize:
             #make ready for direct training (doesn't go into memory before training)
-            current_batch_data= [(self.get_sample_img_tar(item)) for item in self.current_batch]
+            temp_batch_data= [(self.get_sample_img_tar(item)) for item in self.temp_batch]
 
-            train_loss, logits= self.online_train(current_batch_data, self.batch_size, n_worker, 
+            train_loss, logits= self.online_train(temp_batch_data, self.batch_size, n_worker, 
                                                 iterations=int(self.num_updates), stream_batch_size=self.temp_batchsize
                                                 ,alpha=0.05, beta=0.5, theta=1
                                                 )
             print(f"Train_loss: {train_loss}")
-            for idx, stored_sample in enumerate(self.current_batch):
+            for idx, stored_sample in enumerate(self.temp_batch):
                 self.update_memory(stored_sample,\
                                    {'proposals': logits['proposals'][idx], 
                                     'class_logits': logits['class_logits'][idx], 
                                     'box_regression': logits['box_regression'][idx]})    
 
-            self.current_batch.clear() 
+            self.temp_batch = []
             self.num_updates -= int(self.num_updates)
              
               

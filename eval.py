@@ -28,7 +28,7 @@ for i in range(4):
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-task_seed_list = [[2,0,3,1],[0,1,2,3],[1,2,3,0]]
+task_seed_list = [[0,1,2,3], [2,0,3,1],[1,2,3,0]]
 selected_seed = task_seed_list[int(args.seed_num) - 1]
 
 for i, task in enumerate(task_seed_list[int(args.seed_num) - 1]):

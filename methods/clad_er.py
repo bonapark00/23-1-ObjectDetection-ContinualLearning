@@ -1,10 +1,10 @@
 import logging
-import torchvision
 import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
 from utils.train_utils import select_model
 from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset
+from utils.visualize import visualize_bbox
 
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
@@ -62,7 +62,6 @@ class CLAD_ER:
             sample_num (int): Sample count for all tasks
             n_worker (int): Number of worker, default zero
         """
-        
         if not set(sample['objects']['category_id']).issubset(set(self.exposed_classes)):
             self.exposed_classes = list(set(self.exposed_classes + sample['objects']['category_id']))
             self.num_learned_class = len(self.exposed_classes)
@@ -73,7 +72,6 @@ class CLAD_ER:
         # update_memory 호출 -> samplewise_importance_memory 호출 -> 여기에서 memory.replace_sample 호출
         # self.memory.replace_sample(sample)
         self.temp_batch.append(sample)
-        #self.update_memory(sample)
         self.num_updates += self.online_iter
 
         if self.num_updates >= 1:
@@ -87,7 +85,7 @@ class CLAD_ER:
 
                 self.temp_batch = []
                 self.num_updates -= int(self.num_updates)
-
+        
     
     def online_train(self, sample, batch_size, n_worker, iterations=1, stream_batch_size=1):
         """Trains the model using both memory data and new data.

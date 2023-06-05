@@ -63,13 +63,11 @@ class CLAD_DER(CLAD_ER):
         
         if len(self.temp_batch) == self.temp_batchsize:
             #make ready for direct training (doesn't go into memory before training)
-            temp_batch_data= [(self.get_sample_img_tar(item)) for item in self.temp_batch]
-
-            train_loss, logits= self.online_train(temp_batch_data, self.batch_size, n_worker, 
+            train_loss, logits= self.online_train(self.temp_batch, self.batch_size, n_worker, 
                                                 iterations=int(self.num_updates), stream_batch_size=self.temp_batchsize
                                                 ,alpha=0.05, beta=0.5, theta=1
                                                 )
-            print(f"Train_loss: {train_loss}")
+            print(f"Train_loss: {train_loss}\n")
             for idx, stored_sample in enumerate(self.temp_batch):
                 self.update_memory(stored_sample,\
                                    {'proposals': logits['proposals'][idx], 
@@ -94,11 +92,11 @@ class CLAD_DER(CLAD_ER):
             _type_: _description_
         """
         total_loss, correct, num_data = 0.0, 0.0, 0.0
- 
+        sample_dataset = CladStreamDataset(sample, dataset="SSLAD-2D", transform=None, cls_list=None)
+        
+
         memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
         self.count_log += stream_batch_size + memory_batch_size
-
-        
 
         for i in range(iterations):
             self.model.train()
@@ -108,18 +106,30 @@ class CLAD_DER(CLAD_ER):
                 self.current_trained_images = list(set(self.current_trained_images + memory_data['images']))
                 print("Current trained images:", len(self.current_trained_images), ", not included stream batch")
 
-            images = [s[0] for s in sample]
-            targets = [s[1] for s in sample] 
+            images_stream = []; images_memory = []
+            targets_stream = []; targets_memory = []
+            
+            if stream_batch_size > 0:
+                stream_data = sample_dataset.get_data()
+                images_stream = [img.to(self.device) for img in stream_data['images']]
+                for i in range(len(images_stream)):
+                    d = {}
+                    d['boxes'] = stream_data['boxes'][i].to(self.device)
+                    d['labels'] = stream_data['labels'][i].to(self.device)
+                    targets_stream.append(d)
 
             if memory_batch_size > 0:
-                
                 #concat data from memory
-                images += [img.to(self.device) for img in memory_data['images']]
+                images_memory = [img.to(self.device) for img in memory_data['images']]
                 for i in range(len(memory_data['images'])):
                     d = {}
                     d['boxes'] = memory_data['boxes'][i].to(self.device)
                     d['labels'] = memory_data['labels'][i].to(self.device)
-                    targets.append(d)
+                    targets_memory.append(d)
+
+                # Concat stream data and memory data
+                images = images_stream + images_memory
+                targets = targets_stream + targets_memory
 
                 #caution with different length with images, targets
                 proposals = [prop.to(self.device) for prop in memory_data['proposals']] #(512,4) tensor
@@ -160,10 +170,10 @@ class CLAD_DER(CLAD_ER):
                  '''
 
                 loss = sum(loss for loss in losses.values()) + theta*distill_loss
-                print(f"CL:{sum(loss for loss in losses.values())}, DL:{distill_loss}\n")
+                print(f"CL:{sum(loss for loss in losses.values())}, DL:{distill_loss}")
 
             else:
-                losses, proposals_logits, _ = self.model(images, targets)
+                losses, proposals_logits, _ = self.model(images_stream, targets_stream)
                 losses['loss_classifier'] = torch.mean(losses['loss_classifier'])
                 losses['loss_box_reg'] = torch.mean(losses['loss_box_reg'][0])
                 
@@ -186,7 +196,18 @@ class CLAD_DER(CLAD_ER):
             return (total_loss/iterations), proposals_logits
         
     def update_memory(self, sample, logit):
-        self.samplewise_importance_memory(sample, logit)
+        # Updates the memory of the model based on the importance of the samples.
+        if len(self.memory.images) >= self.memory_size:
+            target_idx = np.random.randint(len(self.memory.images))
+            self.memory.replace_sample(sample, logit, target_idx)
+            self.dropped_idx.append(target_idx)
+            self.memory_dropped_idx.append(target_idx)
+            
+                
+        else:
+            self.memory.replace_sample(sample, logit)
+            self.dropped_idx.append(len(self.memory)- 1)
+            self.memory_dropped_idx.append(len(self.memory) - 1)
         
         
     def add_new_class(self, class_name):
@@ -205,20 +226,6 @@ class CLAD_DER(CLAD_ER):
         self.memory.add_new_class(cls_list=self.exposed_classes)
         
 
-    def samplewise_importance_memory(self, sample, logit):
-        # Updates the memory of the model based on the importance of the samples.
-        if len(self.memory.images) >= self.memory_size:
-            target_idx = np.random.randint(len(self.memory.images))
-            self.memory.replace_sample(sample, logit, target_idx)
-            self.dropped_idx.append(target_idx)
-            self.memory_dropped_idx.append(target_idx)
-            
-                
-        else:
-            self.memory.replace_sample(sample, logit)
-            self.dropped_idx.append(len(self.memory)- 1)
-            self.memory_dropped_idx.append(len(self.memory) - 1)
-        
     def get_sample_img_tar(self, sample):
             '''
             return image and target for sample which enumerated from main 

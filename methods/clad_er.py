@@ -183,7 +183,6 @@ class CLAD_ER:
             if len(self.temp_batch) < self.temp_batchsize:
                 self.temp_batch.append(len(self.memory)- 1)
 
-
     def write_tensorboard(self, sample):
         if sample['task_num'] != self.task_num:
             self.writer.close()     

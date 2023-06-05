@@ -252,7 +252,6 @@ class CladMemoryDataset(MemoryDataset):
 			
 		for obj in np.array(self.objects)[indices]:   
 			obj_cls_id = np.bincount(np.array(obj['labels'].tolist()))[1:]
-			#breakpoint()
 			if len(self.obj_cls_train_cnt) > len(obj_cls_id):
 				obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_train_cnt) - len(obj_cls_id)), 
 									constant_values=(0)).flatten()
@@ -265,8 +264,21 @@ class CladMemoryDataset(MemoryDataset):
 				
 		# breakpoint()
 		return {'images': images, 'boxes': boxes, 'labels': labels}
-	   
-			
+	
+	def get_two_batches(self, batch_size, test_transform):
+		indices = np.random.choice(range(len(self.images)), size=batch_size, replace=False)
+
+		images = [self.images[idx] for idx in indices]
+		boxes = [self.objects[idx]['boxes'] for idx in indices]
+		labels = [self.objects[idx]['labels'] for idx in indices]
+		data_1 = {'images': images, 'boxes': boxes, 'labels': labels}
+
+		images = [self.images[idx] for idx in indices]
+		boxes = [self.objects[idx]['boxes'] for idx in indices]
+		labels = [self.objects[idx]['labels'] for idx in indices]
+		data_2 = {'images': images, 'boxes': boxes, 'labels': labels}
+		
+		return data_1, data_2	
 			
 
 #Incomming input eg: {'img_id': 3, 'annot_file': ~, 'task_num': 2}

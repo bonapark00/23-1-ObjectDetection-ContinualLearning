@@ -62,7 +62,7 @@ def main():
     #     test_loader_list.append(torch.utils.data.DataLoader(data_set, batch_size=4, collate_fn=collate_fn))
     
     # Changed seed order to check training status
-    task_seed_list = [[2,0,3,1],[0,1,2,3],[1,2,3,0]]
+    task_seed_list = [[0,1,2,3], [2,0,3,1],[1,2,3,0]]
     
     # Train
     for task in task_seed_list[int(args.seed_num) - 1]:

@@ -8,5 +8,8 @@ tensorboard/
 # Ignore dataset files
 dataset/
 
+# Ignore images for debugging purpose
+debug_imgs/
+
 # Log files
 *.log

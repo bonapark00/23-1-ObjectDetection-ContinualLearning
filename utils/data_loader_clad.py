@@ -26,6 +26,9 @@ class CladStreamDataset(Dataset):
         self.transform_on_gpu = transform_on_gpu
         self.transform_gpu = transform
 
+        # print("#"* 50)
+        # for data in datalist:
+        #      print(data['file_name'])
         for data in datalist:
             try:
                 img_name = data['file_name']
@@ -35,8 +38,9 @@ class CladStreamDataset(Dataset):
             if self.data_dir is None:
                 img_path = os.path.join("dataset", self.dataset, 'labeled', data['split'], img_name)
             else:
-                 img_path = os.path.join(self.data_dir, data['split'], img_name)
+                img_path = os.path.join(self.data_dir, data['split'], img_name)
 
+            print("Image path:", img_path)
             image = PIL.Image.open(img_path).convert('RGB')
             image = transforms.ToTensor()(image)
             target = get_sample_objects(data['objects'])
@@ -106,7 +110,7 @@ class CladMemoryDataset(MemoryDataset):
             target = {'boxes':target['boxes'], 'labels':target['labels']}
             return image, target
       
-        
+      
       def add_new_class(self, obj_cls_list):
         '''
         when appeard new class, check whether to extend obj_cls_count

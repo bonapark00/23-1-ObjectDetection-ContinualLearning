@@ -157,7 +157,7 @@ class CLAD_ER:
 
             # self.current_trained_images = list(set(self.current_trained_images + memory_data['images']))
             # print("Current trained images:", len(self.current_trained_images))  
-                           
+            
         return total_loss / iterations
                 
         

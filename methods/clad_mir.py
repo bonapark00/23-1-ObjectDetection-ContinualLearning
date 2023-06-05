@@ -5,54 +5,30 @@ import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
 from methods.clad_er import CLAD_ER
-from utils.data_loader_clad import CladMemoryDataset
+from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset
+from utils.visualize import visualize_bbox
+
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
 
 class CLAD_MIR(CLAD_ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-        self.mir_cands = kwargs['mir_cands']
-    
-
-    def online_step(self, sample, sample_num, n_worker):
-        """Updates the model based on new data samples. If the sample's class is new, 
-        it is added to the model's class set. The memory is updated with the new sample, 
-        and the model is trained if the number of updates meets a certain threshold.
-
-        Args:
-            sample
-            sample_num (int): Sample count for all tasks
-            n_worker (int): Number of worker, default zero
-        """
-        
-        if not set(sample['objects']['category_id']).issubset(set(self.exposed_classes)):
-            self.exposed_classes = list(set(self.exposed_classes + sample['objects']['category_id']))
-            self.num_learned_class = len(self.exposed_classes)
-            self.memory.add_new_class(self.exposed_classes)
-            
-        self.update_memory(sample)
-        self.num_updates += self.online_iter
-
-        if len(self.temp_batch) == self.temp_batchsize:
-            train_loss = self.online_train(sample, self.batch_size, n_worker,
-                                                    iterations=int(self.num_updates),
-                                                    stream_batch_size=self.temp_batchsize)
-            self.num_updates -= int(self.num_updates)
-            self.temp_batch.clear()
+        self.cand_size = kwargs['mir_cands']
     
     
-    def online_train(self, sample, batch_size, n_worker, iterations, stream_batch_size):
+    def online_train(self, sample, batch_size, n_worker, iterations=1, stream_batch_size=1):
         """
         
         """
         self.model.train()
         total_loss, num_data = 0.0, 0.0
 
+        assert stream_batch_size > 0
+        sample_dataset = CladStreamDataset(sample, dataset="SSLAD-2D", transform=None, cls_list=None)
+        
         for i in range(iterations):
-            stream_data = self.memory.get_batch(concat_idx=self.temp_batch, batch_size=batch_size)
-            # self.count_log += memory_batch_size
-            
+            stream_data = sample_dataset.get_data()
             stream_images = [img.to(self.device) for img in stream_data['images']]
             stream_targets = []
             for i in range(len(stream_images)):
@@ -60,8 +36,8 @@ class CLAD_MIR(CLAD_ER):
                 d['boxes'] = stream_data['boxes'][i].to(self.device)
                 d['labels'] = stream_data['labels'][i].to(self.device)
                 stream_targets.append(d)
-        
-            loss_dict = self.model(stream_images, stream_targets) 
+
+            loss_dict = self.model(stream_images, stream_targets)
             losses = sum(loss for loss in loss_dict.values())
             self.optimizer.zero_grad()
             losses.backward()
@@ -72,31 +48,23 @@ class CLAD_MIR(CLAD_ER):
                 if param.requires_grad:
                     grads[name] = param.grad.data
 
-            if len(self.memory) - stream_batch_size > 0:
-                memory_batch_size = min(len(self.memory) - stream_batch_size, batch_size - stream_batch_size)
-                self.count_log += memory_batch_size
-
+            if len(self.memory) > 0:
+                memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
                 lr = self.optimizer.param_groups[0]['lr']
                 new_model = copy.deepcopy(self.model)
                 for name, param in new_model.named_parameters():
                     if param.requires_grad:
                         param.data = param.data - lr * grads[name]
 
-                memory_stream_concat_size = min(self.mir_cands + stream_batch_size, len(self.memory))
-                memory_stream_concat = self.memory.get_batch(memory_stream_concat_size,
-                                                             concat_idx=self.temp_batch)
-                # No longer need streams -> Get only the randomly choosen batch
-                memory_cands = {k:v[:memory_stream_concat_size - stream_batch_size] for k, v in 
-                                memory_stream_concat.items()}
-                images = [img.to(self.device) for img in memory_cands['images']]
+                memory_cands, memory_cands_test = self.memory.get_two_batches(min(self.cand_size, len(self.memory)), test_transform=None)
+                images = [img.to(self.device) for img in memory_cands_test['images']]
                 targets = []
                 for i in range(len(images)):
                     d = {}
-                    d['boxes'] = memory_cands['boxes'][i].to(self.device)
-                    d['labels'] = memory_cands['labels'][i].to(self.device)
+                    d['boxes'] = memory_cands_test['boxes'][i].to(self.device)
+                    d['labels'] = memory_cands_test['labels'][i].to(self.device)
                     targets.append(d)
                 
-
                 scores = torch.zeros(len(images))
                 with torch.no_grad():
                     for i in range(len(images)):
@@ -109,10 +77,20 @@ class CLAD_MIR(CLAD_ER):
                         scores[i] = score.item()
                         # print(f"Image {i}, target {i} loss difference: {score}")
                 
+                # Fetches selected samples from the memory_cands, which are the training candidates, 
+                # based on the selected sample indices obtained using the test candidates.
+                images = [img.to(self.device) for img in memory_cands['images']]
+                targets = []
+                for i in range(len(images)):
+                    d = {}
+                    d['boxes'] = memory_cands['boxes'][i].to(self.device)
+                    d['labels'] = memory_cands['labels'][i].to(self.device)
+                    targets.append(d)
+
                 selected_samples = torch.argsort(scores, descending=True)[:memory_batch_size]
                 selected_images = [images[idx.item()] for idx in selected_samples]
                 selected_targets = [targets[idx.item()] for idx in selected_samples]
-                
+
                 final_images = stream_images + selected_images
                 final_targets = stream_targets + selected_targets
 
@@ -128,7 +106,9 @@ class CLAD_MIR(CLAD_ER):
 
                 total_loss += losses.item()
                 num_data += len(images)
-        
+                self.count_log += (memory_batch_size + stream_batch_size)
+    
+    
     def update_memory(self, sample):
         # Updates the memory of the model based on the importance of the samples.
         if len(self.memory.images) >= self.memory_size:

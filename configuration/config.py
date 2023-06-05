@@ -134,3 +134,27 @@ def base_parser():
     args = parser.parse_args()
     
     return args
+
+
+def joint_parser():
+    parser = argparse.ArgumentParser(description="Jointly Training (UB)")
+    parser.add_argument("--batch_size", default=4, type=int, help="Training batch size")
+    parser.add_argument("--num_epochs", default=1, type=int)
+    parser.add_argument("--tensorboard_pth", default=f"tensorboard/upperbound")
+    parser.add_argument("--save_pth", default=f"model_checkpoints/upperbound.pth")
+    parser.add_argument("--is_eval", action='store_true')
+    args = parser.parse_args()
+
+    return args
+
+def lowerbound_parser():
+    parser = argparse.ArgumentParser(description="Lower bound training (LB)")
+    parser.add_argument("--batch_size", default=4, type=int, help="Training batch size")
+    parser.add_argument("--num_epochs", default=1, type=int)
+    parser.add_argument("--tensorboard_pth", default=f"tensorboard/lowerbound")
+    parser.add_argument("--save_pth", default=f"model_checkpoints/lowerbound.pth")
+    parser.add_argument("--is_eval", action='store_true')
+    parser.add_argument('--seed_num', type=str, default=1, help='# seed num of the running model')
+    args = parser.parse_args()
+
+    return args

@@ -10,7 +10,8 @@ SEEDS="1 2 3"
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=150 ONLINE_ITER=1
     MODEL_NAME="faster_rcnn"
-    BATCHSIZE=4
+    BATCHSIZE=16
+    TEMP_BATCHSIZE=8
 
 else
     echo "Undefined setting"
@@ -21,7 +22,7 @@ for RND_SEED in $SEEDS
 do
     python main.py --mode $MODE \
     --model_name $MODEL_NAME --dataset $DATASET \
-    --batchsize $BATCHSIZE \
+    --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
     --seed_num $RND_SEED
      

@@ -52,7 +52,7 @@ for i, task in enumerate(task_seed_list[int(args.seed_num) - 1]):
         log_path = (
             f"{args.mode}_{args.model_name}_{args.dataset}"
             + f"_b_size{args.batchsize}_tb_size{args.temp_batchsize}"
-            + f"_sd_{args.seed_num}"
+            + f"_sd_{args.seed_num}_until{task + 1}_eval_task{prev_task + 1}"
             )
         log_path = os.path.join("outputs", log_path)
         coco_evaluator = evaluate(model, test_loader, device=device, log_path=log_path)

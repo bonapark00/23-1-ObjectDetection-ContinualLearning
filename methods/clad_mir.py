@@ -107,7 +107,8 @@ class CLAD_MIR(CLAD_ER):
                 total_loss += losses.item()
                 num_data += len(images)
                 self.count_log += (memory_batch_size + stream_batch_size)
-    
+        
+        return total_loss / iterations
     
     def update_memory(self, sample):
         # Updates the memory of the model based on the importance of the samples.

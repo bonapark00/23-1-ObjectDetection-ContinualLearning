@@ -137,7 +137,7 @@ class CLAD_ER:
             targets = targets_stream + targets_memory
 
             # Train
-            loss_dict = self.model(images, targets) 
+            loss_dict = self.model(images, targets)
             losses = sum(loss for loss in loss_dict.values())
             
             # Report loss

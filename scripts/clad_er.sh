@@ -27,6 +27,9 @@ do
     --seed_num $RND_SEED
      
     python eval.py --mode $MODE \
-    --dataset $DATASET --batchsize $BATCHSIZE \
+    --model_name $MODEL_NAME --dataset $DATASET \
+    --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
+    --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
     --seed_num $RND_SEED
+    
 done

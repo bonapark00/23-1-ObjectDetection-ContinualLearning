@@ -35,7 +35,14 @@ selected_seed = task_seed_list[int(args.seed_num) - 1]
 for i, task in enumerate(task_seed_list[int(args.seed_num) - 1]):
     print(f"Model for task {task + 1} is on evaluation...")
     model = select_method(args, None, device, train_transform, test_transform, 7).model
-    model.load_state_dict(torch.load(f"./model_checkpoints/{args.mode}_seed_{args.seed_num}_task{task + 1}.pth"))
+
+    # Load trained model weights
+    save_path = (
+        f"{args.mode}_{args.model_name}_{args.dataset}"
+        f"_b_size{args.batchsize}_tb_size{args.temp_batchsize}"
+        f"_sd_{args.seed_num}_task{task + 1}.pth"
+    )
+    model.load_state_dict(torch.load(os.path.join('model_checkpoints', save_path)))
     model.to(device)
     model.eval()
 

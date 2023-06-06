@@ -10,3 +10,6 @@ debug_imgs/
 
 # Log files
 *.log
+
+# Model weights
+*.pth

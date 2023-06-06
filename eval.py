@@ -1,4 +1,5 @@
 import torch
+import os
 from torchvision import transforms
 from utils.data_loader_clad import SODADataset
 from utils.method_manager import select_method
@@ -22,7 +23,7 @@ transforms.ToTensor()
 # TODO: make below code as function
 for i in range(4): 
     data_set = SODADataset(path="./dataset/SSLAD-2D", task_id=i+1,
-                                split="val")
+                                split="val", transforms=transforms.ToTensor())
 
     test_loader_list.append(torch.utils.data.DataLoader(data_set, batch_size=4, collate_fn=collate_fn))
 
@@ -41,5 +42,11 @@ for i, task in enumerate(task_seed_list[int(args.seed_num) - 1]):
     # Evaluates accumulated tasks
     for prev_task in selected_seed[:i + 1]:
         test_loader = test_loader_list[prev_task]
-        evaluate(model, test_loader, device=device)
+        log_path = (
+            f"{args.mode}_{args.model_name}_{args.dataset}"
+            + f"_b_size{args.batchsize}_tb_size{args.temp_batchsize}"
+            + f"_sd_{args.seed_num}"
+            )
+        log_path = os.path.join("outputs", log_path)
+        coco_evaluator = evaluate(model, test_loader, device=device, log_path=log_path)
 

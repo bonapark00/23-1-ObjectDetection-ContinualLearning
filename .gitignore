@@ -5,9 +5,6 @@ __pycache__/
 # Ignore TensorBoard files
 tensorboard/
 
-# Ignore dataset files
-dataset/
-
 # Ignore images for debugging purpose
 debug_imgs/
 

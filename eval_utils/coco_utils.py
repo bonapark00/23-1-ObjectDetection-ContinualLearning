@@ -5,8 +5,10 @@ import torch
 import torch.utils.data
 import torchvision
 from . import transforms as T
-from pycocotools import mask as coco_mask
-from pycocotools.coco import COCO
+from . import mask as coco_mask
+from .coco import COCO
+# from pycocotools import mask as coco_mask
+# from pycocotools.coco import COCO
 
 
 class FilterAndRemapCocoCategories:

@@ -6,7 +6,7 @@ import time
 from collections import defaultdict
 from . import mask as maskUtils
 import copy
-import logging
+import logging, os
 
 class COCOeval:
     # Interface for evaluating detection on the Microsoft COCO dataset.
@@ -455,6 +455,10 @@ class COCOeval:
             else:
                 mean_s = np.mean(s[s>-1])
             
+            # Ensure the directory exists before opening the file
+            directory = os.path.dirname(log_path)
+            os.makedirs(directory, exist_ok=True)
+
             with open(log_path, "a") as file:
                 message = iStr.format(titleStr, typeStr, iouStr, areaRng, maxDets, mean_s)
                 print(message)

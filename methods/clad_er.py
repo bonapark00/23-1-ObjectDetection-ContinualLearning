@@ -5,6 +5,7 @@ from torch.utils.tensorboard import SummaryWriter
 from utils.train_utils import select_model
 from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset
 from utils.visualize import visualize_bbox
+from eval_utils.engine import evaluate
 
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
@@ -12,6 +13,7 @@ writer = SummaryWriter("tensorboard")
 class CLAD_ER:
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
         # Member variables from original er_baseline - ER class
+        self.mode = kwargs['mode']
         self.num_learned_class = 0
         self.num_learning_class = 1
         self.n_classes = n_classes
@@ -45,7 +47,7 @@ class CLAD_ER:
         self.count_log = 0
         
         self.model = select_model(model_name=None, dataset="clad", num_classes=n_classes, for_distillation=False).to(self.device)
-        self.params =[p for p in self.model.parameters() if p.requires_grad]
+        self.params = [p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0
         self.writer = SummaryWriter("tensorboard")
@@ -142,7 +144,8 @@ class CLAD_ER:
             
             # Report loss
             if self.count_log % 10 == 0:
-                logging.info(f"Step {self.count_log}, Current Loss: {losses}")
+                task_info = self.train_info()
+                logging.info(f"{task_info} - Step {self.count_log}, Current Loss: {losses}")
             self.writer.add_scalar("Loss/train", losses, self.count_log)
             
             self.optimizer.zero_grad()
@@ -157,7 +160,18 @@ class CLAD_ER:
             # print("Current trained images:", len(self.current_trained_images))  
             
         return total_loss / iterations
-                
+    
+    def report_test(self, sample_num, average_precision):
+        writer.add_scalar(f"test/AP", average_precision, sample_num)
+        logger.info(
+            f"Test | Sample # {sample_num} | AP {average_precision:.4f}"
+        )
+
+    def online_evaluate(self, test_dataloader, sample_num):
+        coco_evaluator = evaluate(self.model, test_dataloader, device=self.device)
+        stats = coco_evaluator.coco_eval['bbox'].stats
+        self.report_test(sample_num, stats[1])  # stats[1]: AP @IOU=0.50
+        return stats[1]
         
     def update_memory(self, sample):
         # Updates the memory of the model based on the importance of the samples.
@@ -207,6 +221,11 @@ class CLAD_ER:
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.
         pass
+
+    
+    def train_info(self):
+        message = f"{self.mode}_{self.dataset}_bs-{self.batch_size}_tbs-{self.temp_batchsize}_sd-{self.seed_num}"
+        return message
     
             
 def collate_fn(batch):

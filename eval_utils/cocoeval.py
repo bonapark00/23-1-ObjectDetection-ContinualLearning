@@ -420,7 +420,7 @@ class COCOeval:
         toc = time.time()
         print('DONE (t={:0.2f}s).'.format( toc-tic))
 
-    def summarize(self, log_path):
+    def summarize(self, args):
         '''
         Compute and display summary metrics for evaluation results.
         Note this functin can *only* be applied on the default parameter setting
@@ -454,16 +454,9 @@ class COCOeval:
                 mean_s = -1
             else:
                 mean_s = np.mean(s[s>-1])
-            
-            # Ensure the directory exists before opening the file
-            directory = os.path.dirname(log_path)
-            os.makedirs(directory, exist_ok=True)
 
-            with open(log_path, "a") as file:
-                message = iStr.format(titleStr, typeStr, iouStr, areaRng, maxDets, mean_s)
-                print(message)
-                file.write(message + "\n")
-
+            message = iStr.format(titleStr, typeStr, iouStr, areaRng, maxDets, mean_s)
+            print(message)
             return mean_s
         
         def _summarizeDets():
@@ -480,6 +473,22 @@ class COCOeval:
             stats[9] = _summarize(0, areaRng='small', maxDets=self.params.maxDets[2])
             stats[10] = _summarize(0, areaRng='medium', maxDets=self.params.maxDets[2])
             stats[11] = _summarize(0, areaRng='large', maxDets=self.params.maxDets[2])
+
+            # Ensure the directory exists before opening the file
+            log_path = (
+                f"{args['mode']}_{args['model_name']}_{args['dataset']}"
+                + f"_bs-{args['batchsize']}_tbs-{args['temp_batchsize']}"
+            )
+            log_path = os.path.join("outputs", log_path)
+            directory = os.path.dirname(log_path)
+            os.makedirs(directory, exist_ok=True)
+
+            with open(log_path, "a") as file:
+                file.write(f"Seed num: {args['seed_num']}, trained task: {args['trained_task']}, eval_task: {args['eval_task']}\n")
+                stats_str = ",".join(map(lambda x: f"{x:.3f}", stats)) + "\n\n"
+                print(stats_str)
+                file.write(stats_str)
+            
             return stats
         def _summarizeKps():
             stats = np.zeros((10,))

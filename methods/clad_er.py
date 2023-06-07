@@ -46,7 +46,7 @@ class CLAD_ER:
         self.count_log = 0
         
         self.model = select_model(model_name=None, dataset="clad", num_classes=n_classes, for_distillation=False).to(self.device)
-        self.params =[p for p in self.model.parameters() if p.requires_grad]
+        self.params = [p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0
         self.writer = SummaryWriter("tensorboard")

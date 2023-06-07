@@ -73,7 +73,7 @@ def _get_iou_types(model):
 
 
 @torch.inference_mode()
-def evaluate(model, data_loader, device, log_path):
+def evaluate(model, data_loader, device, args):
     n_threads = torch.get_num_threads()
     # FIXME remove this and make paste_masks_in_image run on the GPU
     torch.set_num_threads(1)
@@ -110,6 +110,6 @@ def evaluate(model, data_loader, device, log_path):
 
     # accumulate predictions from all images
     coco_evaluator.accumulate()
-    coco_evaluator.summarize(log_path=log_path)
+    coco_evaluator.summarize(args=args)
     torch.set_num_threads(n_threads)
     return coco_evaluator

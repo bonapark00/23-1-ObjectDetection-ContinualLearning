@@ -11,7 +11,7 @@ from utils.method_manager import select_method
 def main():
     args = config.base_parser()
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-    
+
     # Set up logging
     logging.basicConfig(level=logging.INFO, 
                         format='%(asctime)s - %(levelname)s - %(message)s',

@@ -5,6 +5,7 @@ from torch.utils.tensorboard import SummaryWriter
 from utils.train_utils import select_model
 from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset
 from utils.visualize import visualize_bbox
+from eval_utils.engine import evaluate
 
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
@@ -159,7 +160,18 @@ class CLAD_ER:
             # print("Current trained images:", len(self.current_trained_images))  
             
         return total_loss / iterations
-                
+    
+    def report_test(self, sample_num, average_precision):
+        writer.add_scalar(f"test/AP", average_precision, sample_num)
+        logger.info(
+            f"Test | Sample # {sample_num} | AP {average_precision:.4f}"
+        )
+
+    def online_evaluate(self, test_dataloader, sample_num):
+        coco_evaluator = evaluate(self.model, test_dataloader, device=self.device)
+        stats = coco_evaluator.coco_eval['bbox'].stats
+        self.report_test(sample_num, stats[1])  # stats[1]: AP @IOU=0.50
+        return stats[1]
         
     def update_memory(self, sample):
         # Updates the memory of the model based on the importance of the samples.

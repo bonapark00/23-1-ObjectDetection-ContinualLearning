@@ -420,7 +420,7 @@ class COCOeval:
         toc = time.time()
         print('DONE (t={:0.2f}s).'.format( toc-tic))
 
-    def summarize(self, args):
+    def summarize(self, args=None):
         '''
         Compute and display summary metrics for evaluation results.
         Note this functin can *only* be applied on the default parameter setting
@@ -474,20 +474,21 @@ class COCOeval:
             stats[10] = _summarize(0, areaRng='medium', maxDets=self.params.maxDets[2])
             stats[11] = _summarize(0, areaRng='large', maxDets=self.params.maxDets[2])
 
-            # Ensure the directory exists before opening the file
-            log_path = (
-                f"{args['mode']}_{args['model_name']}_{args['dataset']}"
-                + f"_bs-{args['batchsize']}_tbs-{args['temp_batchsize']}"
-            )
-            log_path = os.path.join("outputs", log_path)
-            directory = os.path.dirname(log_path)
-            os.makedirs(directory, exist_ok=True)
+            if args is not None:
+                # Ensure the directory exists before opening the file
+                log_path = (
+                    f"{args['mode']}_{args['model_name']}_{args['dataset']}"
+                    + f"_bs-{args['batchsize']}_tbs-{args['temp_batchsize']}"
+                )
+                log_path = os.path.join("outputs", log_path)
+                directory = os.path.dirname(log_path)
+                os.makedirs(directory, exist_ok=True)
 
-            with open(log_path, "a") as file:
-                file.write(f"Seed num: {args['seed_num']}, trained task: {args['trained_task']}, eval_task: {args['eval_task']}\n")
-                stats_str = ",".join(map(lambda x: f"{x:.3f}", stats)) + "\n\n"
-                print(stats_str)
-                file.write(stats_str)
+                with open(log_path, "a") as file:
+                    file.write(f"Seed num: {args['seed_num']}, trained task: {args['trained_task']}, eval_task: {args['eval_task']}\n")
+                    stats_str = ",".join(map(lambda x: f"{x:.3f}", stats)) + "\n\n"
+                    print(stats_str)
+                    file.write(stats_str)
             
             return stats
         def _summarizeKps():

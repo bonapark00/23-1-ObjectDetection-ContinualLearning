@@ -181,7 +181,8 @@ class CLAD_DER(CLAD_ER):
 
             #report loss
             if self.count_log % 10 == 0:
-                    logging.info(f"Step {self.count_log}, Current Loss: {loss}")
+                task_info = self.train_info()
+                logging.info(f"{task_info} - Step {self.count_log}, Current Loss: {losses}")
             self.writer.add_scalar("Loss/train", loss, self.count_log)
 
             self.optimizer.zero_grad()

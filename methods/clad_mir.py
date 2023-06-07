@@ -99,7 +99,8 @@ class CLAD_MIR(CLAD_ER):
                 losses = sum(loss for loss in loss_dict.values())
 
                 if self.count_log % 10 == 0:
-                    logging.info(f"Step {self.count_log}, Current Loss: {losses}")
+                    task_info = self.train_info()
+                    logging.info(f"{task_info} - Step {self.count_log}, Current Loss: {losses}")
                 self.writer.add_scalar("Loss/train", losses, self.count_log)
                 losses.backward()
                 self.optimizer.step()

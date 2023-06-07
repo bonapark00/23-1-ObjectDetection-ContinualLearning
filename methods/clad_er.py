@@ -12,6 +12,7 @@ writer = SummaryWriter("tensorboard")
 class CLAD_ER:
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
         # Member variables from original er_baseline - ER class
+        self.mode = kwargs['mode']
         self.num_learned_class = 0
         self.num_learning_class = 1
         self.n_classes = n_classes
@@ -142,7 +143,8 @@ class CLAD_ER:
             
             # Report loss
             if self.count_log % 10 == 0:
-                logging.info(f"Step {self.count_log}, Current Loss: {losses}")
+                task_info = self.train_info()
+                logging.info(f"{task_info} - Step {self.count_log}, Current Loss: {losses}")
             self.writer.add_scalar("Loss/train", losses, self.count_log)
             
             self.optimizer.zero_grad()
@@ -207,6 +209,11 @@ class CLAD_ER:
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.
         pass
+
+    
+    def train_info(self):
+        message = f"{self.mode}_{self.dataset}_bs-{self.batch_size}_tbs-{self.temp_batchsize}_sd-{self.seed_num}"
+        return message
     
             
 def collate_fn(batch):

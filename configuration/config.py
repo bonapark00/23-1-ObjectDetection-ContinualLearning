@@ -32,7 +32,7 @@ def base_parser():
     parser.add_argument("--debug", action="store_true", help="Turn on Debug mode")
     parser.add_argument('--seed_num', type=str, default=1, help='# seed num of the running model')
     # Eval period
-    parser.add_argument("--eval_period", type=int, default=10, help="evaluation period for true online setup")
+    parser.add_argument("--eval_period", type=int, default=100, help="evaluation period for true online setup")
     # MIR
     parser.add_argument('--mir_cands', type=int, default=20, help='# candidates to use for MIR')
 

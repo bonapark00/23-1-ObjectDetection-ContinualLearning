@@ -78,6 +78,7 @@ def main():
 
     # Train and eval
     for i, task in enumerate(selected_seed):
+        print("Mode:", args.mode, " Selected seed:", selected_seed, " Current task:", task + 1)
         for data in train_task[task]:
             samples_cnt += 1
             method.model.train()

@@ -13,3 +13,5 @@ debug_imgs/
 
 # Model weights
 *.pth
+
+dataset/

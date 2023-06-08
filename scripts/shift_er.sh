@@ -1,13 +1,13 @@
 #/bin/bash
 
 # CIL CONFIG
-NOTE="clad_er" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
-MODE="clad_er"
-DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet, clad, shift
+NOTE="shift_er" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+MODE="shift_er"
+DATASET="shift" # cifar10, cifar100, tinyimagenet, imagenet, clad, shift
 SEEDS="1 2 3"
 
 
-if [ "$DATASET" == "clad" ]; then
+if [ "$DATASET" == "shift" ]; then
     MEM_SIZE=150 ONLINE_ITER=1
     MODEL_NAME="faster_rcnn"
     BATCHSIZE=16

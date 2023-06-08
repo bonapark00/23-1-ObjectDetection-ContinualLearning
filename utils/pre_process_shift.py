@@ -8,8 +8,6 @@ import zipfile
 import torchvision.transforms as T
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
-from configuration.clad_meta import SODA_DOMAINS
-from configuration.clad_meta import CLADD_TRAIN_VAL_DOMAINS, SODA_ROOT
 from utils.preprocess_clad import *
 from typing import List, Callable, Dict, Any
 import torch
@@ -20,6 +18,7 @@ def load_label_img_dic(ann_file):
     data_infos=[]
 
     class_names = ("pedestrian", "car", "truck", "bus", "motorcycle", "bicycle")
+    index=0
 
     for img_info in data['frames']:
 
@@ -30,8 +29,15 @@ def load_label_img_dic(ann_file):
             bbox = label['box2d']
             bboxes.append((bbox['x1'], bbox['y1'], bbox['x2'], bbox['y2']))
             labels.append(class_names.index(label['category']))
+        
+        data_infos.append({
+            'name':img_info['name'],
+            'videoName':img_info['videoName'],
+            'bboxes':bboxes,
+            'labels':labels
+        })
 
-        data_infos.append(dict(img_info['name'], bboxes, labels))
+      
     
     return data_infos
 
@@ -56,6 +62,10 @@ def get_shift_datalist(data_type: str='train'):
 
     datalist=[]
     obj_properties=['image_id','category_id','bbox']
+
+
+
+
 
     
     

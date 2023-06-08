@@ -12,7 +12,7 @@ import sys
 
 import torch
 from torch.utils.data import DataLoader
-from utils.pre_process_shift import get_sample_objects
+from utils.pre_process_shift import get_sample_objects, get_shift_datalist, load_label_img_dic
 from torch.utils.data import Dataset
 
 
@@ -213,7 +213,47 @@ class SHIFTMemoryDataset(MemoryDataset):
     
 
 class SHIFTDataset(Dataset):
+
+    def __init__(self, path="./dataset/SHIFT_dataset/discrete/images", split="train", transforms="None"):
+        self.root=path
+        self.split=split
+        self.transforms=transforms
+
+        self.img_paths=[]
+        self.objects=[]
+        self.data_infos=load_label_img_dic(f"{self.root}/{self.split}/front/det_2d.json")
+        
+        
+
+
+    def __len__(self):
+        return len(self.img_paths)
     
+    def __getitem__(self, idx):
+
+        boxes, labels=[],[]
+
+        img_path=f"self.root/self.split/front/{self.data_infos[idx]['videoName']}/{self.data_infos[idx]['name']}.jpg"
+        img=PIL.Image.open(img_path).convert('RGB')
+
+        if self.transforms is not None:
+            img=self.transforms(img)
+
+        target={}
+        target['boxes']=torch.as_tensor(self.data_infos["bboxes"], dtype=torch.float32)
+        target['labels']=torch.tensor(self.data_infos["labels"], dtype=torch.int64)
+        target['image_id']=torch.tensor([idx])
+        # target['area']=(target['boxes'][:,3]-target['boxes'][:,1])*(target['boxes'][:,2]-target['boxes'][:,0])
+        # target['iscrowd']=torch.zeros((len(target['boxes']),), dtype=torch.int64)
+
+        return img, target
+
+
+
+        # boxes= torch.as_tensor(self.objects[idx], dtype=torch.float32)
+
+
+
     
 
             

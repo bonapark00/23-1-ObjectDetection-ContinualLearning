@@ -4,6 +4,7 @@ from configuration import config
 from torchvision import transforms
 from torch.utils.data import random_split
 from collections import defaultdict
+from tqdm import tqdm
 import os
 
 import logging
@@ -101,13 +102,11 @@ def main():
     for i, task in enumerate(selected_seed):
         # Train one task
         logging.info(f"Mode: {args.mode}, Selected seed: {selected_seed}, Current task: {task + 1}")
-        for data in train_task[task]:
+        for data in tqdm(train_task[task], desc=f"Seed {args.seed_num} Task {task + 1} training"):
             # For each sample, train the model and evaluate when eval period is reached
             samples_cnt += 1
             method.model.train()
-            loss = method.online_step(data, samples_cnt, args.n_worker)
-            logging.info(f"Task {task + 1}, sample {samples_cnt}, loss: {loss}")
-            
+            method.online_step(data, samples_cnt, args.n_worker)
             if samples_cnt % args.eval_period == 0:
                 # Evaluate on all tasks before current task
                 for task_eval in selected_seed[:i + 1]:
@@ -131,24 +130,29 @@ def main():
         task_mAP = sum(task_records["test_mAP"]) / float(len(task_records["test_mAP"]))
         logging.info(f"After training task {task + 1}, average mAP of all tasks: {task_mAP}")
 
+    # Create path for each method
+    if not os.path.exists(os.path.join('outputs', args.mode)):
+        os.makedirs(os.path.join('outputs', args.mode))
+
+    
     # Save results to file
     save_path = (
-        f"{args.mode}_{args.model_name}_{args.dataset}"
+        f"{args.model_name}_{args.dataset}"
         f"_bs-{args.batchsize}_tbs-{args.temp_batchsize}"
         f"_sd-{args.seed_num}"
     )
 
     # Results during training each task
-    np.save(os.path.join('outputs', save_path + "_mAP.npy"), eval_results['test_mAP'])
-    np.save(os.path.join('outputs', save_path + "_task_training.npy"), eval_results['task_training'])
-    np.save(os.path.join('outputs', save_path + "_task_evaluating.npy"), eval_results['task_evaluating'])
-    np.save(os.path.join('outputs', save_path + "_eval_time.npy"), eval_results['data_cnt'])
+    np.save(os.path.join('outputs', args.mode, save_path + "_mAP.npy"), eval_results['test_mAP'])
+    np.save(os.path.join('outputs', args.mode, save_path + "_task_training.npy"), eval_results['task_training'])
+    np.save(os.path.join('outputs', args.mode, save_path + "_task_evaluating.npy"), eval_results['task_evaluating'])
+    np.save(os.path.join('outputs', args.mode, save_path + "_eval_time.npy"), eval_results['data_cnt'])
 
     # Results after training each task
-    np.save(os.path.join('outputs', save_path + "_mAP.npy"), task_records['test_mAP'])
-    np.save(os.path.join('outputs', save_path + "_task_trained.npy"), task_records['task_trained'])
-    np.save(os.path.join('outputs', save_path + "_task_evaluating.npy"), task_records['task_evaluating'])
-    np.save(os.path.join('outputs', save_path + "_eval_time.npy"), task_records['data_cnt'])
+    np.save(os.path.join('outputs', args.mode, save_path + "_mAP.npy"), task_records['test_mAP'])
+    np.save(os.path.join('outputs', args.mode, save_path + "_task_trained.npy"), task_records['task_trained'])
+    np.save(os.path.join('outputs', args.mode, save_path + "_task_evaluating.npy"), task_records['task_evaluating'])
+    np.save(os.path.join('outputs', args.mode, save_path + "_eval_time.npy"), task_records['data_cnt'])
 
 if __name__ == "__main__":
     main()

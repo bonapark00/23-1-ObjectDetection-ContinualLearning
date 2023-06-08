@@ -12,55 +12,9 @@ import sys
 
 import torch
 from torch.utils.data import DataLoader
+from utils.pre_process_shift import get_sample_objects
+from torch.utils.data import Dataset
 
-# Add the root directory of the project to the path. Remove the following two lines
-# if you have installed shift_dev as a package.
-
-
-# def main():
-#     """Load the SHIFT dataset and print the tensor shape of the first batch."""
-
-#     dataset = SHIFTDataset(
-#         data_root="./dataset/SHIFT_dataset/",
-#         split="train",
-#         keys_to_load=[
-#             Keys.images,                # note: images, shape (1, 3, H, W), uint8 (RGB)
-#             Keys.boxes2d,  
-#             Keys.categories             # note: 2D boxes in image coordinate, (x1, y1, x2, y2)
-              
-#         ],
-#         views_to_load=["front"],
-#         shift_type="discrete",          # also supports "continuous/1x", "continuous/10x", "continuous/100x"
-#         backend=ZipBackend(),           # also supports HDF5Backend(), FileBackend()
-#         verbose=True,
-#     )
-
-#     dataloader = DataLoader(
-#         dataset,
-#         batch_size=1,
-#         shuffle=False,
-#     )
-
-#     # Print the dataset size
-#     print(f"Total number of samples: {len(dataset)}.")
-
-
-#     # Print the tensor shape of the first batch.
-#     print('\n')
-#     for i, batch in enumerate(dataloader):
-#         print(f"Batch {i}:\n")
-#         print(f"{'Item':20} {'Shape':35} {'Min':10} {'Max':10}")
-#         print("-" * 80)
-#         for k, data in batch["front"].items():
-#             if isinstance(data, torch.Tensor):
-#                 print(f"{k:20} {str(data.shape):35} {data.min():10.2f} {data.max():10.2f}")
-#             else:
-#                 print(f"{k:20} {data}")
-#         break
-
-
-# if __name__ == "__main__":
-#     main()
 
 
 class SHIFTStreamDataset():
@@ -92,10 +46,7 @@ class SHIFTStreamDataset():
 
             image=PIL.Image.open(img_path).convert('RGB')
             image = transforms.ToTensor()(image)
-            target=  {"boxes": torch.tensor(data['labels']['boxes2d'], dtype=torch.float32),
-                      "labels": torch.tensor(data['labels']['category'], dtype=torch.int64),
-                     }
-            
+            target=  get_sample_objects(data['labels'])
             self.images.append(image)
             self.objects.append(target)
 
@@ -154,7 +105,7 @@ class SHIFTMemoryDataset(MemoryDataset):
         print("Samples in SHIFTMemoryDataset")
         print("Total Number of Samples: ", len(self.images))
         print("Total Number of Classes: ", len(self.obj_cls_count))
-        print("sample image name..."):
+        print("sample image name...")
 
         for data in self.datalist:
             img_name=data['name']
@@ -196,10 +147,7 @@ class SHIFTMemoryDataset(MemoryDataset):
             self.datalist.append(sample)
             image=PIL.Image.open(img_path).convert('RGB')
             image = transforms.ToTensor()(image)
-            target=  {"boxes": torch.tensor(sample['boxes2d'], dtype=torch.float32),
-                      "labels": torch.tensor(sample['categories'], dtype=torch.int64),
-                     }
-            
+            target=  get_sample_objects(sample['labels'])
             self.images.append(image)
             self.objects.append(target)
         else:
@@ -220,9 +168,7 @@ class SHIFTMemoryDataset(MemoryDataset):
             self.datalist[idx]=sample
             image=PIL.Image.open(img_path).convert('RGB')
             image = transforms.ToTensor()(image)
-            target=  {"boxes": torch.tensor(sample['boxes2d'], dtype=torch.float32),
-                      "labels": torch.tensor(sample['categories'], dtype=torch.int64),
-                      }
+            target=  get_sample_objects(sample['labels'])
             
             self.images[idx]=image
             self.objects[idx]=target
@@ -266,7 +212,8 @@ class SHIFTMemoryDataset(MemoryDataset):
         return data_1, data_2
     
 
-         
+class SHIFTDataset(Dataset):
+    
     
 
             

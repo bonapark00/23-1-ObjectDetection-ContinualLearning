@@ -6,7 +6,7 @@ from methods.clad_der import CLAD_DER
 logger = logging.getLogger()
 
 
-def select_method(args, criterion, device, train_transform, test_transform, n_classes):
+def select_method(args, criterion, device, train_transform, test_transform, n_classes, writer):
     kwargs = vars(args)
     if args.mode == "clad_er":
         method = CLAD_ER(
@@ -15,6 +15,7 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             train_transform=train_transform,
             test_transform=test_transform,
             n_classes=n_classes,
+            writer=writer,
             **kwargs,
         )
     elif args.mode == "clad_mir":
@@ -24,6 +25,7 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             train_transform=train_transform,
             test_transform=test_transform,
             n_classes=n_classes,
+            writer=writer
             **kwargs,
         )
 
@@ -34,6 +36,7 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             train_transform=train_transform,
             test_transform=test_transform,
             n_classes=n_classes,
+            writer=writer
             **kwargs,
         )
     else:

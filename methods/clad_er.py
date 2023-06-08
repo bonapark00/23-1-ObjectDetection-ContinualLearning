@@ -1,17 +1,15 @@
 import logging
 import numpy as np
 import torch
-from torch.utils.tensorboard import SummaryWriter
 from utils.train_utils import select_model
 from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset
 from utils.visualize import visualize_bbox
 from eval_utils.engine import evaluate
 
 logger = logging.getLogger()
-writer = SummaryWriter("tensorboard")
 
 class CLAD_ER:
-    def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
+    def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         # Member variables from original er_baseline - ER class
         self.mode = kwargs['mode']
         self.num_learned_class = 0
@@ -19,6 +17,7 @@ class CLAD_ER:
         self.n_classes = n_classes
         self.exposed_classes = []
         self.seen = 0
+        self.writer = writer
 
         self.dataset = kwargs["dataset"]
         self.device = device
@@ -50,8 +49,6 @@ class CLAD_ER:
         self.params = [p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0
-        self.writer = SummaryWriter("tensorboard")
-        self.tensorboard_pth = f"{kwargs['mode']}_{self.model_name}_{self.dataset}_b_size{self.batch_size}_tb_size{self.temp_batchsize}_sd_{self.seed_num}"
 
     
     def online_step(self, sample, sample_num, n_worker):
@@ -69,7 +66,7 @@ class CLAD_ER:
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
             
-        self.write_tensorboard(sample)
+        # self.write_tensorboard(sample)
 
         # update_memory 호출 -> samplewise_importance_memory 호출 -> 여기에서 memory.replace_sample 호출
         # self.memory.replace_sample(sample)
@@ -80,8 +77,8 @@ class CLAD_ER:
             if len(self.temp_batch) == self.temp_batchsize:
                 train_loss = self.online_train(self.temp_batch, self.batch_size, n_worker, 
                                     iterations=int(self.num_updates), stream_batch_size=self.temp_batchsize)
+                self.report_training(sample_num, train_loss, self.writer)
                 
-                print(f"Train_loss: {train_loss}")
                 for sample in self.temp_batch:
                     self.update_memory(sample)
 
@@ -141,13 +138,7 @@ class CLAD_ER:
             # Train
             loss_dict = self.model(images, targets)
             losses = sum(loss for loss in loss_dict.values())
-            
-            # Report loss
-            if self.count_log % 10 == 0:
-                task_info = self.train_info()
-                logging.info(f"{task_info} - Step {self.count_log}, Current Loss: {losses}")
-            self.writer.add_scalar("Loss/train", losses, self.count_log)
-            
+
             self.optimizer.zero_grad()
             losses.backward()
             self.optimizer.step()
@@ -157,11 +148,18 @@ class CLAD_ER:
             self.count_log += (memory_batch_size + stream_batch_size)
 
             # self.current_trained_images = list(set(self.current_trained_images + memory_data['images']))
-            # print("Current trained images:", len(self.current_trained_images))  
+            # print("Current trained images:", len(self.current_trained_images))
             
         return total_loss / iterations
     
-    def report_test(self, sample_num, average_precision):
+    def report_training(self, sample_num, train_loss, writer, log_interval=10):
+        writer.add_scalar(f"train/loss", train_loss, sample_num)
+        if sample_num % log_interval == 0:
+            logger.info(
+                f"Train | Sample # {sample_num} | Loss {train_loss:.4f}"
+            )
+
+    def report_test(self, sample_num, average_precision, writer):
         writer.add_scalar(f"test/AP", average_precision, sample_num)
         logger.info(
             f"Test | Sample # {sample_num} | AP {average_precision:.4f}"
@@ -170,7 +168,7 @@ class CLAD_ER:
     def online_evaluate(self, test_dataloader, sample_num):
         coco_evaluator = evaluate(self.model, test_dataloader, device=self.device)
         stats = coco_evaluator.coco_eval['bbox'].stats
-        self.report_test(sample_num, stats[1])  # stats[1]: AP @IOU=0.50
+        self.report_test(sample_num, stats[1], self.writer)  # stats[1]: AP @IOU=0.50
         return stats[1]
         
     def update_memory(self, sample):
@@ -211,12 +209,12 @@ class CLAD_ER:
         self.memory.add_new_class(cls_list=self.exposed_classes)
 
 
-    def write_tensorboard(self, sample):
-        if sample['task_num'] != self.task_num:
-            self.writer.close()     
-            self.writer = SummaryWriter(f"tensorboard/{self.tensorboard_pth}")
+    # def write_tensorboard(self, sample):
+    #     if sample['task_num'] != self.task_num:
+    #         self.writer.close()     
+    #         self.writer = SummaryWriter(f"tensorboard/{self.tensorboard_pth}")
         
-        self.task_num = sample['task_num']
+    #     self.task_num = sample['task_num']
         
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.

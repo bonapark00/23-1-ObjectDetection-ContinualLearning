@@ -145,6 +145,9 @@ def joint_parser():
     parser.add_argument("--tensorboard_pth", default=f"tensorboard/upperbound")
     parser.add_argument("--save_pth", default=f"model_checkpoints/upperbound.pth")
     parser.add_argument("--is_eval", action='store_true')
+    parser.add_argument("--eval_period", type=int, default=100, help="evaluation period for true online setup")
+    parser.add_argument("--debug", action="store_true", help="Turn on Debug mode")
+    
     args = parser.parse_args()
 
     return args

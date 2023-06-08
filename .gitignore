@@ -13,3 +13,6 @@ debug_imgs/
 
 # Model weights
 *.pth
+
+# Ignore .npy files in outputs directory
+outputs/*.npy

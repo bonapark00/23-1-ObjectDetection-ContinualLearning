@@ -89,7 +89,8 @@ def main():
     #         test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=4, collate_fn=collate_fn))
 
     dataset = SHIFTDataset(transforms=transforms.ToTensor())
-    shift_dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, collate_fn=collate_fn)
+    debug_dataset, _ = random_split(dataset, [10, len(dataset) - 10])
+    shift_dataloader = torch.utils.data.DataLoader(debug_dataset, batch_size=1, collate_fn=collate_fn)
 
     samples_cnt = 0
     # task_seed_list = [[0,1,2,3], [2,0,3,1],[1,2,3,0]]

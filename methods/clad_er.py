@@ -168,6 +168,7 @@ class CLAD_ER:
         )
 
     def online_evaluate(self, test_dataloader, sample_num):
+        breakpoint()
         coco_evaluator = evaluate(self.model, test_dataloader, device=self.device)
         stats = coco_evaluator.coco_eval['bbox'].stats
         self.report_test(sample_num, stats[1])  # stats[1]: AP @IOU=0.50

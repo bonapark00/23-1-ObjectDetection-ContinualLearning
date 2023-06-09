@@ -94,6 +94,8 @@ def evaluate(model, data_loader, device, args=None):
         model_time = time.time()
         outputs = model(images)
 
+        breakpoint()
+
         outputs = [{k: v.to(cpu_device) for k, v in t.items()} for t in outputs]
         model_time = time.time() - model_time
 

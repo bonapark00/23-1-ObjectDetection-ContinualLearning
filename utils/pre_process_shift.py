@@ -49,11 +49,12 @@ def get_sample_objects(objects):
     boxes=[]
 
     for bbox in objects['bbox']:
-       boxes.append([bbox['x1'],bbox['y1'],bbox['x2'],bbox['y2']])
-    
+       boxes.append([bbox[0],bbox[1],bbox[2],bbox[3]])
+    # breakpoint()
+
     
 
-    target={"boxes": torch.as_tensor(objects["boxes"], dtype=torch.float32),
+    target={"boxes": torch.as_tensor(boxes, dtype=torch.float32),
             "labels": torch.tensor(objects["category_id"], dtype=torch.int64)}
     
     return target
@@ -90,7 +91,7 @@ def get_shift_datalist(data_type: str='train'):
 
         datalist.append(
             {
-            'file_name': {f"{path}/{data_type}/front/{data_info['videoName']}/{data_info['name']}"},
+            'file_name': f"{path}/{data_type}/front/{data_info['videoName']}/{data_info['name']}",
             'objects':{"category_id": data_info['labels'],"bbox": data_info['bboxes']},
             'task_num':1,
             'split':data_type

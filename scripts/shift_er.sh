@@ -20,16 +20,16 @@ fi
 
 for RND_SEED in $SEEDS
 do
-    python main.py --mode $MODE \
+    python eval_shift.py --mode $MODE \
     --model_name $MODEL_NAME --dataset $DATASET \
     --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
     --seed_num $RND_SEED
      
-    python eval.py --mode $MODE \
-    --model_name $MODEL_NAME --dataset $DATASET \
-    --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
-    --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-    --seed_num $RND_SEED
+    # python eval.py --mode $MODE \
+    # --model_name $MODEL_NAME --dataset $DATASET \
+    # --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
+    # --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
+    # --seed_num $RND_SEED
     
 done

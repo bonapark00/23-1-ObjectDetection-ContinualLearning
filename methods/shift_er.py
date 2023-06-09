@@ -3,8 +3,9 @@ import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
 from utils.train_utils import select_model
-from utils.data_loader_shift import SHIFTStreamDataset, SHIFTMemoryDataset
+from utils.data_loader_shift import SHIFTMemoryDataset, SHIFTStreamDataset
 from utils.visualize import visualize_bbox
+from eval_utils.engine import evaluate
 
 logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
@@ -12,6 +13,7 @@ writer = SummaryWriter("tensorboard")
 class SHIFT_ER:
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
         # Member variables from original er_baseline - ER class
+        self.mode = kwargs['mode']
         self.num_learned_class = 0
         self.num_learning_class = 1
         self.n_classes = n_classes
@@ -37,15 +39,15 @@ class SHIFT_ER:
         self.dropped_idx = []
         self.memory_dropped_idx = []
         self.imp_update_counter = 0
-        self.memory = SHIFTMemoryDataset(dataset=None, device=None)
+        self.memory = SHIFTMemoryDataset(dataset='SHIFTDataset', device=None)
         # self.imp_update_period = kwargs['imp_update_period']
         
         self.current_trained_images = []
         self.exposed_tasks = []
         self.count_log = 0
         
-        self.model = select_model(model_name=None, dataset="clad", num_classes=n_classes, for_distillation=False).to(self.device)
-        self.params =[p for p in self.model.parameters() if p.requires_grad]
+        self.model = select_model(model_name=None, dataset="shift", num_classes=n_classes, for_distillation=False).to(self.device)
+        self.params = [p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0
         self.writer = SummaryWriter("tensorboard")
@@ -101,7 +103,7 @@ class SHIFT_ER:
             _type_: _description_
         """
         total_loss, num_data = 0.0, 0.0
-        sample_dataset = SHIFTStreamDataset(sample, dataset=None , transform=None, cls_list=None)
+        sample_dataset = SHIFTStreamDataset(sample, dataset="SHIFTDataset", transform=None, cls_list=None)
         memory_batch_size = 0
         
         if len(self.memory) > 0 and batch_size > 0:
@@ -112,7 +114,7 @@ class SHIFT_ER:
             images_stream = []; images_memory = []
             targets_stream = []; targets_memory = []
 
-            # Get stream data from CladStreamDataset
+            # Get stream data from SHIFTStreamDataset
             if stream_batch_size > 0:
                 stream_data = sample_dataset.get_data()
                 images_stream = [img.to(self.device) for img in stream_data['images']]
@@ -122,7 +124,7 @@ class SHIFT_ER:
                     d['labels'] = stream_data['labels'][i].to(self.device)
                     targets_stream.append(d)
             
-            # Get memory data from CladMemoryDataset
+            # Get memory data from SHIFTMemoryDataset
             if len(self.memory) > 0 and batch_size - stream_batch_size > 0:
                 memory_data = self.memory.get_batch(memory_batch_size)
                 images_memory = [img.to(self.device) for img in memory_data['images']]
@@ -142,7 +144,8 @@ class SHIFT_ER:
             
             # Report loss
             if self.count_log % 10 == 0:
-                logging.info(f"Step {self.count_log}, Current Loss: {losses}")
+                task_info = self.train_info()
+                logging.info(f"{task_info} - Step {self.count_log}, Current Loss: {losses}")
             self.writer.add_scalar("Loss/train", losses, self.count_log)
             
             self.optimizer.zero_grad()
@@ -157,7 +160,18 @@ class SHIFT_ER:
             # print("Current trained images:", len(self.current_trained_images))  
             
         return total_loss / iterations
-                
+    
+    def report_test(self, sample_num, average_precision):
+        writer.add_scalar(f"test/AP", average_precision, sample_num)
+        logger.info(
+            f"Test | Sample # {sample_num} | AP {average_precision:.4f}"
+        )
+
+    def online_evaluate(self, test_dataloader, sample_num):
+        coco_evaluator = evaluate(self.model, test_dataloader, device=self.device)
+        stats = coco_evaluator.coco_eval['bbox'].stats
+        self.report_test(sample_num, stats[1])  # stats[1]: AP @IOU=0.50
+        return stats[1]
         
     def update_memory(self, sample):
         # Updates the memory of the model based on the importance of the samples.
@@ -207,6 +221,11 @@ class SHIFT_ER:
     def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
         # Adjusts the learning rate of the optimizer based on the learning history.
         pass
+
+    
+    def train_info(self):
+        message = f"{self.mode}_{self.dataset}_bs-{self.batch_size}_tbs-{self.temp_batchsize}_sd-{self.seed_num}"
+        return message
     
             
 def collate_fn(batch):

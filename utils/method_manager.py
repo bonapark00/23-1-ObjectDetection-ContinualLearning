@@ -2,6 +2,7 @@ import logging
 from methods.clad_er import CLAD_ER
 from methods.clad_mir import CLAD_MIR
 from methods.clad_der import CLAD_DER
+from methods.shift_er import SHIFT_ER
 
 logger = logging.getLogger()
 
@@ -37,7 +38,7 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             **kwargs,
         )
     elif args.mode == "shift_er":
-        method = CLAD_ER(
+        method = SHIFT_ER(
             criterion=None,
             device=device,
             train_transform=train_transform,
@@ -45,6 +46,7 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             n_classes=n_classes,
             **kwargs,
         )
+    
     else:
         raise NotImplementedError("Choose the args.mode in [er, gdumb, rm, bic, ewc++, mir, clib]")
 

@@ -3,7 +3,7 @@ import os
 import PIL
 import numpy as np
 from torchvision import transforms
-from data_loader import MemoryDataset
+from utils.data_loader import MemoryDataset
 from torch.utils.data import Dataset
 from PIL import Image
 
@@ -41,7 +41,8 @@ class SHIFTStreamDataset(Dataset):
 
             if self.data_dir is not None:
                 img_path = data['file_name']
-
+            
+            # breakpoint()
             image=PIL.Image.open(img_path).convert('RGB')
             image = transforms.ToTensor()(image)
             target=  get_sample_objects(data['objects'])
@@ -73,7 +74,7 @@ class SHIFTMemoryDataset(MemoryDataset):
         self.images=[]
         self.objects=[]
 
-        self.obj_cls_list=[]
+        self.obj_cls_list=[1]
         self.obj_cls_count = np.zeros(np.max(self.obj_cls_list), dtype=int)
         self.obj_cls_train_cnt = np.zeros(np.max(self.obj_cls_list),dtype=int)
         self.others_loss_decrease = np.array([]) 
@@ -138,14 +139,16 @@ class SHIFTMemoryDataset(MemoryDataset):
             
         except KeyError:
             img_name=sample['filepath']
+        
+        img_path = img_name
             
 
-        if self.data_dir is not None:
-            img_path = os.path.join("dataset", self.dataset, "discrete", "images", sample['split'], "front", img_name)
+        # if self.data_dir is not None:
+        #     img_path = os.path.join("dataset", self.dataset, "discrete", "images", sample['split'], "front", img_name)
 
         image=PIL.Image.open(img_path).convert('RGB')
         image = transforms.ToTensor()(image)
-        target=  get_sample_objects(sample['labels'])
+        target=  get_sample_objects(sample['objects'])
         
         if idx is None:
             self.datalist.append(sample)
@@ -154,8 +157,8 @@ class SHIFTMemoryDataset(MemoryDataset):
         else:
 
             discard_sample=self.datalist[idx]
-            dis_sample_img=discard_sample['name']
-            dis_sample_obj=discard_sample['labels']
+            # dis_sample_img=discard_sample['name']
+            dis_sample_obj=discard_sample['objects']
 
 
 

@@ -4,7 +4,7 @@ import PIL
 import numpy as np
 from torchvision import transforms
 from data_loader import MemoryDataset
-# from torch.utils.data import Dataset
+from torch.utils.data import Dataset
 from PIL import Image
 
 import os
@@ -17,9 +17,9 @@ from torch.utils.data import Dataset
 
 
 
-class SHIFTStreamDataset():
+class SHIFTStreamDataset(Dataset):
     """SHIFT dataset for streaming data."""
-    def __init__(self,datalist, dataset, transform, cls_list, data_dir=None, device=None, transform_on_gpu=False):
+    def __init__(self,datalist, dataset, transform, cls_list, data_dir="./dataset/SHIFT_dataset/discrete/images/train/front", device=None, transform_on_gpu=False):
         self.images = []
         self.labels = []
         self.objects=[]
@@ -29,26 +29,26 @@ class SHIFTStreamDataset():
         self.data_dir = data_dir
         self.device = device
         self.transform_on_gpu = transform_on_gpu
-        self.data_dir= "/home/user/Desktop/pratham_sahu/paper_clones/i_blurry_clad/dataset/SHIFT_dataset/discrete/images/train/front"
-        
-
+ 
         for data in datalist:
             try:
-                img_name=data['name']
-                vid_name=data['videoName']
+                img_name=data['file_name']
+                
             except KeyError:
                 # img_name=data['image_name']
                 print("KeyError")
             
 
             if self.data_dir is not None:
-                img_path = os.path.join(self.data_dir, vid_name, img_name)
+                img_path = data['file_name']
 
             image=PIL.Image.open(img_path).convert('RGB')
             image = transforms.ToTensor()(image)
-            target=  get_sample_objects(data['labels'])
+            target=  get_sample_objects(data['objects'])
             self.images.append(image)
             self.objects.append(target)
+
+        
 
     def __len__(self):
         return len(self.images)
@@ -220,28 +220,28 @@ class SHIFTDataset(Dataset):
         self.transforms=transforms
 
         self.img_paths=[]
-        self.objects=[]
+        # self.objects=[]
         self.data_infos=load_label_img_dic(f"{self.root}/{self.split}/front/det_2d.json")
         
         
 
 
     def __len__(self):
-        return len(self.img_paths)
+        return len(self.data_infos)
     
     def __getitem__(self, idx):
 
         boxes, labels=[],[]
 
-        img_path=f"self.root/self.split/front/{self.data_infos[idx]['videoName']}/{self.data_infos[idx]['name']}.jpg"
-        img=PIL.Image.open(img_path).convert('RGB')
+        img_path=f"{self.root}/{self.split}/front/{self.data_infos[idx]['videoName']}/{self.data_infos[idx]['name']}"
+        img=Image.open(img_path).convert('RGB')
 
-        if self.transforms is not None:
-            img=self.transforms(img)
+        # if self.transforms is not None:
+        #     img=self.transforms(img)
 
         target={}
-        target['boxes']=torch.as_tensor(self.data_infos["bboxes"], dtype=torch.float32)
-        target['labels']=torch.tensor(self.data_infos["labels"], dtype=torch.int64)
+        target['boxes']=torch.as_tensor(self.data_infos[idx]["bboxes"], dtype=torch.float32)
+        target['labels']=torch.tensor(self.data_infos[idx]["labels"], dtype=torch.int64)
         target['image_id']=torch.tensor([idx])
         # target['area']=(target['boxes'][:,3]-target['boxes'][:,1])*(target['boxes'][:,2]-target['boxes'][:,0])
         # target['iscrowd']=torch.zeros((len(target['boxes']),), dtype=torch.int64)
@@ -251,35 +251,6 @@ class SHIFTDataset(Dataset):
 
 
         # boxes= torch.as_tensor(self.objects[idx], dtype=torch.float32)
-
-
-
-    
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

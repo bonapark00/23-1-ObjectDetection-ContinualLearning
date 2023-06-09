@@ -87,7 +87,7 @@ class CLAD_ER:
 
                 self.temp_batch = []
                 self.num_updates -= int(self.num_updates)
-        
+        ``
     
     def online_train(self, sample, batch_size, n_worker, iterations=1, stream_batch_size=1):
         """Trains the model using both memory data and new data.

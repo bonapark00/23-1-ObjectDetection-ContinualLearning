@@ -45,23 +45,61 @@ def load_label_img_dic(ann_file):
 
 
 
-def get_sample_objects(labels):
+def get_sample_objects(objects):
     boxes=[]
 
-    for label in labels:
-        boxes.append(label['box2d'])
+    for bbox in objects['bbox']:
+       boxes.append([bbox['x1'],bbox['y1'],bbox['x2'],bbox['y2']])
     
-    class_names = ("pedestrian", "car", "truck", "bus", "motorcycle", "bicycle")
+    
 
-    target={"boxes": torch.as_tensor(boxes, dtype=torch.float32),
-            "labels": torch.tensor([class_names.index(label['category']) for label in labels], dtype=torch.int64)}
+    target={"boxes": torch.as_tensor(objects["boxes"], dtype=torch.float32),
+            "labels": torch.tensor(objects["category_id"], dtype=torch.int64)}
     
     return target
 
 def get_shift_datalist(data_type: str='train'):
 
+      
+    """
+    Creates datalist, so that single data info (sample) can be enumerated as stream.
+    All data from CLAD are combined inorder.
+    
+    Single data is formed as below
+    
+        e.g) {'file_name': ~.png,  
+              'objects': [list of obj annotation info], 
+              'task_num': 1, 
+              'split': 'train'} 
+    Args:
+        data_type: 'train' or 'val' (should be extended further for test data)
+        val_proportion: proportion of val/train
+        
+    Return: 
+        data list: list that contains single image data.
+                   data of all tasks are combined in order. Thus shouldn't be shuffled
+    """
+
+
     datalist=[]
-    obj_properties=['image_id','category_id','bbox']
+    obj_properties=['category_id','bbox']
+    path="./dataset/SHIFT_dataset/discrete/images"
+    data_infos=load_label_img_dic(f"{path}/{data_type}/front/det_2d.json")
+    
+    for data_info in data_infos:
+
+        datalist.append(
+            {
+            'file_name': {f"{path}/{data_type}/front/{data_info['videoName']}/{data_info['name']}"},
+            'objects':{"category_id": data_info['labels'],"bbox": data_info['bboxes']},
+            'task_num':1,
+            'split':data_type
+            }
+        )
+
+    return datalist
+
+
 
 
 

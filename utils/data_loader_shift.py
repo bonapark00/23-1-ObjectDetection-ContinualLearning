@@ -80,7 +80,7 @@ class SHIFTMemoryDataset(MemoryDataset):
         self.previous_idx = np.array([], dtype=int)
         self.device = device
 
-        self.data_dir =  "/home/user/Desktop/pratham_sahu/paper_clones/i_blurry_clad/dataset/SHIFT_dataset/discrete/images/train/front"
+        self.data_dir =  data_dir
         self.keep_history = keep_history
 
     def __len__(self):
@@ -128,26 +128,27 @@ class SHIFTMemoryDataset(MemoryDataset):
 
     def replace_sample(self, sample, idx=None):
 
-        obj_cls_info=np.array(sample['labels']['category'])
+        obj_cls_info=np.array(sample['objects']['category_id'])
         obj_cls_id=np.bincount(obj_cls_info)[1:]
         obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_count)-len(obj_cls_id)), constant_values=(0)).flatten()
         self.obj_cls_count += obj_cls_id
 
         try:
-            img_name=sample['name']
-            vid_name=sample['videoName']
+            img_name=sample['file_name']
+            
         except KeyError:
-            img_name=sample['image_name']
+            img_name=sample['filepath']
             
 
         if self.data_dir is not None:
-            img_path = os.path.join(self.data_dir, vid_name, img_name)
+            img_path = os.path.join("dataset", self.dataset, "discrete", "images", sample['split'], "front", img_name)
+
+        image=PIL.Image.open(img_path).convert('RGB')
+        image = transforms.ToTensor()(image)
+        target=  get_sample_objects(sample['labels'])
         
         if idx is None:
             self.datalist.append(sample)
-            image=PIL.Image.open(img_path).convert('RGB')
-            image = transforms.ToTensor()(image)
-            target=  get_sample_objects(sample['labels'])
             self.images.append(image)
             self.objects.append(target)
         else:
@@ -166,10 +167,6 @@ class SHIFTMemoryDataset(MemoryDataset):
 
 
             self.datalist[idx]=sample
-            image=PIL.Image.open(img_path).convert('RGB')
-            image = transforms.ToTensor()(image)
-            target=  get_sample_objects(sample['labels'])
-            
             self.images[idx]=image
             self.objects[idx]=target
 
@@ -210,6 +207,10 @@ class SHIFTMemoryDataset(MemoryDataset):
         data_2={'images': images, 'boxes': boxes, 'labels': labels}
 
         return data_1, data_2
+
+
+# class SHIFTDistillationMemory(MemoryDataset):
+
     
 
 class SHIFTDataset(Dataset):
@@ -236,8 +237,8 @@ class SHIFTDataset(Dataset):
         img_path=f"{self.root}/{self.split}/front/{self.data_infos[idx]['videoName']}/{self.data_infos[idx]['name']}"
         img=Image.open(img_path).convert('RGB')
 
-        # if self.transforms is not None:
-        #     img=self.transforms(img)
+        if self.transforms is not None:
+            img=self.transforms(img)
 
         target={}
         target['boxes']=torch.as_tensor(self.data_infos[idx]["bboxes"], dtype=torch.float32)

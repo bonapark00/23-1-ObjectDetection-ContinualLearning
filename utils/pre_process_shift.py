@@ -101,6 +101,10 @@ def get_shift_datalist(data_type: str='train'):
 
 
 
+def collate_fn(batch):
+    return tuple(zip(*batch))
+
+
 
 
 

@@ -213,6 +213,61 @@ class SHIFTMemoryDataset(MemoryDataset):
 
 
 # class SHIFTDistillationMemory(MemoryDataset):
+#     def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
+# 				data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
+        
+#         self.datalist = []
+#         self.images = []
+#         self.objects = []
+#         self.proposals = []
+#         self.class_logits = []
+#         self.box_regression = []
+
+
+#         self.dataset = dataset #SHIFTDataset
+
+#         self.obj_cls_list = [1] # [1,4] exposed class list(숫자 리스트) cat1,4 classes were exposed
+# 		self.obj_cls_count = np.zeros(np.max(self.obj_cls_list), dtype=int) #[2,0,0,4]  2 objects in cat1, 4 objects of cat 4, in total
+# 		self.obj_cls_train_cnt = np.zeros(np.max(self.obj_cls_list),dtype=int) #[1,0,0,2] 1 time for cat1 obj, 2 times for cat4 are trained
+# 		self.others_loss_decrease = np.array([]) 
+# 		self.previous_idx = np.array([], dtype=int)
+# 		self.device = device
+
+#         self.keep_history = keep_history
+#         self.data_dir = data_dir
+
+
+#     def __len__(self):
+#         return len(self.images)
+    
+#     def __getitem__(self, idx):
+
+#         if torch.is_tensor(idx):
+#             idx = idx.value()
+
+#         image=self.images[idx]
+
+#         if self.transform:
+#             image=self.transform(image)
+
+#         target=self.objects[idx]
+#         target={'boxes': target['boxes'], 'labels': target['labels']}
+
+#         return image, target
+
+#     def add_new_class(self, obj_cls_list):
+
+#         self.obj_cls_list = obj_cls_list
+
+#         if np.max(obj_cls_list) > len(self.obj_cls_count):
+# 			extend_length = np.max(obj_cls_list)-len(self.obj_cls_count)
+# 			self.obj_cls_count = np.pad(self.obj_cls_count, (0,extend_length), constant_values=(0)).flatten()
+# 			self.obj_cls_train_cnt = np.pad(self.obj_cls_train_cnt, (0,extend_length), constant_values=(0)).flatten()
+	
+
+    
+
+
 
     
 

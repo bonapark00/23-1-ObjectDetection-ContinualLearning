@@ -27,21 +27,25 @@ def load_label_img_dic(ann_file):
 
         for label in img_info['labels']:
             bbox = label['box2d']
-            bboxes.append((bbox['x1'], bbox['y1'], bbox['x2'], bbox['y2']))
+            bboxes.append([bbox['x1'], bbox['y1'], bbox['x2'], bbox['y2']])
             labels.append(class_names.index(label['category']))
-        
-        data_infos.append({
+
+        if(len(bboxes)==0):
+            continue
+        else:
+
+            data_infos.append({
             'name':img_info['name'],
             'videoName':img_info['videoName'],
             'bboxes':bboxes,
             'labels':labels
-        })
-
+             })
       
     
     return data_infos
 
-    
+
+# def remove_empty_images() 
 
 
 
@@ -50,12 +54,15 @@ def get_sample_objects(objects):
 
     for bbox in objects['bbox']:
        boxes.append([bbox[0],bbox[1],bbox[2],bbox[3]])
+    
+    # area=(boxes[:,3]-boxes[:,1])*(boxes[:,2]-boxes[:,0])
     # breakpoint()
 
     
 
     target={"boxes": torch.as_tensor(boxes, dtype=torch.float32),
-            "labels": torch.tensor(objects["category_id"], dtype=torch.int64)}
+            "labels": torch.tensor(objects["category_id"], dtype=torch.int64)
+            }
     
     return target
 

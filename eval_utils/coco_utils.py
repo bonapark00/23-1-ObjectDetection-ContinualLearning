@@ -162,8 +162,13 @@ def convert_to_coco_api(ds):
         img_dict["width"] = img.shape[-1]
         dataset["images"].append(img_dict)
         bboxes = targets["boxes"].clone()
+        # breakpoint()
+
+        # print(bboxes)
+        
         bboxes[:, 2:] -= bboxes[:, :2]
         bboxes = bboxes.tolist()
+        
         labels = targets["labels"].tolist()
         # areas = targets["area"].tolist()
         # iscrowd = targets["iscrowd"].tolist()

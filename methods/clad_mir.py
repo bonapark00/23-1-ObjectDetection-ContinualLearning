@@ -9,7 +9,6 @@ from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset
 from utils.visualize import visualize_bbox
 
 logger = logging.getLogger()
-writer = SummaryWriter("tensorboard")
 
 class CLAD_MIR(CLAD_ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
@@ -44,6 +43,7 @@ class CLAD_MIR(CLAD_ER):
 
             # Getting the gradients after a forward and backward pass
             grads = {}
+
             for name, param in self.model.named_parameters():
                 if param.requires_grad:
                     grads[name] = param.grad.data
@@ -97,11 +97,6 @@ class CLAD_MIR(CLAD_ER):
                 self.optimizer.zero_grad()
                 loss_dict = self.model(final_images, final_targets)
                 losses = sum(loss for loss in loss_dict.values())
-
-                if self.count_log % 10 == 0:
-                    task_info = self.train_info()
-                    logging.info(f"{task_info} - Step {self.count_log}, Current Loss: {losses}")
-                self.writer.add_scalar("Loss/train", losses, self.count_log)
                 losses.backward()
                 self.optimizer.step()
 

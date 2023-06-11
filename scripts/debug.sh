@@ -5,7 +5,7 @@ NOTE="clad_er" # Short description of the experiment. (WARNING: logs/results wit
 MODE="clad_er"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
 SEEDS="1"
-EVAL_PERIOD=20
+EVAL_PERIOD=40
 
 
 if [ "$DATASET" == "clad" ]; then
@@ -26,5 +26,4 @@ do
     --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
     --seed_num $RND_SEED --debug --eval_period $EVAL_PERIOD
-    
 done

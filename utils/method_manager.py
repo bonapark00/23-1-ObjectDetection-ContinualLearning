@@ -25,7 +25,7 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             train_transform=train_transform,
             test_transform=test_transform,
             n_classes=n_classes,
-            writer=writer
+            writer=writer,
             **kwargs,
         )
 
@@ -36,7 +36,7 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             train_transform=train_transform,
             test_transform=test_transform,
             n_classes=n_classes,
-            writer=writer
+            writer=writer,
             **kwargs,
         )
     else:

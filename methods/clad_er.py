@@ -7,7 +7,7 @@ from utils.visualize import visualize_bbox
 from eval_utils.engine import evaluate
 
 logger = logging.getLogger()
-
+ 
 class CLAD_ER:
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         # Member variables from original er_baseline - ER class
@@ -84,7 +84,6 @@ class CLAD_ER:
 
                 self.temp_batch = []
                 self.num_updates -= int(self.num_updates)
-        
     
     def online_train(self, sample, batch_size, n_worker, iterations=1, stream_batch_size=1):
         """Trains the model using both memory data and new data.
@@ -224,7 +223,6 @@ class CLAD_ER:
     def train_info(self):
         message = f"{self.mode}_{self.dataset}_bs-{self.batch_size}_tbs-{self.temp_batchsize}_sd-{self.seed_num}"
         return message
-    
-            
+
 def collate_fn(batch):
     return tuple(zip(*batch))

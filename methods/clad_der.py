@@ -10,35 +10,24 @@ import PIL
 from torchvision import transforms
 
 logger = logging.getLogger()
-writer = SummaryWriter("tensorboard")
 
 class CLAD_DER(CLAD_ER):
-    def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
-        super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-        self.memory_size = 150 #kwargs["memory_size"]
-        self.batch_size = 4
-        
-        # Samplewise importance variables
-        self.loss = np.array([])
-        self.dropped_idx = []
-        self.memory_dropped_idx = []
-        self.imp_update_counter = 0
-        self.n_classes = n_classes
+    def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
+        super().__init__(criterion, device, train_transform, test_transform, n_classes, writer, **kwargs)
+
+        self.alpha = kwargs['alpha']
+        self.beta = kwargs['beta']
+        self.theta = kwargs['theta']
+
         self.memory = CladDistillationMemory(dataset='SSLAD-2D', device=None)
-
-        # Exposed classes
-        self.current_trained_images = []
-        self.exposed_classes = []
-        self.exposed_tasks = []
         
-        #Customized torchvision model. for normal model use for_distillation = False (default)
+        # Customized torchvision model. for normal model use for_distillation = False (default)
+        # TODO: select_model must be called only in the CLAD_ER class
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=n_classes, for_distillation=True).to(self.device)
-        self.params =[p for p in self.model.parameters() if p.requires_grad]
+        self.params = [p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
+        
 
-        self.seed_num = kwargs['seed_num']  #only used for tensorboard
-        self.temp_batch = []             #batch for stream
-    
     def online_step(self, sample, sample_num, n_worker):
         """Updates the model based on new data samples. If the sample's class is new, 
         it is added to the model's class set. The memory is updated with the new sample, 
@@ -55,30 +44,27 @@ class CLAD_DER(CLAD_ER):
             self.exposed_classes = list(set(self.exposed_classes + sample['objects']['category_id']))
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
-            
-        self.write_tensorboard(sample)
-       
+        
+        # Add sample to memory - sample consists of image, objects, and image_id
         self.temp_batch.append(sample)
         self.num_updates += self.online_iter
         
         if len(self.temp_batch) == self.temp_batchsize:
-            #make ready for direct training (doesn't go into memory before training)
-            train_loss, logits= self.online_train(self.temp_batch, self.batch_size, n_worker, 
-                                                iterations=int(self.num_updates), stream_batch_size=self.temp_batchsize
-                                                ,alpha=0.05, beta=0.5, theta=1
-                                                )
-            print(f"Train_loss: {train_loss}\n")
+            # Make ready for direct training (doesn't go into memory before training)
+
+            train_loss, logits = self.online_train(self.temp_batch, self.batch_size, n_worker, 
+                                                iterations=int(self.num_updates), stream_batch_size=self.temp_batchsize)
+
+            self.report_training(sample_num, train_loss, self.writer)
             for idx, stored_sample in enumerate(self.temp_batch):
                 self.update_memory(stored_sample,\
                                    {'proposals': logits['proposals'][idx], 
                                     'class_logits': logits['class_logits'][idx], 
-                                    'box_regression': logits['box_regression'][idx]})    
-
+                                    'box_regression': logits['box_regression'][idx]})
             self.temp_batch = []
             self.num_updates -= int(self.num_updates)
-             
-              
-    def online_train(self, sample, batch_size, n_worker, iterations=1, stream_batch_size=2, alpha=0.05, beta=0.5, theta= 1):
+            
+    def online_train(self, sample, batch_size, n_worker, iterations=1, stream_batch_size=1):
         """Trains the model using both memory data and new data.
 
         Args:
@@ -91,21 +77,15 @@ class CLAD_DER(CLAD_ER):
         Returns:
             _type_: _description_
         """
-        total_loss, correct, num_data = 0.0, 0.0, 0.0
+        total_loss, num_data = 0.0, 0.0
         sample_dataset = CladStreamDataset(sample, dataset="SSLAD-2D", transform=None, cls_list=None)
         
-
         memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
-        self.count_log += stream_batch_size + memory_batch_size
+        self.count_log += (stream_batch_size + memory_batch_size)
 
         for i in range(iterations):
             self.model.train()
-            memory_data = self.memory.get_batch(memory_batch_size) if memory_batch_size >0 else None
-
-            if memory_data:
-                self.current_trained_images = list(set(self.current_trained_images + memory_data['images']))
-                print("Current trained images:", len(self.current_trained_images), ", not included stream batch")
-
+            memory_data = self.memory.get_batch(memory_batch_size) if memory_batch_size > 0 else None
             images_stream = []; images_memory = []
             targets_stream = []; targets_memory = []
             
@@ -154,8 +134,8 @@ class CLAD_DER(CLAD_ER):
                 for (output, target) in zip(z_logits['box_regression'], box_regression):
                     distill_reg += distill_func(output, target)
 
-                distill_loss = (alpha * distill_cls.detach() + beta * distill_reg.detach())/memory_batch_size
-                print(f'distill_cl: {(alpha * distill_cls/memory_batch_size)}   distill_rg :{beta * distill_reg.detach()/memory_batch_size}')
+                distill_loss = (self.alpha * distill_cls.detach() + self.beta * distill_reg.detach())/memory_batch_size
+                #print(f'distill_cl: {(alpha * distill_cls/memory_batch_size)}   distill_rg :{beta * distill_reg.detach()/memory_batch_size}')
                 #breakpoint()
 
                 losses, proposals_logits, _ = self.model(images, targets)
@@ -169,8 +149,8 @@ class CLAD_DER(CLAD_ER):
                 losses['loss_rpn_box_reg'] = (1+theta)*losses['loss_rpn_box_reg']
                  '''
 
-                loss = sum(loss for loss in losses.values()) + theta*distill_loss
-                print(f"CL:{sum(loss for loss in losses.values())}, DL:{distill_loss}")
+                loss = sum(loss for loss in losses.values()) + self.theta * distill_loss
+                #print(f"CL:{sum(loss for loss in losses.values())}, DL:{distill_loss}")
 
             else:
                 losses, proposals_logits, _ = self.model(images_stream, targets_stream)
@@ -179,22 +159,15 @@ class CLAD_DER(CLAD_ER):
                 
                 loss = sum(loss for loss in losses.values())
 
-            #report loss
-            if self.count_log % 10 == 0:
-                task_info = self.train_info()
-                logging.info(f"{task_info} - Step {self.count_log}, Current Loss: {losses}")
-            self.writer.add_scalar("Loss/train", loss, self.count_log)
-
             self.optimizer.zero_grad()
             loss.backward()
             self.optimizer.step()
-
             total_loss += loss.item()
-            
-            for item in ['proposals', 'class_logits', 'box_regression']:
-                proposals_logits[item] = proposals_logits[item][:stream_batch_size] 
+        
+        for item in ['proposals', 'class_logits', 'box_regression']:
+            proposals_logits[item] = proposals_logits[item][:stream_batch_size] 
 
-            return (total_loss/iterations), proposals_logits
+        return (total_loss / iterations), proposals_logits
         
     def update_memory(self, sample, logit):
         # Updates the memory of the model based on the importance of the samples.
@@ -204,56 +177,8 @@ class CLAD_DER(CLAD_ER):
             self.dropped_idx.append(target_idx)
             self.memory_dropped_idx.append(target_idx)
             
-                
         else:
             self.memory.replace_sample(sample, logit)
             self.dropped_idx.append(len(self.memory)- 1)
             self.memory_dropped_idx.append(len(self.memory) - 1)
-        
-        
-    def add_new_class(self, class_name):
-        """Called when a new class of data is encountered. It extends the model's final layer 
-        to account for the new class, and updates the optimizer and memory accordingly.
-        
-        1. Modify the final layer to handle the new class
-        2. Assign the previous weight to the new layer
-        3. Modify the optimizer while preserving previous optimizer states
-
-        Args:
-            class_name (str): The name of the new class to be added
-        """
-        self.exposed_classes.append(class_name)
-        self.num_learned_class = len(self.exposed_classes)
-        self.memory.add_new_class(cls_list=self.exposed_classes)
-        
-
-    def get_sample_img_tar(self, sample):
-            '''
-            return image and target for sample which enumerated from main 
-            '''
-
-            #prepare Image
-            img_name = sample['file_name']
-            img_path = os.path.join("dataset","SSLAD-2D",'labeled',sample['split'],img_name)
-            image = PIL.Image.open(img_path).convert('RGB')
-            image = transforms.ToTensor()(image).to(self.device)
-
-            #prepare targets
-            boxes = []
-            for bbox in sample['objects']['bbox']:
-                  # Convert from x, y, h, w to x0, y0, x1, y1
-                  boxes.append([bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]])
-                  
-            # Targets should all be tensors
-            target = \
-                  {"boxes": torch.as_tensor(boxes, dtype=torch.float32).to(self.device), 
-                   "labels": torch.as_tensor(sample['objects']['category_id'],dtype=torch.int64).to(self.device)}
-            
-            
-            return image, target
-
-
-    def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
-        # Adjusts the learning rate of the optimizer based on the learning history.
-        pass
     

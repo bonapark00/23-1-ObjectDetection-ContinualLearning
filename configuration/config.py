@@ -36,7 +36,10 @@ def base_parser():
     # MIR
     parser.add_argument('--mir_cands', type=int, default=20, help='# candidates to use for MIR')
 
-
+    # DER
+    parser.add_argument('--alpha', type=float, default=0.05, help='DER alpha')
+    parser.add_argument('--beta', type=float, default=0.5, help='DER beta')
+    parser.add_argument('--theta', type=float, default=1.0, help='DER theta')
     
     # parser.add_argument("--n_tasks", type=int, default=4, help="The number of tasks")
     # parser.add_argument("--n", type=int, default=50, help="The percentage of disjoint split. Disjoint=100, Blurry=0")
@@ -139,11 +142,13 @@ def base_parser():
 
 
 def joint_parser():
-    parser = argparse.ArgumentParser(description="Jointly Training (UB)")
-    parser.add_argument("--batch_size", default=4, type=int, help="Training batch size")
-    parser.add_argument("--num_epochs", default=1, type=int)
-    parser.add_argument("--tensorboard_pth", default=f"tensorboard/upperbound")
-    parser.add_argument("--save_pth", default=f"model_checkpoints/upperbound.pth")
+    parser = argparse.ArgumentParser(description="Jointly Training")
+    parser.add_argument("--upperbound", action="store_true", help="Train upperbound (all tasks)")
+    parser.add_argument("--seed_num", type=str, default=1, help="seed number for joint training of two tasks")
+    parser.add_argument("--batch_size", default=16, type=int, help="Training batch size")
+    parser.add_argument("--num_epochs", default=16, type=int)
+    parser.add_argument("--tensorboard_pth", default=f"tensorboard")
+    parser.add_argument("--save_pth", default=f"model_checkpoints")
     parser.add_argument("--is_eval", action='store_true')
     parser.add_argument("--eval_period", type=int, default=100, help="evaluation period for true online setup")
     parser.add_argument("--debug", action="store_true", help="Turn on Debug mode")

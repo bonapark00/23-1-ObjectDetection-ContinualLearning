@@ -159,11 +159,9 @@ class FasterRCNN(GeneralizedRCNN):
                  box_fg_iou_thresh=0.5, box_bg_iou_thresh=0.5,
                  box_batch_size_per_image=512, box_positive_fraction=0.25,
                  bbox_reg_weights=None,
-
-                 # dongjae edit
-                 separate_loss = False,
-                 generate_soft_proposals = False,
-                 soft_num = 64,
+                 
+                 #distillation
+                 for_distillation = False
                  ):
 
         if not hasattr(backbone, "out_channels"):
@@ -205,9 +203,7 @@ class FasterRCNN(GeneralizedRCNN):
             rpn_fg_iou_thresh, rpn_bg_iou_thresh,
             rpn_batch_size_per_image, rpn_positive_fraction,
             rpn_pre_nms_top_n, rpn_post_nms_top_n, rpn_nms_thresh,
-            score_thresh=rpn_score_thresh,
-            separate_loss = separate_loss
-            )
+            score_thresh=rpn_score_thresh)
 
 
         #ROI modules
@@ -238,10 +234,10 @@ class FasterRCNN(GeneralizedRCNN):
             bbox_reg_weights,
             box_score_thresh, box_nms_thresh, box_detections_per_img,
 
+            #used for distillation,
+            #if it is True, it returns seperate ROI head losses for each sample,
             #dongjae edit
-            separate_loss = separate_loss,
-            generate_soft_proposals= generate_soft_proposals,
-            soft_num=soft_num,
+            for_distillation = for_distillation
             )
 
         if image_mean is None:
@@ -313,7 +309,7 @@ model_urls = {
 
 
 def fasterrcnn_resnet50_fpn(pretrained=False, progress=True,
-                            num_classes=7, pretrained_backbone=True, trainable_backbone_layers=None, **kwargs):
+                            num_classes=91, pretrained_backbone=True, trainable_backbone_layers=None, for_distillation= False, **kwargs ):
     """
     Constructs a Faster R-CNN model with a ResNet-50-FPN backbone.
 
@@ -387,7 +383,8 @@ def fasterrcnn_resnet50_fpn(pretrained=False, progress=True,
     
     #pretrained_backbone == True by default. 3 layers from last are trainable
     backbone = resnet_fpn_backbone('resnet50', pretrained_backbone, trainable_layers=trainable_backbone_layers)
-    model = FasterRCNN(backbone, num_classes, **kwargs)
+    model = FasterRCNN(backbone, num_classes, for_distillation=for_distillation, **kwargs)
+
 
     if pretrained:
         state_dict = load_state_dict_from_url(model_urls['fasterrcnn_resnet50_fpn_coco'],

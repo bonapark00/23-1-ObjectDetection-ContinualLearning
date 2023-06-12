@@ -45,7 +45,7 @@ class CLAD_ER:
         self.exposed_tasks = []
         self.count_log = 0
         
-        self.model = select_model(model_name=None, dataset="clad", num_classes=n_classes, for_distillation=False).to(self.device)
+        self.model = select_model(mode=self.mode, num_classes=self.n_classes).to(self.device)
         self.params = [p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0
@@ -65,9 +65,7 @@ class CLAD_ER:
             self.exposed_classes = list(set(self.exposed_classes + sample['objects']['category_id']))
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
-            
-        # self.write_tensorboard(sample)
-
+        
         # update_memory 호출 -> samplewise_importance_memory 호출 -> 여기에서 memory.replace_sample 호출
         # self.memory.replace_sample(sample)
         self.temp_batch.append(sample)
@@ -177,21 +175,12 @@ class CLAD_ER:
             self.memory.replace_sample(sample, target_idx)
             self.dropped_idx.append(target_idx)
             self.memory_dropped_idx.append(target_idx)
-
-            # temp_batch update now done in online_step                   
-            # if len(self.temp_batch) < self.temp_batchsize:
-            #     self.temp_batch.append(target_idx)
                 
         else:
             self.memory.replace_sample(sample)
             self.dropped_idx.append(len(self.memory)- 1)
             self.memory_dropped_idx.append(len(self.memory) - 1)
-            
-            # temp_batch update now done in online_step 
-            # if len(self.temp_batch) < self.temp_batchsize:
-            #     self.temp_batch.append(len(self.memory)- 1)
-        
-        
+
     def add_new_class(self, class_name):
         """Called when a new class of data is encountered. It extends the model's final layer 
         to account for the new class, and updates the optimizer and memory accordingly.

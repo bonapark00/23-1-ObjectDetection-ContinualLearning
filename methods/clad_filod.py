@@ -11,43 +11,20 @@ import PIL
 from torchvision import transforms
 import copy
 import torch
-import gc
+from utils.train_utils import select_model
 
 logger = logging.getLogger()
-writer = SummaryWriter("tensorboard")
 
 class CLAD_FILOD(CLAD_ER):
-    def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
-        super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-        print("CLAD_FILOD Initialized!")
-        self.memory_size = kwargs["memory_size"]
-        self.batch_size = kwargs["batchsize"]
-        self.temp_batchsize = 8
-        #kwargs["temp_batchsize"]
+    def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
+        super().__init__(criterion, device, train_transform, test_transform, n_classes, writer, **kwargs)
+        logging.info("CLAD_FILOD Initialized")
         
-        # Samplewise importance variables
-        self.loss = np.array([])
-        self.dropped_idx = []
-        self.memory_dropped_idx = []
-        self.imp_update_counter = 0
-        self.n_classes = n_classes
-        self.memory = CladMemoryDataset(dataset='SSLAD-2D', device=None)
-
-        # Exposed classes
-        self.current_trained_images = []
-        self.exposed_classes = []
-        self.exposed_tasks = []
-        
-        #FILOD Model
+        # FILOD Model
         self.model_teacher = None
-        self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=n_classes, for_distillation=True, generate_soft_proposals=False).to(self.device)
-        self.params =[p for p in self.model.parameters() if p.requires_grad]
-        self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
-        self.n_classes = n_classes
 
-        self.seed_num = kwargs['seed_num']  #only used for tensorboard
-        self.temp_batch = []             #batch for stream
-        self.task_changed = 0            #num of task changed
+        # Num of task changed
+        self.task_changed = 0
     
     def online_step(self, sample, sample_num, n_worker):
         """Updates the model based on new data samples. If the sample's class is new, 
@@ -66,16 +43,14 @@ class CLAD_FILOD(CLAD_ER):
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
             
-        #Need to change as function
+        # Need to change as function
         if sample['task_num'] != self.task_num:
-            self.writer.close()     
-            self.writer = SummaryWriter(f"tensorboard/{self.tensorboard_pth}")
-            self.task_changed +=1
+            self.task_changed += 1
 
-            #Switch teacher as task changed
+            # Switch teacher as task changed
             if self.task_changed > 1:
-                self.model_teacher = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=self.n_classes, for_distillation=True, generate_soft_proposals=True).to(self.device)
-                self.model_teacher.load_state_dict(self.model.state_dict())
+                self.model_teacher = select_model(mode=self.mode, num_classes=self.n_classes).to(self.device)
+                self.model_teacher.load_state_dict(self.model.state_dict()) # Copy weights from student to teacher
                 self.model_teacher.eval()
                 self.model_teacher.roi_heads.generate_soft_proposals = True
 
@@ -84,12 +59,13 @@ class CLAD_FILOD(CLAD_ER):
         self.num_updates += self.online_iter
         
         if len(self.temp_batch) == self.temp_batchsize:
-            print(self.temp_batchsize)
-            #make ready for direct training (doesn't go into memory before training)
-            train_loss = self.online_train(self.temp_batch, self.batch_size, n_worker, 
+            # print(self.temp_batchsize)
+            # Make ready for direct training (doesn't go into memory before training)
+            return_losses = self.online_train(self.temp_batch, self.batch_size, n_worker, 
                                            iterations=int(self.num_updates), stream_batch_size=self.temp_batchsize
                                             )
-            print(f"Train_loss: {train_loss}\n")
+            self.report_training(sample_num, return_losses, self.writer)
+
             for sample in self.temp_batch:
                 self.update_memory(sample)
 
@@ -97,7 +73,7 @@ class CLAD_FILOD(CLAD_ER):
             self.num_updates -= int(self.num_updates)
              
               
-    def online_train(self, sample, batch_size, n_worker, iterations=1, stream_batch_size=2,):
+    def online_train(self, sample, batch_size, n_worker, iterations=1, stream_batch_size=1):
         """Trains the model using both memory data and new data.
 
         Args:
@@ -110,20 +86,15 @@ class CLAD_FILOD(CLAD_ER):
         Returns:
             _type_: _description_
         """
-        total_loss, correct, num_data = 0.0, 0.0, 0.0
+        total_loss, num_data = 0.0, 0.0
         sample_dataset = CladStreamDataset(sample, dataset="SSLAD-2D", transform=None, cls_list=None)
         memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
-        self.count_log += stream_batch_size + memory_batch_size
+        self.count_log += (stream_batch_size + memory_batch_size)
 
         self.model.train()
         
         for i in range(iterations):
-            memory_data = self.memory.get_batch(memory_batch_size) if memory_batch_size >0 else None
-
-            if memory_data:
-                self.current_trained_images = list(set(self.current_trained_images + memory_data['images']))
-                print("Current trained images:", len(self.current_trained_images), ", not included stream batch")
-
+            memory_data = self.memory.get_batch(memory_batch_size) if memory_batch_size > 0 else None
             images_stream = []; images_memory = []
             targets_stream = []; targets_memory = []
             
@@ -151,91 +122,81 @@ class CLAD_FILOD(CLAD_ER):
 
                 # Calculate distillation loss
                 if self.model_teacher:
+                    _ = self.model_teacher(images, targets)
+                    proposals_logits_te = self.model_teacher.proposals_logits
                     
-                    __ , proposals_logits_te = self.model_teacher(images, targets)
-                    
-                    losses_st, __, z_logits = self.model(images, targets, proposals_logits_te['proposals'])
+                    losses_st = self.model(images, targets, proposals_logits_te['proposals'])
+                    student_logits = self.model.student_logits
 
                     backbone_te, rpn_te= self.model_teacher.backbone_output, self.model_teacher.rpn_output
                     backbone_st, rpn_st= self.model.backbone_output, self.model.rpn_output
                     
-                    #fast rcnn loss
-                    losses_st['loss_classifier'] = torch.mean(losses_st['loss_classifier'])
-                    losses_st['loss_box_reg'] = torch.mean(losses_st['loss_box_reg'][0])
+                    # Fast rcnn loss
                     faster_rcnn_losses = sum(loss for loss in losses_st.values())
 
-                    #backbone loss
+                    # Backbone loss
                     feature_distillation_losses = self.calculate_feature_distillation_loss(backbone_te, backbone_st)
 
-                    #rpn loss
+                    # RPN loss
                     rpn_distillation_losses = self.calculate_rpn_distillation_loss(rpn_te, rpn_st, bbox_threshold=0.1)
 
-                    #roi head loss
-                    roi_distillation_losses = self.calculate_roi_distillation_loss(proposals_logits_te, z_logits, targets)
+                    # ROI head loss
+                    roi_distillation_losses = self.calculate_roi_distillation_loss(proposals_logits_te, student_logits, targets)
 
-                    #distillation loss
+                    # Distillation loss
                     distillation_losses = roi_distillation_losses + rpn_distillation_losses + feature_distillation_losses
                     distillation_losses = distillation_losses.clone().detach()
                     if i == 1:
-                        print(f"{faster_rcnn_losses}, roi:{roi_distillation_losses}, rpn:{rpn_distillation_losses} , backbone:{feature_distillation_losses}")
+                        logging.info(f"{faster_rcnn_losses}, roi:{roi_distillation_losses}, rpn:{rpn_distillation_losses}, \
+                            backbone:{feature_distillation_losses}")
 
                     loss = faster_rcnn_losses + distillation_losses
 
-                #while first task (do not have any teacher model)
+                # While first task (do not have any teacher model)
                 else:
-                    losses, proposals_logits, _ = self.model(images, targets)
-                    losses['loss_classifier'] = torch.mean(losses['loss_classifier'])
-                    losses['loss_box_reg'] = torch.mean(losses['loss_box_reg'][0])
-                
+                    losses = self.model(images, targets)
                     loss = sum(loss for loss in losses.values())
             else:
-                losses, proposals_logits, _ = self.model(images_stream, targets_stream)
-                losses['loss_classifier'] = torch.mean(losses['loss_classifier'])
-                losses['loss_box_reg'] = torch.mean(losses['loss_box_reg'][0])
-                
+                losses = self.model(images_stream, targets_stream)
                 loss = sum(loss for loss in losses.values())
 
-        #report loss
-        if self.count_log % 10 == 0:
-                logging.info(f"Step {self.count_log}, Current Loss: {loss}")
-        self.writer.add_scalar("Loss/train", loss, self.count_log)
+            self.optimizer.zero_grad()
+            loss.backward()
+            self.optimizer.step()
 
-        self.optimizer.zero_grad()
-        loss.backward()
-        self.optimizer.step()
+            total_loss += loss.item()
 
-        total_loss += loss.item()
-
-        return (total_loss/iterations)
+        return_losses = {
+            'loss': total_loss / iterations,
+            'distillation_loss': distillation_losses.item() if self.model_teacher else 0.0,
+            'faster_rcnn_loss': faster_rcnn_losses.item() if self.model_teacher else 0.0,
+            'roi_distillation_loss': roi_distillation_losses.item() if self.model_teacher else 0.0,
+            'rpn_distillation_loss': rpn_distillation_losses.item() if self.model_teacher else 0.0,
+            'feature_distillation_loss': feature_distillation_losses.item() if self.model_teacher else 0.0,
+        }
+        return return_losses
+    
+    def report_training(self, sample_num, losses, writer, log_interval=10):
+        """Reports the training progress to the console.
         
-    def update_memory(self, sample):
-        # Updates the memory of the model based on the importance of the samples.
-        if len(self.memory.images) >= self.memory_size:
-            target_idx = np.random.randint(len(self.memory.images))
-            self.memory.replace_sample(sample, target_idx)
-            self.dropped_idx.append(target_idx)
-            self.memory_dropped_idx.append(target_idx)
-                
-        else:
-            self.memory.replace_sample(sample)
-            self.dropped_idx.append(len(self.memory)- 1)
-            self.memory_dropped_idx.append(len(self.memory) - 1)
-        
-        
-    def add_new_class(self, class_name):
-        """Called when a new class of data is encountered. It extends the model's final layer 
-        to account for the new class, and updates the optimizer and memory accordingly.
-        
-        1. Modify the final layer to handle the new class
-        2. Assign the previous weight to the new layer
-        3. Modify the optimizer while preserving previous optimizer states
-
         Args:
-            class_name (str): The name of the new class to be added
+            sample_num (int): The number of samples that have been trained on.
+            losses (dict): The losses from the training iteration.
+            writer (SummaryWriter): The Tensorboard summary writer.
+            log_interval (int): The number of iterations between each console log.
         """
-        self.exposed_classes.append(class_name)
-        self.num_learned_class = len(self.exposed_classes)
-        self.memory.add_new_class(cls_list=self.exposed_classes)
+        # Tensorboard logging for each loss
+        writer.add_scalar(f"Train/Loss/Total", losses['loss'], sample_num)
+        writer.add_scalar(f"Train/Loss/Distillation", losses['distillation_loss'], sample_num)
+        writer.add_scalar(f"Train/Loss/FasterRCNN", losses['faster_rcnn_loss'], sample_num)
+        writer.add_scalar(f"Train/Loss/ROIDistillation", losses['roi_distillation_loss'], sample_num)
+        writer.add_scalar(f"Train/Loss/RPNDistillation", losses['rpn_distillation_loss'], sample_num)
+        writer.add_scalar(f"Train/Loss/FeatureDistillation", losses['feature_distillation_loss'], sample_num)
+
+        if sample_num % log_interval == 0:
+            logger.info(
+                f"Train | Sample # {sample_num} | Loss {losses['loss']:.4f}"
+            )
 
     def calculate_feature_distillation_loss(self,backbone_te, backbone_st):
         final_feature_distillation_loss = []
@@ -275,7 +236,6 @@ class CLAD_FILOD(CLAD_ER):
 
         if num_te_rpn_objectness == num_st_rpn_objectness:
             for i in range(num_st_rpn_objectness):
-                
                 current_te_rpn_objectness = rpn_objectness_te[i] 
                 current_st_rpn_objectness = rpn_objectness_st[i]
                 rpn_objectness_difference = current_te_rpn_objectness - current_st_rpn_objectness
@@ -340,14 +300,14 @@ class CLAD_FILOD(CLAD_ER):
         return final_rpn_loss
 
 
-    def calculate_roi_distillation_loss(self, proposals_logits_te, z_logits, targets):
+    def calculate_roi_distillation_loss(self, proposals_logits_te, student_logits, targets):
 
         #per batch
         cls_logit_te = proposals_logits_te['class_logits']
-        cls_logit_st = z_logits['class_logits']
+        cls_logit_st = student_logits['class_logits']
         
         bbox_reg_te = proposals_logits_te['box_regression']
-        bbox_reg_st = z_logits['box_regression']
+        bbox_reg_st = student_logits['box_regression']
         
         batch_size = len(cls_logit_st)
         total_anchor_num = cls_logit_st[0].size()[0] * batch_size
@@ -371,12 +331,6 @@ class CLAD_FILOD(CLAD_ER):
         roi_distillation_losses = roi_distillation_losses / (total_anchor_num+total_object_num)
         
         return roi_distillation_losses
-
-
-    def adaptive_lr(self, period=10, min_iter=10, significance=0.05):
-        # Adjusts the learning rate of the optimizer based on the learning history.
-        pass
-
     
 def permute_and_flatten(layer, N, A, C, H, W):
         layer = layer.view(N, -1, C, H, W)

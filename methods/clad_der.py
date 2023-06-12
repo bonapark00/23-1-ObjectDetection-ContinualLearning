@@ -23,9 +23,6 @@ class CLAD_DER(CLAD_ER):
         
         # Customized torchvision model. for normal model use for_distillation = False (default)
         # TODO: select_model must be called only in the CLAD_ER class
-        self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=n_classes, for_distillation=True).to(self.device)
-        self.params = [p for p in self.model.parameters() if p.requires_grad]
-        self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         
 
     def online_step(self, sample, sample_num, n_worker):
@@ -116,56 +113,41 @@ class CLAD_DER(CLAD_ER):
                 class_logits = [cl.to(self.device) for cl in memory_data['class_logits']] #(512, 7)
                 box_regression = [br.to(self.device) for br in memory_data['box_regression']] #(512, 28)
 
-                losses, proposals_logits, z_logits = self.model(images, targets, proposals)
-                
-                ##################################################################################
-                # z_logits, proposals_logits = {proposals:[(512,4)], class_logits:[(512,7)], ...}
-                # proposals_logits: newly updated infos of all data
-                # z_logits: logits given from previous proposals (used in distillation loss)
-                ##################################################################################
-
-                distill_func = torch.nn.MSELoss()
+                losses = self.model(images, targets, proposals)
+                st_logits = self.model.student_logits
+                proposals_logits = self.model.proposals_logits
+                ###################################################################################
+                # st_logits, proposals_logits = {proposals:[(512,4)], class_logits:[(512,7)], ...}#
+                # proposals_logits: newly updated infos of all data                               #
+                # st_logits: logits given from previous proposals (used in distillation loss)     #
+                ################################################################################### 
+                l2_loss = torch.nn.MSELoss()
                 #distillation loss
                 distill_cls = 0
-                for (output, target) in zip(z_logits['class_logits'], class_logits):
-                    distill_cls += distill_func(output, target)
+                for (output, target) in zip(st_logits['class_logits'], class_logits):
+                    distill_cls += l2_loss(output, target)
 
                 distill_reg = 0
-                for (output, target) in zip(z_logits['box_regression'], box_regression):
-                    distill_reg += distill_func(output, target)
+                for (output, target) in zip(st_logits['box_regression'], box_regression):
+                    distill_reg += l2_loss(output, target)
 
                 distill_loss = (self.alpha * distill_cls.detach() + self.beta * distill_reg.detach())/memory_batch_size
-                #print(f'distill_cl: {(alpha * distill_cls/memory_batch_size)}   distill_rg :{beta * distill_reg.detach()/memory_batch_size}')
-                #breakpoint()
-
-                losses, proposals_logits, _ = self.model(images, targets)
-                losses['loss_classifier'] = torch.mean(losses['loss_classifier'])
-                losses['loss_box_reg'] = torch.mean(losses['loss_box_reg'][0])
-
-                ''' (수정필요함)
-                losses['loss_classifier'] = torch.mean(losses['loss_classifier'][:-memory_batch_size]) + theta*torch.mean(losses['loss_classifier'][-memory_batch_size:])
-                losses['loss_box_reg'] = torch.mean(losses['loss_box_reg'][:-memory_batch_size][0]) + theta*torch.mean(losses['loss_box_reg'][-memory_batch_size:][0])
-                losses['loss_objectness'] = (1+theta)*losses['loss_objectness']
-                losses['loss_rpn_box_reg'] = (1+theta)*losses['loss_rpn_box_reg']
-                 '''
-
                 loss = sum(loss for loss in losses.values()) + self.theta * distill_loss
-                #print(f"CL:{sum(loss for loss in losses.values())}, DL:{distill_loss}")
 
             else:
-                losses, proposals_logits, _ = self.model(images_stream, targets_stream)
-                losses['loss_classifier'] = torch.mean(losses['loss_classifier'])
-                losses['loss_box_reg'] = torch.mean(losses['loss_box_reg'][0])
-                
+                losses = self.model(images_stream, targets_stream)
+                proposals_logits = self.model.proposals_logits
                 loss = sum(loss for loss in losses.values())
-
+                
+                
             self.optimizer.zero_grad()
             loss.backward()
             self.optimizer.step()
             total_loss += loss.item()
-        
+      
         for item in ['proposals', 'class_logits', 'box_regression']:
-            proposals_logits[item] = proposals_logits[item][:stream_batch_size] 
+                proposals_logits[item] = proposals_logits[item][:stream_batch_size] 
+        
 
         return (total_loss / iterations), proposals_logits
         

@@ -42,9 +42,7 @@ class BalancedPositiveNegativeSampler(object):
         """
         pos_idx = []
         neg_idx = []
-
         for matched_idxs_per_image in matched_idxs:
-
             positive = torch.where(matched_idxs_per_image >= 1)[0]
             negative = torch.where(matched_idxs_per_image == 0)[0]
 
@@ -169,7 +167,6 @@ class BoxCoder(object):
         return targets
 
     def decode(self, rel_codes, boxes):
-        # proposals from rpn, anchors from anchor generators
         # type: (Tensor, List[Tensor]) -> Tensor
         assert isinstance(boxes, (list, tuple))
         assert isinstance(rel_codes, torch.Tensor)
@@ -185,7 +182,6 @@ class BoxCoder(object):
         )
         if box_sum > 0:
             pred_boxes = pred_boxes.reshape(box_sum, -1, 4)
-    
         return pred_boxes
 
     def decode_single(self, rel_codes, boxes):

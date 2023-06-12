@@ -30,21 +30,19 @@ class GeneralizedRCNN(nn.Module):
         self.roi_heads = roi_heads
         # used only on torchscript mode
         self._has_warned = False
-        self.backbone_output = None
-        self.rpn_output = None
-        
-        self.student_logits = []
-        self.proposals_logits = []
 
     @torch.jit.unused
-    def eager_outputs(self, losses, detections):
-        #type: (Dict[str, Tensor], List[Dict[str, Tensor]]) -> Union[Dict[str, Tensor], List[Dict[str, Tensor]]]
+    def eager_outputs(self, losses, detections, proposals_logits, z_logits, for_distillation=False):
+        # type: (Dict[str, Tensor], List[Dict[str, Tensor]]) -> Union[Dict[str, Tensor], List[Dict[str, Tensor]]]
         if self.training:
+            if for_distillation:
+                z_logits = z_logits if len(z_logits) else None
+                return losses, proposals_logits, z_logits
             return losses
-        else:
-            return detections
+    
+        return detections
 
-    def forward(self, images, targets=None, teacher_proposals=None):
+    def forward(self, images, targets=None, distill_proposals=None):
         # type: (List[Tensor], Optional[List[Dict[str, Tensor]]]) -> Tuple[Dict[str, Tensor], List[Dict[str, Tensor]]]
         """
         Args:
@@ -58,6 +56,11 @@ class GeneralizedRCNN(nn.Module):
                 like `scores`, `labels` and `mask` (for Mask R-CNN models).
 
         """
+        #dongjae edit
+        if distill_proposals:
+            assert self.roi_heads.for_distillation == True, "3rd argument is available only when 'for_distillation=True' in model initilaization"
+
+
         if self.training and targets is None:
             raise ValueError("In training mode, targets should be passed")
         if self.training:
@@ -96,32 +99,25 @@ class GeneralizedRCNN(nn.Module):
                                      " Found invalid box {} for target at index {}."
                                      .format(degen_bb, target_idx))
 
-        features, feature_list = self.backbone(images.tensors)
+        features = self.backbone(images.tensors)
         if isinstance(features, torch.Tensor):
             features = OrderedDict([('0', features)])
-        self.backbone_output = feature_list  #list of backbone features for distillation
-
-        proposals, scores, proposal_losses, rpn_output = self.rpn(images, features, targets)
-        self.rpn_output = rpn_output #tuple of rpn output for distillation
-        #(concatnate, proposals:scores) for distillation (proposals: region proposal, scores: objectness), in a batch_size
-        concatnated_proposals =[torch.cat((proposal, score.reshape(-1,1)), dim=1) for proposal, score in zip(proposals, scores)] 
-    
-        detections, detector_losses, proposals_logits = self.roi_heads(features, concatnated_proposals, images.image_sizes, targets)
+        proposals, proposal_losses = self.rpn(images, features, targets)
+        detections, detector_losses, proposals_logits = self.roi_heads(features, proposals, images.image_sizes, targets)
         detections = self.transform.postprocess(detections, images.image_sizes, original_image_sizes)
-        self.proposals_logits = proposals_logits 
-
+       
         losses = {}
         losses.update(detector_losses)
         losses.update(proposal_losses)
 
-        #s_logits are generated if there are distill_proposals. 
-        #s_logits are returned classification, regression logits
-        if teacher_proposals:
+        #z_logits are generated if there are distill_proposals. 
+        #Z_logits are returned classification, regression logits
+        z_logits = []
+        if distill_proposals:
             #use same rpn feature with the original model, but proposals are switched to distill_proposals.
             #distill_mode returns z_logits which are new logits according to distill_proposals.
-            _, _, s_logits = self.roi_heads(features, teacher_proposals, images.image_sizes, targets, distill_mode = True)
-            del s_logits['proposals']
-            self.student_logits = s_logits
+            _, _, z_logits = self.roi_heads(features, distill_proposals, images.image_sizes, targets, distill_mode = True)
+            del z_logits['proposals']
 
         if torch.jit.is_scripting():
             if not self._has_warned:
@@ -129,4 +125,4 @@ class GeneralizedRCNN(nn.Module):
                 self._has_warned = True
             return losses, detections
         else:
-            return self.eager_outputs(losses, detections)
+            return self.eager_outputs(losses, detections, proposals_logits, z_logits= z_logits, for_distillation= self.roi_heads.for_distillation)

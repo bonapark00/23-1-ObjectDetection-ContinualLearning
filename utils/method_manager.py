@@ -2,9 +2,9 @@ import logging
 from methods.clad_er import CLAD_ER
 from methods.clad_mir import CLAD_MIR
 from methods.clad_der import CLAD_DER
+from methods.clad_filod import CLAD_FILOD
 
 logger = logging.getLogger()
-
 
 def select_method(args, criterion, device, train_transform, test_transform, n_classes, writer):
     kwargs = vars(args)
@@ -31,6 +31,16 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
 
     elif args.mode == "clad_der":
         method = CLAD_DER(
+            criterion=None,
+            device=device,
+            train_transform=train_transform,
+            test_transform=test_transform,
+            n_classes=n_classes,
+            writer=writer,
+            **kwargs,
+        )
+    elif args.mode == "clad_filod":
+        method = CLAD_FILOD(
             criterion=None,
             device=device,
             train_transform=train_transform,

@@ -7,7 +7,6 @@ from torch import nn, Tensor
 from torchvision.ops import boxes as box_ops
 
 from torchvision.ops import roi_align
-import random
 
 from . import _utils as det_utils
 import numpy as np
@@ -15,7 +14,7 @@ import numpy as np
 from typing import Optional, List, Dict, Tuple
 
 
-def fastrcnn_loss(class_logits, box_regression, labels, regression_targets, separate_loss=False):
+def fastrcnn_loss(class_logits, box_regression, labels, regression_targets, for_distillation=False):
     """
     Computes the loss for Faster R-CNN.
 
@@ -29,12 +28,12 @@ def fastrcnn_loss(class_logits, box_regression, labels, regression_targets, sepa
         classification_loss (Tensor)
         box_loss (Tensor)
     """
- 
+
     labels = torch.cat(labels, dim=0)
     regression_targets = torch.cat(regression_targets, dim=0)
 
-    if separate_loss:
-        batch_size = (len(labels)//512) #fixed with 512 always
+    if for_distillation:
+        batch_size = (len(labels)//512)
         classification_loss = F.cross_entropy(class_logits, labels, reduction='none')
         classification_loss = torch.mean(classification_loss.view(batch_size, -1), dim=1) 
     else:
@@ -43,7 +42,7 @@ def fastrcnn_loss(class_logits, box_regression, labels, regression_targets, sepa
     # the corresponding ground truth labels, to be used with
     # advanced indexing
 
-    if separate_loss:
+    if for_distillation:
         box_regression_loss = []
         split_arr = [512]*batch_size
         labels = labels.reshape(batch_size,-1)
@@ -541,10 +540,8 @@ class RoIHeads(nn.Module):
                  keypoint_head=None,
                  keypoint_predictor=None,
 
-                 #dongjae edit
-                 separate_loss=False,
-                 generate_soft_proposals=False,
-                 soft_num = 64
+                 #used for distillation?
+                 for_distillation = False
                  ):
         super(RoIHeads, self).__init__()
 
@@ -579,11 +576,7 @@ class RoIHeads(nn.Module):
         self.keypoint_head = keypoint_head
         self.keypoint_predictor = keypoint_predictor
 
-        #dongjae edit
-        self.separate_loss = separate_loss
-        self.generate_soft_proposals = generate_soft_proposals
-        self.soft_num = soft_num
-        
+        self.for_distillation = for_distillation
 
     def has_mask(self):
         if self.mask_roi_pool is None:
@@ -649,8 +642,6 @@ class RoIHeads(nn.Module):
         ):
             img_sampled_inds = torch.where(pos_inds_img | neg_inds_img)[0]
             sampled_inds.append(img_sampled_inds)
-        
-
         return sampled_inds
 
     def add_gt_proposals(self, proposals, gt_boxes):
@@ -671,55 +662,39 @@ class RoIHeads(nn.Module):
             assert all(["masks" in t for t in targets])
 
     def select_training_samples(self,
-                                concatnated_proposals,  # type: List[Tensor]
+                                proposals,  # type: List[Tensor]
                                 targets     # type: Optional[List[Dict[str, Tensor]]]
                                 ):
         # type: (...) -> Tuple[List[Tensor], List[Tensor], List[Tensor], List[Tensor]]
         self.check_targets(targets)
         assert targets is not None
-        dtype = concatnated_proposals[0].dtype
-        device = concatnated_proposals[0].device
+        dtype = proposals[0].dtype
+        device = proposals[0].device
 
-
-        #get info from gt
         gt_boxes = [t["boxes"].to(dtype) for t in targets]
         gt_labels = [t["labels"] for t in targets]
 
-        #seperate concatnated_proposals: dongjae edit
-        proposals = []
-        objectness = [] 
-        for p_o in concatnated_proposals:
-            proposals.append(p_o[:,:4])
-            objectness.append(p_o[:,-1].reshape(-1,1)) 
-
-        # append ground-truth bboxes to propos (concat) #bottom concated gt
+        # append ground-truth bboxes to propos
         proposals = self.add_gt_proposals(proposals, gt_boxes)
-
-        #proposals (2000 + gt, 4), objectness (2000+gt (ones), 1)
-        image_num = len(proposals)
-        for i in range(image_num):
-            objectness[i] = torch.vstack((objectness[i], torch.ones((gt_boxes[i].shape[0],1),device='cuda')))
 
         # get matching gt indices for each proposal
         matched_idxs, labels = self.assign_targets_to_proposals(proposals, gt_boxes, gt_labels)
         # sample a fixed proportion of positive-negative proposals
         sampled_inds = self.subsample(labels)
-        # sampled_inds -> which indx picked (512)
-
         matched_gt_boxes = []
-        for img_id in range(image_num):
+        num_images = len(proposals)
+        for img_id in range(num_images):
             img_sampled_inds = sampled_inds[img_id]
             proposals[img_id] = proposals[img_id][img_sampled_inds]
-            objectness[img_id] = objectness[img_id][img_sampled_inds]
             labels[img_id] = labels[img_id][img_sampled_inds]
             matched_idxs[img_id] = matched_idxs[img_id][img_sampled_inds]
+
             gt_boxes_in_image = gt_boxes[img_id]
             if gt_boxes_in_image.numel() == 0:
                 gt_boxes_in_image = torch.zeros((1, 4), dtype=dtype, device=device)
             matched_gt_boxes.append(gt_boxes_in_image[matched_idxs[img_id]])
 
         regression_targets = self.box_coder.encode(matched_gt_boxes, proposals)
-
         return proposals, matched_idxs, labels, regression_targets
 
     def postprocess_detections(self,
@@ -785,7 +760,7 @@ class RoIHeads(nn.Module):
                 proposals,     # type: List[Tensor]
                 image_shapes,  # type: List[Tuple[int, int]]
                 targets=None,   # type: Optional[List[Dict[str, Tensor]]]
-                distill_mode=False  # only used in distillation (get logits from previous proposals)
+                distill_mode= False  # only used in distillation (get logits from previous proposals)
                 ):
         # type: (...) -> Tuple[List[Dict[str, Tensor]], Dict[str, Tensor]]
         """
@@ -803,62 +778,45 @@ class RoIHeads(nn.Module):
                 assert t["labels"].dtype == torch.int64, 'target labels must of int64 type'
                 if self.has_keypoint():
                     assert t["keypoints"].dtype == torch.float32, 'target keypoints must of float type'
-        
-        concatnated_proposals = proposals
 
         if self.training:
-            if not distill_mode: 
-                #distill_mode means that there already exists proposals (from teacher model)
-                #swhere it selects 512 ROIs per sample from batch
-                proposals, matched_idxs, labels, regression_targets = self.select_training_samples(concatnated_proposals, targets) 
+            if not distill_mode:
+                proposals, matched_idxs, labels, regression_targets = self.select_training_samples(proposals, targets)
         else:
-            if self.generate_soft_proposals:
-                proposals = self.generate_soft_output(concatnated_proposals, self.soft_num)
-            else:
-                proposals = [item[:,:4] for item in concatnated_proposals]
             labels = None
             regression_targets = None
             matched_idxs = None
 
+
         box_features = self.box_roi_pool(features, proposals, image_shapes)
-        box_features = self.box_head(box_features)  
+        box_features = self.box_head(box_features)
         class_logits, box_regression = self.box_predictor(box_features)
 
         #dongjae edit
         proposals_logits = {}
         if self.training:
-            batch_num = (box_features.shape[0]//proposals[0].shape[0])
-            batch_num_arr = [proposals[0].shape[0]]*batch_num
-
-            class_logits_pl = list(torch.split(class_logits, batch_num_arr))
-            box_regression_pl = list(torch.split(box_regression, batch_num_arr))
-            proposals_logits['proposals'] = proposals
-            proposals_logits['class_logits'] = class_logits_pl
-            proposals_logits['box_regression'] = box_regression_pl 
-
-        else: 
-            if self.generate_soft_proposals:
-                batch_num = (box_features.shape[0]//self.soft_num)
-                batch_num_arr = [self.soft_num]*batch_num
+            if self.for_distillation:
+                batch_num = (box_features.shape[0]//512)
+                batch_num_arr = [512]*batch_num
 
                 class_logits_pl = list(torch.split(class_logits, batch_num_arr))
                 box_regression_pl = list(torch.split(box_regression, batch_num_arr))
                 proposals_logits['proposals'] = proposals
                 proposals_logits['class_logits'] = class_logits_pl
-                proposals_logits['box_regression'] = box_regression_pl
-
+                proposals_logits['box_regression'] = box_regression_pl 
 
         result: List[Dict[str, torch.Tensor]] = []
         losses = {}
         if self.training:
-            if not distill_mode: #when distill_mode, there will be no labels, and it will cause an error!
+            if not distill_mode:
+                #if distill_mode, we only give z_logits (no losses, no proposals_logits)
                 assert labels is not None and regression_targets is not None
                 loss_classifier, loss_box_reg = fastrcnn_loss(
-                    class_logits, box_regression, labels, regression_targets, separate_loss=self.separate_loss)
+                    class_logits, box_regression, labels, regression_targets, for_distillation = self.for_distillation)
                 losses = {
                     "loss_classifier": loss_classifier,
                     "loss_box_reg": loss_box_reg
-                    }
+                }
         else:
             boxes, scores, labels = self.postprocess_detections(class_logits, box_regression, proposals, image_shapes)
             num_images = len(boxes)
@@ -961,16 +919,3 @@ class RoIHeads(nn.Module):
             losses.update(loss_keypoint)
               
         return result, losses, proposals_logits
-
-    #basically chooses soft_num proposals out of 1000 proposals
-    def generate_soft_output(self, concatnated_proposals, soft_num):
-        soft_proposals = []
-        for item in concatnated_proposals:
-            indices =torch.argsort(item[:,-1], descending=True)
-            item = item[indices][:soft_num*2]
-            list_ = range(0, soft_num*2, 1)
-            random_idx = random.sample(list_, soft_num)
-            prop_soft = item[random_idx, :4]
-            soft_proposals.append(prop_soft)
-
-        return soft_proposals

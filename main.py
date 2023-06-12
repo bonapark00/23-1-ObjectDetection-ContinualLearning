@@ -35,7 +35,7 @@ def main():
         transforms.ToTensor()
     ])
     
-    tensorboard_path = f"{args.mode}_{args.model_name}_{args.dataset}_bs-{args.batchsize}_tbs-{args.temp_batchsize}_sd-{args.seed_num}_alpha"
+    tensorboard_path = f"{args.mode}_{args.model_name}_{args.dataset}_bs-{args.batchsize}_tbs-{args.temp_batchsize}_sd-{args.seed_num}"
     # Remove existing tensorboard logs
     if os.path.exists(f"tensorboard/{tensorboard_path}"):
         os.system(f"rm -rf tensorboard/{tensorboard_path}")
@@ -157,7 +157,7 @@ def main():
     save_path = (
         f"{args.model_name}_{args.dataset}"
         f"_bs-{args.batchsize}_tbs-{args.temp_batchsize}"
-        f"_sd-{args.seed_num}_alpha"
+        f"_sd-{args.seed_num}"
     )
 
     # Results during training each task

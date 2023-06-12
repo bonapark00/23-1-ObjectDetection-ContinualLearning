@@ -97,7 +97,6 @@ def concat_box_prediction_layers(box_cls, box_regression):
     # being concatenated as well)
     box_cls = torch.cat(box_cls_flattened, dim=1).flatten(0, -2)
     box_regression = torch.cat(box_regression_flattened, dim=1).reshape(-1, 4)
-   
     return box_cls, box_regression
 
 
@@ -141,10 +140,7 @@ class RegionProposalNetwork(torch.nn.Module):
                  fg_iou_thresh, bg_iou_thresh,
                  batch_size_per_image, positive_fraction,
                  #
-                 pre_nms_top_n, post_nms_top_n, nms_thresh, score_thresh=0.0,
-                 #
-                 separate_loss=False
-                 ):
+                 pre_nms_top_n, post_nms_top_n, nms_thresh, score_thresh=0.0):
         super(RegionProposalNetwork, self).__init__()
         self.anchor_generator = anchor_generator
         self.head = head
@@ -168,9 +164,6 @@ class RegionProposalNetwork(torch.nn.Module):
         self.nms_thresh = nms_thresh
         self.score_thresh = score_thresh
         self.min_size = 1e-3
-
-        #dongjae edit
-        self.sepate_loss = separate_loss
 
     def pre_nms_top_n(self):
         if self.training:
@@ -235,23 +228,20 @@ class RegionProposalNetwork(torch.nn.Module):
 
     def filter_proposals(self, proposals, objectness, image_shapes, num_anchors_per_level):
         # type: (Tensor, Tensor, List[Tuple[int, int]], List[int]) -> Tuple[List[Tensor], List[Tensor]]
-
         num_images = proposals.shape[0]
         device = proposals.device
         # do not backprop throught objectness
         objectness = objectness.detach()
         objectness = objectness.reshape(num_images, -1)
 
-        #objectness와 proposal의 alignment 이루어짐
         levels = [
             torch.full((n,), idx, dtype=torch.int64, device=device)
             for idx, n in enumerate(num_anchors_per_level)
         ]
-        levels = torch.cat(levels, 0) 
-        levels = levels.reshape(1, -1).expand_as(objectness) #[Batch, 2만개]
+        levels = torch.cat(levels, 0)
+        levels = levels.reshape(1, -1).expand_as(objectness)
 
-        # select top_n boxes independently per level before applying nms 
-        # independently take good boxes for each feature
+        # select top_n boxes independently per level before applying nms
         top_n_idx = self._get_top_n_idx(objectness, num_anchors_per_level)
 
         image_range = torch.arange(num_images, device=device)
@@ -260,6 +250,7 @@ class RegionProposalNetwork(torch.nn.Module):
         objectness = objectness[batch_idx, top_n_idx]
         levels = levels[batch_idx, top_n_idx]
         proposals = proposals[batch_idx, top_n_idx]
+
         objectness_prob = torch.sigmoid(objectness)
 
         final_boxes = []
@@ -280,14 +271,11 @@ class RegionProposalNetwork(torch.nn.Module):
             keep = box_ops.batched_nms(boxes, scores, lvl, self.nms_thresh)
 
             # keep only topk scoring predictions
-            # 2000 (after nms - 
             keep = keep[:self.post_nms_top_n()]
             boxes, scores = boxes[keep], scores[keep]
 
             final_boxes.append(boxes)
             final_scores.append(scores)
-            #seems like pre_nms -> each level(잔처리), post_nms -> (후처리) 2000개 
-
         return final_boxes, final_scores
 
     def compute_loss(self, objectness, pred_bbox_deltas, labels, regression_targets):
@@ -303,60 +291,28 @@ class RegionProposalNetwork(torch.nn.Module):
             objectness_loss (Tensor)
             box_loss (Tensor)
         """
-        #dongjae edit
-        #want to get separate loss for each items
-        #note that proportion would be same, but the result could be different.
-        if self.sepate_loss:
-            batch_size = len(labels)
 
-            #sampled_inds => 256 per samples
-            #batchwise_sampled_inds = (sampled_pos_inds, sampled_neg_inds, sampled_inds) for samples in batches
-            batchwise_sampled_inds= [(torch.where(torch.cat(self.fg_bg_sampler([label])[0], dim=0))[0],\
-                                      torch.where(torch.cat(self.fg_bg_sampler([label])[1], dim=0))[0],\
-                                      torch.cat((torch.where(torch.cat(self.fg_bg_sampler([label])[0], dim=0))[0],\
-                                      torch.where(torch.cat(self.fg_bg_sampler([label])[1], dim=0))[0]), dim=0))
-                                     for label in labels]
+        sampled_pos_inds, sampled_neg_inds = self.fg_bg_sampler(labels)
+        sampled_pos_inds = torch.where(torch.cat(sampled_pos_inds, dim=0))[0]
+        sampled_neg_inds = torch.where(torch.cat(sampled_neg_inds, dim=0))[0]
 
-            objectness = list(torch.chunk(objectness.reshape(-1,1), chunks=batch_size, dim=0))
-            box_loss = []
-            objectness_loss = []
-            samplewise_pred_bbox_deltas = list(torch.chunk(pred_bbox_deltas, chunks=batch_size, dim=0)) 
-          
-            for inds, regress, pred, obj, lab in zip(batchwise_sampled_inds, regression_targets, samplewise_pred_bbox_deltas, objectness, labels):
-                pos_inds = inds[0]
-                total_inds = inds[2]
-                box_loss.append(F.smooth_l1_loss(
-                    pred[pos_inds],
-                    regress[pos_inds],
-                    beta=1 / 9,
-                    reduction='sum',
-                ) / (total_inds.numel()))
-          
-                objectness_loss.append(F.binary_cross_entropy_with_logits(
-                    obj.flatten()[total_inds], lab[total_inds]
-                ))
-        else:
-            sampled_pos_inds, sampled_neg_inds = self.fg_bg_sampler(labels)
-            sampled_pos_inds = torch.where(torch.cat(sampled_pos_inds, dim=0))[0]
-            sampled_neg_inds = torch.where(torch.cat(sampled_neg_inds, dim=0))[0]
+        sampled_inds = torch.cat([sampled_pos_inds, sampled_neg_inds], dim=0)
 
-            sampled_inds = torch.cat([sampled_pos_inds, sampled_neg_inds], dim=0)
+        objectness = objectness.flatten()
 
-            objectness = objectness.flatten()
+        labels = torch.cat(labels, dim=0)
+        regression_targets = torch.cat(regression_targets, dim=0)
 
-            labels = torch.cat(labels, dim=0)
-            regression_targets = torch.cat(regression_targets, dim=0)
+        box_loss = F.smooth_l1_loss(
+            pred_bbox_deltas[sampled_pos_inds],
+            regression_targets[sampled_pos_inds],
+            beta=1 / 9,
+            reduction='sum',
+        ) / (sampled_inds.numel())
 
-            box_loss = F.smooth_l1_loss(
-                pred_bbox_deltas[sampled_pos_inds],
-                regression_targets[sampled_pos_inds],
-                beta=1 / 9,
-                reduction='sum',
-            ) / (sampled_inds.numel())
-
-            objectness_loss = F.binary_cross_entropy_with_logits(
-                objectness[sampled_inds], labels[sampled_inds]
-            )
+        objectness_loss = F.binary_cross_entropy_with_logits(
+            objectness[sampled_inds], labels[sampled_inds]
+        )
 
         return objectness_loss, box_loss
 
@@ -384,44 +340,30 @@ class RegionProposalNetwork(torch.nn.Module):
         """
         # RPN uses all feature maps that are available
         features = list(features.values())
-        objectness, pred_bbox_deltas = self.head(features) #objectness[[N,3,W,H] ...] total: 5 (feature num) eachgrid, pred_bbox_deltas... total:5
-        anchors = self.anchor_generator(images, features) #[[257796,4] ...] total: baatchsize length (anchors from each batch)
-        rpn_output = (objectness, pred_bbox_deltas) #shape => ([[N, 3, W, H], ...], [[N, 12, W, H], ...])
+        objectness, pred_bbox_deltas = self.head(features)
+        anchors = self.anchor_generator(images, features)
 
-        num_images = len(anchors) #batchsize
+        num_images = len(anchors)
         num_anchors_per_level_shape_tensors = [o[0].shape for o in objectness]
         num_anchors_per_level = [s[0] * s[1] * s[2] for s in num_anchors_per_level_shape_tensors]
-        #num_anchors_per_level -> from which feature? (total 5 features, total 257796)
-
         objectness, pred_bbox_deltas = \
-            concat_box_prediction_layers(objectness, pred_bbox_deltas) 
-        #objectness => (total anchors, 1) pred_bbox_deltas => (total anchors, 4) 
-        #anchors total num == pred_bbox_deltas total num 
-
+            concat_box_prediction_layers(objectness, pred_bbox_deltas)
         # apply pred_bbox_deltas to anchors to obtain the decoded proposals
         # note that we detach the deltas because Faster R-CNN do not backprop through
         # the proposals
         proposals = self.box_coder.decode(pred_bbox_deltas.detach(), anchors)
-                    #deconde only makes anchors and bbox deltas comparable
-
-        proposals = proposals.view(num_images, -1, 4) #shape = (batch, total anchors per image, (xyxy)) (4,257796, 4)
+        proposals = proposals.view(num_images, -1, 4)
         boxes, scores = self.filter_proposals(proposals, objectness, images.image_sizes, num_anchors_per_level)
-        # boxes -> 2000 ROI -> fits into the roi head
-  
+
         losses = {}
         if self.training:
             assert targets is not None
             labels, matched_gt_boxes = self.assign_targets_to_anchors(anchors, targets)
-           
             regression_targets = self.box_coder.encode(matched_gt_boxes, anchors)
-            #regression_targets are about 20000 -> gets label from anchors => RPN target generator
-
             loss_objectness, loss_rpn_box_reg = self.compute_loss(
                 objectness, pred_bbox_deltas, labels, regression_targets)
-
             losses = {
                 "loss_objectness": loss_objectness,
                 "loss_rpn_box_reg": loss_rpn_box_reg,
             }
-            # RPN loss
-        return boxes, scores, losses, rpn_output
+        return boxes, losses

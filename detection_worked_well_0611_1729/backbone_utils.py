@@ -40,17 +40,10 @@ class BackboneWithFPN(nn.Module):
         )
         self.out_channels = out_channels
 
-    def extract_each_feature(self, order_dict):
-        feature_list = []
-        for val in order_dict.values():
-            feature_list.append(val)
-        return feature_list
-
     def forward(self, x):
         x = self.body(x)
         x = self.fpn(x)
-        feature_list = self.extract_each_feature(x)
-        return x, feature_list
+        return x
 
 
 def resnet_fpn_backbone(

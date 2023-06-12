@@ -152,10 +152,23 @@ def joint_parser():
     parser.add_argument("--is_eval", action='store_true')
     parser.add_argument("--eval_period", type=int, default=100, help="evaluation period for true online setup")
     parser.add_argument("--debug", action="store_true", help="Turn on Debug mode")
-    
     args = parser.parse_args()
 
     return args
+
+def finetune_parser():
+    parser = argparse.ArgumentParser(description="Lower bound training (LB)")
+    parser.add_argument("--batch_size", default=16, type=int, help="Training batch size")
+    parser.add_argument("--num_iters", default=16, type=int, help="Number of iterations, basically same as batch size")
+    parser.add_argument("--tensorboard_pth", default=f"tensorboard")
+    parser.add_argument("--is_eval", action='store_true')
+    parser.add_argument("--eval_period", type=int, default=100, help="evaluation period for true online setup")
+    parser.add_argument('--seed_num', type=str, default=1, help='# seed num of the running model')
+    parser.add_argument("--debug", action="store_true", help="Turn on Debug mode")
+    args = parser.parse_args()
+
+    return args
+
 
 def lowerbound_parser():
     parser = argparse.ArgumentParser(description="Lower bound training (LB)")

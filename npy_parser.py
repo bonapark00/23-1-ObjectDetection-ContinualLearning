@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import os
 
-mode = "clad_mir"
+mode = "clad_filod"
 model_name = "faster_rcnn"
 dataset = "clad"
 batchsize = 16

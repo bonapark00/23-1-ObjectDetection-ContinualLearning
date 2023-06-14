@@ -162,8 +162,8 @@ class SHIFTMemoryDataset(MemoryDataset):
 
 
 
-            
-            obj_cls_info=np.array(discard_sample['categories'])
+            # breakpoint()cont
+            obj_cls_info=np.array(dis_sample_obj["category_id"])
             obj_cls_id=np.bincount(obj_cls_info)[1:]
             obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_count)-len(obj_cls_id)), constant_values=(0)).flatten()
             self.obj_cls_count -= obj_cls_id
@@ -302,7 +302,7 @@ class SHIFTDataset(Dataset):
         target['boxes']=torch.as_tensor(self.data_infos[idx]["bboxes"], dtype=torch.float32)
         target['labels']=torch.tensor(self.data_infos[idx]["labels"], dtype=torch.int64)
         target['image_id']=torch.tensor([idx])
-        # target['area']=(target['boxes'][:,3]-target['boxes'][:,1])*(target['boxes'][:,2]-target['boxes'][:,0])
+        target['area']=(target['boxes'][:,3]-target['boxes'][:,1])*(target['boxes'][:,2]-target['boxes'][:,0])
         # target['iscrowd']=torch.zeros((len(target['boxes']),), dtype=torch.int64)
 
         return img, target

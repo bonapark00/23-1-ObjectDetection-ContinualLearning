@@ -170,8 +170,10 @@ def convert_to_coco_api(ds):
         bboxes = bboxes.tolist()
         
         labels = targets["labels"].tolist()
-        # areas = targets["area"].tolist()
+        areas = targets["area"].tolist()
         # iscrowd = targets["iscrowd"].tolist()
+
+        # breakpoint()
         if "masks" in targets:
             masks = targets["masks"]
             # make masks Fortran contiguous for coco_mask
@@ -181,6 +183,7 @@ def convert_to_coco_api(ds):
             keypoints = keypoints.reshape(keypoints.shape[0], -1).tolist()
         num_objs = len(bboxes)
         for i in range(num_objs):
+            # breakpoint()
             ann = {}
             ann["image_id"] = image_id
             ann["bbox"] = bboxes[i]
@@ -196,6 +199,7 @@ def convert_to_coco_api(ds):
                 ann["num_keypoints"] = sum(k != 0 for k in keypoints[i][2::3])
             dataset["annotations"].append(ann)
             ann_id += 1
+    # breakpoint()
     dataset["categories"] = [{"id": i} for i in sorted(categories)]
     coco_ds.dataset = dataset
     coco_ds.createIndex()
@@ -203,11 +207,14 @@ def convert_to_coco_api(ds):
 
 
 def get_coco_api_from_dataset(dataset):
+    # breakpoint()
     for _ in range(10):
         if isinstance(dataset, torchvision.datasets.CocoDetection):
             break
         if isinstance(dataset, torch.utils.data.Subset):
-            dataset = dataset.dataset
+            # dataset = dataset.dataset
+            continue
+    # breakpoint()
     if isinstance(dataset, torchvision.datasets.CocoDetection):
         return dataset.coco
     return convert_to_coco_api(dataset)

@@ -24,12 +24,15 @@ def load_label_img_dic(ann_file):
 
         bboxes=[]
         labels=[]
+        # image_id=''
+       
 
         for label in img_info['labels']:
             bbox = label['box2d']
             bboxes.append([bbox['x1'], bbox['y1'], bbox['x2'], bbox['y2']])
             labels.append(class_names.index(label['category']))
-
+            
+            
         if(len(bboxes)==0):
             continue
         else:
@@ -38,7 +41,8 @@ def load_label_img_dic(ann_file):
             'name':img_info['name'],
             'videoName':img_info['videoName'],
             'bboxes':bboxes,
-            'labels':labels
+            'labels':labels,
+            
              })
       
     

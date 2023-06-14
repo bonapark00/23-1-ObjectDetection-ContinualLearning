@@ -82,6 +82,7 @@ def evaluate(model, data_loader, device, args=None):
     metric_logger = MetricLogger(delimiter="  ")
     header = "Test:"
 
+    # breakpoint()
     coco = get_coco_api_from_dataset(data_loader.dataset)
     iou_types = _get_iou_types(model)
     coco_evaluator = CocoEvaluator(coco, iou_types)
@@ -94,7 +95,7 @@ def evaluate(model, data_loader, device, args=None):
         model_time = time.time()
         outputs = model(images)
 
-        breakpoint()
+        # breakpoint()
 
         outputs = [{k: v.to(cpu_device) for k, v in t.items()} for t in outputs]
         model_time = time.time() - model_time

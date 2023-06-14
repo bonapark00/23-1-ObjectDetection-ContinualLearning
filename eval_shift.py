@@ -120,20 +120,21 @@ def main():
     #         task_eval_results.append(mAP)
     #     task_mAP = sum(task_eval_results) / float(len(task_eval_results))
     #     task_records["task_mAP"].append(task_mAP)
-
+    # breakpoint()
     for data in cur_train_datalist:
         samples_cnt += 1
         method.model.train()
         method.online_step(data, samples_cnt, args.n_worker)
 
-        if samples_cnt % args.eval_period == 0:
-            mAP= method.online_evaluate(shift_dataloader, samples_cnt)
-            eval_results["test_mAP"].append(mAP)
-            eval_results["task_training"].append(1)
-            eval_results["task_eval"].append(1)
-            eval_results["data_cnt"].append(samples_cnt)
+        # if samples_cnt % args.eval_period == 0:
+        #     mAP= method.online_evaluate(shift_dataloader, samples_cnt)
+        #     eval_results["test_mAP"].append(mAP)
+        #     eval_results["task_training"].append(1)
+        #     eval_results["task_eval"].append(1)
+        #     eval_results["data_cnt"].append(samples_cnt)
 
     task_eval_results = []
+    # breakpoint()
     mAP = method.online_evaluate(shift_dataloader, samples_cnt)
     task_eval_results.append(mAP)
 

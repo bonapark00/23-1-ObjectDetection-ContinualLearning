@@ -46,7 +46,7 @@ class SHIFT_ER:
         self.exposed_tasks = []
         self.count_log = 0
         
-        self.model = select_model(model_name=None, dataset="shift", num_classes=n_classes, for_distillation=False).to(self.device)
+        self.model = select_model(mode=self.mode, num_classes=self.n_classes).to(self.device)
         self.params = [p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0

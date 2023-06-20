@@ -262,7 +262,7 @@ class CladMemoryDataset(MemoryDataset):
 					#total history of indices selected for batch
 					self.previous_idx = np.append(self.previous_idx, indices)
 				
-		breakpoint()
+		# breakpoint()
 		return {'images': images, 'boxes': boxes, 'labels': labels}
 	
 	def get_two_batches(self, batch_size, test_transform):

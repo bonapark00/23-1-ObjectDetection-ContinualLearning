@@ -1,20 +1,3 @@
-# import torch
-# import os
-# from torchvision import transforms
-# from utils.data_loader_shift import SHIFTDataset
-# from utils.method_manager import select_method
-# from utils.preprocess_clad import collate_fn
-# from configuration import config
-# from eval_utils.engine import evaluate
-
-# data_set=SHIFTDataset(transforms=transforms.ToTensor())
-# shift_dataloader = torch.utils.data.DataLoader(data_set, batch_size=1, collate_fn=collate_fn)
-
-
-# for sample in shift_dataloader:
-#     print(sample)
-#     breakpoint()
-
 
 import torch
 import numpy as np
@@ -30,6 +13,8 @@ import logging
 from utils.pre_process_shift import get_shift_datalist, collate_fn
 from utils.data_loader_shift import SHIFTDataset
 from utils.method_manager import select_method
+
+from torch.utils import tensorboard
 
 
 def main():
@@ -52,9 +37,12 @@ def main():
     test_transform = transforms.Compose([
         transforms.ToTensor()
     ])
-    
-    method = select_method(args, None, device, train_transform, test_transform, 7)
-    
+    tensorboard_path = f"{args.mode}_{args.model_name}_{args.dataset}_bs-{args.batchsize}_tbs-{args.temp_batchsize}_sd-{args.seed_num}"
+    # Remove existing tensorboard logs
+    if os.path.exists(f"tensorboard/{tensorboard_path}"):
+        os.system(f"rm -rf tensorboard/{tensorboard_path}")
+    writer = tensorboard.SummaryWriter(log_dir=f"tensorboard/{tensorboard_path}")
+    method = select_method(args, None, device, train_transform, test_transform, 23, writer)
     # Get train dataset
     cur_train_datalist = get_shift_datalist('train')
     # val_data_list = get_shift_datalist('val')
@@ -89,40 +77,32 @@ def main():
     #         debug_dataset, _ = random_split(dataset, [10, len(dataset) - 10])
     #         test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=4, collate_fn=collate_fn))
 
-    dataset = SHIFTDataset(transforms=transforms.ToTensor())
-    debug_dataset, _ = random_split(dataset, [10, len(dataset) - 10])
-    shift_dataloader = torch.utils.data.DataLoader(debug_dataset, batch_size=1, collate_fn=collate_fn)
+    # dataset = SHIFTDataset(split="val", transforms=transforms.ToTensor())
+    # debug_dataset, _ = random_split(dataset, [500, len(dataset) - 500])
+    # shift_dataloader = torch.utils.data.DataLoader(debug_dataset, batch_size=1, collate_fn=collate_fn)
+
+    if not args.debug:
+        print("Loading test dataset...")
+        test_loader_list = []
+        for i in range(4):
+            dataset = SHIFTDataset(split="val", transforms=transforms.ToTensor())
+            debug_dataset, _ = random_split(dataset, [500, len(dataset) - 500])
+            shift_dataloader = torch.utils.data.DataLoader(debug_dataset, batch_size=args.batchsize, collate_fn=collate_fn)
+
+    else:
+        print("Loading test debug dataset...")
+        test_loader_list = []
+        for i in range(4): 
+            dataset = SHIFTDataset(split="val", transforms=transforms.ToTensor())
+            debug_dataset, _ = random_split(dataset, [10, len(dataset) - 10])
+            shift_dataloader = torch.utils.data.DataLoader(debug_dataset, batch_size=args.batchsize, collate_fn=collate_fn)
 
     samples_cnt = 0
     # task_seed_list = [[0,1,2,3], [2,0,3,1],[1,2,3,0]]
     eval_results = defaultdict(list)
     task_records = defaultdict(list)
-    # selected_seed = task_seed_list[int(args.seed_num) - 1]
-
-    # Train and eval
-    # for i, task in enumerate(selected_seed):
-    #     for data in train_task[task]:
-    #         samples_cnt += 1
-    #         method.model.train()
-    #         method.online_step(data, samples_cnt, args.n_worker)
-    #         if samples_cnt % args.eval_period == 0:
-    #             for task_eval in selected_seed[:i + 1]:
-    #                 mAP = method.online_evaluate(test_loader_list[task_eval], samples_cnt)
-    #                 eval_results["test_mAP"].append(mAP)
-    #                 eval_results["task_training"].append(task + 1)
-    #                 eval_results["task_eval"].append(task_eval + 1)
-    #                 eval_results["data_cnt"].append(samples_cnt)
-
-    #     # Training one task is done, starts evaluating each task
-    #     # TODO: After training one task, should we evaluate all tasks?
-    #     task_eval_results = []
-    #     for task_eval in selected_seed[:i + 1]:
-    #         mAP = method.online_evaluate(test_loader_list[task_eval], samples_cnt)
-    #         task_eval_results.append(mAP)
-    #     task_mAP = sum(task_eval_results) / float(len(task_eval_results))
-    #     task_records["task_mAP"].append(task_mAP)
-    # breakpoint()
-    for data in cur_train_datalist:
+ 
+    for data in tqdm(cur_train_datalist, desc=f"{args.mode} - Seed {args.seed_num}  training"):
         samples_cnt += 1
         method.model.train()
         method.online_step(data, samples_cnt, args.n_worker)
@@ -134,13 +114,15 @@ def main():
             eval_results["task_eval"].append(1)
             eval_results["data_cnt"].append(samples_cnt)
 
+            writer.add_scalar(f"mAP", mAP, samples_cnt)
+
     task_eval_results = []
     # breakpoint()
     mAP = method.online_evaluate(shift_dataloader, samples_cnt)
     task_eval_results.append(mAP)
 
-    task_mAP = sum(task_eval_results) / float(len(task_eval_results))
-    task_records["task_mAP"].append(task_mAP)
+    # task_mAP = sum(task_eval_results) / float(len(task_eval_results))
+    # task_records["task_mAP"].append(task_mAP)
 
     # for data in cur_train_datalist:
     #     print(data)

@@ -84,6 +84,7 @@ def main():
             method.online_step(data, samples_cnt, args.n_worker)
             if samples_cnt % args.eval_period == 0:
                 for task_eval in selected_seed[:i + 1]:
+                    breakpoint()
                     mAP = method.online_evaluate(test_loader_list[task_eval], samples_cnt)
                     eval_results["test_mAP"].append(mAP)
                     eval_results["task_training"].append(task + 1)

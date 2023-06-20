@@ -186,9 +186,8 @@ class COCOeval:
             raise Exception('unknown iouType for iou computation')
 
         # compute iou between each dt and gt region
-        # iscrowd = [int(o['iscrowd']) for o in gt]
-        # ious = maskUtils.iou(d,g,iscrowd)
-        ious = maskUtils.iou(d,g,[0 for o in gt])
+        iscrowd = [int(o['iscrowd']) for o in gt]
+        ious = maskUtils.iou(d,g,iscrowd)
         return ious
 
     def computeOks(self, imgId, catId):

@@ -57,6 +57,7 @@ def main():
     
     # Get train dataset
     cur_train_datalist = get_shift_datalist('train')
+    # val_data_list = get_shift_datalist('val')
     
     # train_task = [
     #     cur_train_datalist[0:4470],
@@ -126,12 +127,12 @@ def main():
         method.model.train()
         method.online_step(data, samples_cnt, args.n_worker)
 
-        # if samples_cnt % args.eval_period == 0:
-        #     mAP= method.online_evaluate(shift_dataloader, samples_cnt)
-        #     eval_results["test_mAP"].append(mAP)
-        #     eval_results["task_training"].append(1)
-        #     eval_results["task_eval"].append(1)
-        #     eval_results["data_cnt"].append(samples_cnt)
+        if samples_cnt % args.eval_period == 0:
+            mAP= method.online_evaluate(shift_dataloader, samples_cnt)
+            eval_results["test_mAP"].append(mAP)
+            eval_results["task_training"].append(1)
+            eval_results["task_eval"].append(1)
+            eval_results["data_cnt"].append(samples_cnt)
 
     task_eval_results = []
     # breakpoint()

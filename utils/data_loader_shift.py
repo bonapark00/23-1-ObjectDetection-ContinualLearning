@@ -303,7 +303,7 @@ class SHIFTDataset(Dataset):
         target['labels']=torch.tensor(self.data_infos[idx]["labels"], dtype=torch.int64)
         target['image_id']=torch.tensor([idx])
         target['area']=(target['boxes'][:,3]-target['boxes'][:,1])*(target['boxes'][:,2]-target['boxes'][:,0])
-        # target['iscrowd']=torch.zeros((len(target['boxes']),), dtype=torch.int64)
+        target['iscrowd']=torch.zeros((len(target['boxes']),), dtype=torch.int64)
 
         return img, target
 

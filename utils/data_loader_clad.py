@@ -480,50 +480,70 @@ class CladDistillationMemory(MemoryDataset):
 	  
 
 class SODADataset(Dataset):
-	def __init__(self, path="./dataset/SSLAD-2D", task_id=1, split="train", transforms=None):
+	"""
+		Dataset for SODA
+		Given task_id and split, initialize a Pytorch Dataset object
+		Currently only used for joint training and evaluation
+
+		Args:
+			path (string): Path to the dataset folder. Default is "./dataset/SSLAD-2D"
+			task_ids (list): List of task ids. Default is [1]
+			split (string): Split of the dataset. Default is "train"
+			transforms (callable, optional): Optional transform to be applied on a sample
+	"""
+
+	def __init__(self, path="./dataset/SSLAD-2D", task_ids=[1], split="train", transforms=None):
 		self.split = split
-		self.task_id = task_id
+		self.task_ids = task_ids
 		self.root = path
 		self.transforms = transforms
 		self.img_paths = []
 		self.objects = []
+		self.organize_paths(self.split, self.task_ids)
 		
-		self.organize_paths(self.split, self.task_id)
-		
-	def organize_paths(self, split, task_id):
+	def organize_paths(self, split, task_ids):
 		train_num = [0, 4470, 5799, 7278, 7802]
 		val_num = [0, 497, 645, 810, 869]
 		split_num = train_num if split =='train' else val_num
 		
+		# Get total_data using split
 		total_data = get_clad_datalist(data_type=split)
-		target_data = total_data if self.task_id == None else total_data[split_num[task_id-1]:split_num[task_id]]
 		
+		# Get target_data using task_ids, first sort task_ids
+		# This is because we want to get data from task 1, 2, 3, 4 in order
+		print("Target task ids: ", task_ids)
+		task_ids.sort()
+		target_data = []
+		for task_id in task_ids:
+			start_idx = split_num[task_id-1]; end_idx = split_num[task_id]
+			target_data += total_data[start_idx:end_idx]
+		
+		# Get img_paths and objects
 		for item in target_data:
 			self.img_paths.append(item['file_name'])
 			for i in range(len(item['objects']['bbox'])):
 				box = item['objects']['bbox'][i]
 				item['objects']['bbox'][i] = [box[0], box[1], box[0] + box[2], box[1] + box[3]]
 			self.objects.append(item['objects'])
-	
-
 
 	def __len__(self):
 		return len(self.img_paths)
 	
 	def __getitem__(self, idx):
+		# Task 1 is always from task_path = 'train'
+		# Assume task 1 always appears first in task_ids (sorted)
+		# Split is train and task 1 (idx < 4470) -> task_path = 'train'
+		# Split is val and task 1 (idx < 497) -> task_path = 'train'
+		# Else -> task_path = 'val'
 		boxes, labels = [], []
 		if self.split == 'train':
-			if self.task_id == 1:
+			if 1 in self.task_ids and idx < 4470: # 4470 is the number of images in task 1
 				task_path = 'train'
-			elif self.task_id == None:
-				task_path = 'train' if idx < 4470 else 'val'
 			else:
 				task_path = 'val'
-		else: 
-			if self.task_id == 1:
+		else:
+			if 1 in self.task_ids and idx < 497: # 497 is the number of images in task 1
 				task_path = 'train'
-			elif self.task_id == None:
-				task_path = 'train' if idx < 497 else 'val'
 			else:
 				task_path = 'val'
 	

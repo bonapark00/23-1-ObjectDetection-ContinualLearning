@@ -14,4 +14,9 @@ debug_imgs/
 # Model weights
 *.pth
 
-dataset/
+# Ignore .npy files in outputs directory
+outputs/*.npy
+
+# Ignore data folder except .sh files
+dataset/*
+!dataset/*.sh

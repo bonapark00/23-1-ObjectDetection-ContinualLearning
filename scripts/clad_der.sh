@@ -4,8 +4,10 @@
 NOTE="clad_der" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="clad_der"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
-SEEDS="1 2 3"
-
+SEEDS="1"
+ALPHA=0.05
+BETA=0.5
+THETA=1.0
 
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=150 ONLINE_ITER=1
@@ -24,11 +26,5 @@ do
     --model_name $MODEL_NAME --dataset $DATASET \
     --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-    --seed_num $RND_SEED
-     
-    python eval.py --mode $MODE \
-    --model_name $MODEL_NAME --dataset $DATASET \
-    --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
-    --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-    --seed_num $RND_SEED
+    --seed_num $RND_SEED --alpha $ALPHA --beta $BETA --theta $THETA 
 done

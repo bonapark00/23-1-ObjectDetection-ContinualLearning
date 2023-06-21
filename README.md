@@ -52,4 +52,4 @@ Download the dataset using the scripts given in the ```/dataset``` directory [Yo
 ## Run the experiments
 Run individual experiments using the scripts given in ```/scripts``` directory
 
-$Using Docker
+# Using Docker

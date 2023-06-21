@@ -11,7 +11,7 @@ logger = logging.getLogger()
 writer = SummaryWriter("tensorboard")
 
 class SHIFT_ER:
-    def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
+    def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         # Member variables from original er_baseline - ER class
         self.mode = kwargs['mode']
         self.num_learned_class = 0
@@ -46,7 +46,7 @@ class SHIFT_ER:
         self.exposed_tasks = []
         self.count_log = 0
         
-        self.model = select_model(model_name=None, dataset="shift", num_classes=n_classes, for_distillation=False).to(self.device)
+        self.model = select_model(mode=self.mode, num_classes=self.n_classes).to(self.device)
         self.params = [p for p in self.model.parameters() if p.requires_grad]
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         self.task_num = 0
@@ -159,8 +159,17 @@ class SHIFT_ER:
             # self.current_trained_images = list(set(self.current_trained_images + memory_data['images']))
             # print("Current trained images:", len(self.current_trained_images))  
             
+
         return total_loss / iterations
     
+
+    def report_training(self, sample_num, train_loss, writer, log_interval=10):
+        writer.add_scalar(f"train/loss", train_loss, sample_num)
+        if sample_num % log_interval == 0:
+            logger.info(
+                f"Train | Sample # {sample_num} | Loss {train_loss:.4f}"
+            )
+
     def report_test(self, sample_num, average_precision):
         writer.add_scalar(f"test/AP", average_precision, sample_num)
         logger.info(

@@ -176,7 +176,7 @@ class StreamDataset(Dataset):
         return data
     
 class MemoryDataset(Dataset):
-    def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
+    def __init__(self, dataset, transform=None, cls_list=[], device=None, test_transform=None,
                  data_dir=None, transform_on_gpu=True, save_test=None, keep_history=False):
         self.datalist = []
         self.labels = []
@@ -184,6 +184,7 @@ class MemoryDataset(Dataset):
         self.dataset = dataset
         self.transform = transform
         self.cls_list = []
+        # breakpoint()
         self.cls_dict = {cls_list[i]:i for i in range(len(cls_list))}
         self.cls_count = []
         self.cls_idx = []
@@ -615,7 +616,8 @@ def get_statistics(dataset: str):
         "tinyimagenet",
         
         #CLAD dataset
-        "SSLAD-2D"
+        "SSLAD-2D",
+        "SHIFT"
     ]
     mean = {
         "mnist": (0.1307,),
@@ -631,7 +633,9 @@ def get_statistics(dataset: str):
         "imagenet1000": (0.485, 0.456, 0.406),
         
         #not calculated yet. Same as imagenet1000
-        "CLAD": (0.485, 0.456, 0.406)
+        "CLAD": (0.485, 0.456, 0.406),
+        "SHIFT": (0.485, 0.456, 0.406),
+        
     
     }
 
@@ -650,6 +654,7 @@ def get_statistics(dataset: str):
         
         #not calculated yet. Same as imagenet1000 
         "CLAD": (0.229, 0.224, 0.225),
+        "SHIFT": (0.229, 0.224, 0.225),
     }
 
     classes = {
@@ -666,7 +671,8 @@ def get_statistics(dataset: str):
         "imagenet1000": 1000,
         
         #CLAD dataset
-        "CLAD": 6
+        "CLAD": 6,
+        "SHIFT": 23
     }
 
     in_channels = {
@@ -683,7 +689,8 @@ def get_statistics(dataset: str):
         "imagenet1000": 3,
         
         #CLAD dataset
-        "CLAD": 3
+        "CLAD": 3,
+        "SHIFT": 3
         
     }
 
@@ -701,7 +708,8 @@ def get_statistics(dataset: str):
         "imagenet1000": 224,
         
         #CLAD dataset. input size differs
-        "CLAD": None
+        "CLAD": None,
+        "SHIFT": None
     }
     return (
         mean[dataset],

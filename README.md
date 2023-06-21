@@ -43,7 +43,7 @@ If you wish, you can install all the required packages step-by-step as well.
 
 ## 2. Using modified torchvision
 
-Run the script in ```/scripts/update_torchvision``` using dir2 for virtualenv( use dir for docker environments)
+Run the script in ```/scripts/update_torchvision.sh``` using dir2 for virtualenv( use dir for docker environments)
 
 ## 3. Download the datasets
 

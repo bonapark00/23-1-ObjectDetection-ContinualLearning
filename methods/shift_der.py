@@ -4,14 +4,14 @@ import os
 import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
-from methods.clad_er import CLAD_ER
-from utils.data_loader_clad import CladDistillationMemory, CladStreamDataset
+from methods.shift_er import SHIFT_ER
+from utils.data_loader_shift import SHIFTDistillationMemory, SHIFTStreamDataset
 import PIL
 from torchvision import transforms
 
 logger = logging.getLogger()
 
-class CLAD_DER(CLAD_ER):
+class SHIFT_DER(SHIFT_ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, writer, **kwargs)
 
@@ -19,7 +19,7 @@ class CLAD_DER(CLAD_ER):
         self.beta = kwargs['beta']
         self.theta = kwargs['theta']
 
-        self.memory = CladDistillationMemory(dataset='SSLAD-2D', device=None)
+        self.memory = SHIFTDistillationMemory(dataset='SHIFT', device=None)
         
         # Customized torchvision model. for normal model use for_distillation = False (default)
         # TODO: select_model must be called only in the CLAD_ER class
@@ -75,7 +75,7 @@ class CLAD_DER(CLAD_ER):
             _type_: _description_
         """
         total_loss, num_data = 0.0, 0.0
-        sample_dataset = CladStreamDataset(sample, dataset="SSLAD-2D", transform=None, cls_list=None)
+        sample_dataset = SHIFTStreamDataset(sample, dataset="SSLAD-2D", transform=None, cls_list=None)
         
         memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
         self.count_log += (stream_batch_size + memory_batch_size)
@@ -136,10 +136,10 @@ class CLAD_DER(CLAD_ER):
 
             else:
                 losses = self.model(images_stream, targets_stream)
+
                 proposals_logits = self.model.proposals_logits
                 loss = sum(loss for loss in losses.values())
                 
-            
                 
             self.optimizer.zero_grad()
             loss.backward()

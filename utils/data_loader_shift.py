@@ -211,12 +211,12 @@ class SHIFTMemoryDataset(MemoryDataset):
 
         return data_1, data_2
 
-
 class SHIFTDistillationMemory(MemoryDataset):
 
-    def _init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
+    def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
              data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
         
+        # breakpoint()
         self.datalist = []
         self.images=[]
         self.objects=[]
@@ -235,6 +235,7 @@ class SHIFTDistillationMemory(MemoryDataset):
 
         self.data_dir =  data_dir
         self.keep_history = keep_history
+        
 
     def __len__(self):
         return len(self.images)
@@ -253,7 +254,7 @@ class SHIFTDistillationMemory(MemoryDataset):
         return image, target
     
     def add_new_class(self, obj_cls_list):
-        
+        # breakpoint()
         self.obj_cls_list = obj_cls_list
 
         if np.max(obj_cls_list) > len(self.obj_cls_count):

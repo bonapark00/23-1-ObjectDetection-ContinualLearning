@@ -44,3 +44,12 @@ If you wish, you can install all the required packages step-by-step as well.
 ## 2. Using modified torchvision
 
 Run the script in ```/scripts/update_torchvision``` using dir2 for virtualenv( use dir for docker environments)
+
+## 3. Download the datasets
+
+Download the dataset using the scripts given in the ```/dataset``` directory [You may need to unzip the files manually to run the experiments]
+
+## Run the experiments
+Run individual experiments using the scripts given in ```/scripts``` directory
+
+$Using Docker

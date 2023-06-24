@@ -262,7 +262,7 @@ class CladMemoryDataset(MemoryDataset):
 					#total history of indices selected for batch
 					self.previous_idx = np.append(self.previous_idx, indices)
 				
-		breakpoint()
+		# breakpoint()
 		return {'images': images, 'boxes': boxes, 'labels': labels}
 	
 	def get_two_batches(self, batch_size, test_transform):
@@ -296,7 +296,7 @@ class CladDistillationMemory(MemoryDataset):
 		self.proposals = [] #(512, 4) total 512 of region proposals
 		self.class_logits = []    #class_logits: (512, 7), 
 		self.box_regression = []  #box_logits: (512, 28)
-		
+		# breakpoint()
 		
 		self.dataset = dataset #SSLAD-2D
 		
@@ -311,6 +311,7 @@ class CladDistillationMemory(MemoryDataset):
 		self.others_loss_decrease = np.array([]) 
 		self.previous_idx = np.array([], dtype=int)
 		self.device = device
+
 		
 		#self.test_transform = test_transform
 		self.data_dir = data_dir
@@ -338,6 +339,7 @@ class CladDistillationMemory(MemoryDataset):
 		when appeard new class, check whether to extend obj_cls_count
 		if it is, extend new spaces for new classes('category_id') 
 		'''
+		# breakpoint()
 		self.obj_cls_list = obj_cls_list 
 		
 		if np.max(obj_cls_list) > len(self.obj_cls_count):

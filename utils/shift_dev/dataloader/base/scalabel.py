@@ -24,10 +24,10 @@ from scalabel.label.utils import (
 from torch import Tensor
 from torch.utils.data import Dataset
 
-from shift_dev.types import DataDict, DictStrAny, Keys, NDArrayU8
-from shift_dev.utils import Timer, setup_logger
-from shift_dev.utils.backend import DataBackend, FileBackend
-from shift_dev.utils.load import im_decode, ply_decode
+from utils.shift_dev.types import DataDict, DictStrAny, Keys, NDArrayU8
+from utils.shift_dev.utils import Timer, setup_logger
+from utils.shift_dev.utils.backend import DataBackend, FileBackend
+from utils.shift_dev.utils.load import im_decode, ply_decode
 
 from .cache import CacheMappingMixin, DatasetFromList
 

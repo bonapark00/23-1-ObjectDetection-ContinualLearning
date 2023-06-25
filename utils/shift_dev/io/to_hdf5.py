@@ -5,11 +5,11 @@ import glob
 import multiprocessing as mp
 import os
 import sys
-
 import h5py
 import numpy as np
 import tqdm
 
+#sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from ..utils.logs import setup_logger
 from ..utils.storage import ZipArchiveReader
 

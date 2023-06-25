@@ -12,8 +12,8 @@ import appdirs
 import numpy as np
 from torch.utils.data import Dataset
 
-from shift_dev.types import DictStrAny, NDArrayU8
-from shift_dev.utils import Timer, setup_logger
+from utils.shift_dev.types import DictStrAny, NDArrayU8
+from utils.shift_dev.utils import Timer, setup_logger
 
 logger = setup_logger()
 

@@ -10,7 +10,7 @@ from tqdm import tqdm
 from itertools import islice
 
 import logging
-from utils.pre_process_shift import get_shift_datalist, collate_fn
+from clad_iblurry.i_blurry_clad.utils.preprocess_shift import get_shift_datalist, collate_fn
 from utils.data_loader_shift import SHIFTDataset
 from utils.method_manager import select_method
 

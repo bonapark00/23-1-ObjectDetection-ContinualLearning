@@ -17,10 +17,10 @@ from scalabel.label.typing import Dataset as ScalabelData
 from torch import Tensor
 from torch.utils.data import Dataset
 
-from shift_dev.types import DataDict, Keys
-from shift_dev.utils import setup_logger
-from shift_dev.utils.backend import DataBackend, HDF5Backend, ZipBackend
-from shift_dev.utils.load import im_decode, ply_decode
+from utils.shift_dev.types import DataDict, Keys
+from utils.shift_dev.utils import setup_logger
+from utils.shift_dev.utils.backend import DataBackend, HDF5Backend, ZipBackend
+from utils.shift_dev.utils.load import im_decode, ply_decode
 
 from .base import Scalabel
 

@@ -12,7 +12,7 @@ import sys
 
 import torch
 from torch.utils.data import DataLoader
-from utils.pre_process_shift import get_sample_objects, get_shift_datalist, load_label_img_dic
+from clad_iblurry.i_blurry_clad.utils.preprocess_shift import get_sample_objects, get_shift_datalist, load_label_img_dic
 from torch.utils.data import Dataset
 
 

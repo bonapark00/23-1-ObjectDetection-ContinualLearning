@@ -69,8 +69,12 @@ def select_model(mode="clad_er", num_classes=7):
     if mode == "clad_mir":
         default_config['separate_loss'] = True
 
-    if(mode=="shift_der"):
+    if mode == "shift_der":
         num_classes=23
+    
+    if mode == "clad_ilod":
+   
+    
         
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=num_classes, **default_config)
     return model

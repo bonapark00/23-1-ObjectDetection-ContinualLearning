@@ -169,12 +169,13 @@ class ER:
         
     def update_memory(self, sample):
         # Updates the memory of the model based on the importance of the samples.
+
         if len(self.memory.images) >= self.memory_size:
             target_idx = np.random.randint(len(self.memory.images))
             self.memory.replace_sample(sample, target_idx)
             self.dropped_idx.append(target_idx)
             self.memory_dropped_idx.append(target_idx)
-                
+    
         else:
             self.memory.replace_sample(sample)
             self.dropped_idx.append(len(self.memory)- 1)

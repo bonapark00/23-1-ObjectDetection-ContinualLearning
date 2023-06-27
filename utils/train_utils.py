@@ -3,6 +3,7 @@ from easydict import EasyDict as edict
 from torch import optim
 import torchvision
 from models import mnist, cifar, imagenet
+from fast_rcnn.fast_rcnn import fastrcnn_resnet50_fpn
 from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset, CladDistillationMemory
 from utils.data_loader_shift import SHIFTMemoryDataset, SHIFTStreamDataset, SHIFTDistillationMemory
 
@@ -91,6 +92,11 @@ def select_scheduler(sched_name, opt, hparam=None):
 def select_model(mode="clad_er", num_classes=7):
     if mode == "mir":
         default_config['separate_loss'] = True
-        
+
+    elif mode == 'ilod':
+        model = fastrcnn_resnet50_fpn(num_classes=num_classes)
+        return model
+
+
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=num_classes, **default_config)
     return model

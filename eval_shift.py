@@ -1,21 +1,17 @@
-
 import torch
 import numpy as np
 from configuration import config
 from torchvision import transforms
 from torch.utils.data import random_split
 from collections import defaultdict
-import os
 from tqdm import tqdm
-from itertools import islice
+import os
 
 import logging
-from clad_iblurry.i_blurry_clad.utils.preprocess_shift import get_shift_datalist, collate_fn
+from utils.preprocess_shift import get_shift_datalist, collate_fn
 from utils.data_loader_shift import SHIFTDataset
 from utils.method_manager import select_method
-
 from torch.utils import tensorboard
-
 
 def main():
     args = config.base_parser()
@@ -44,7 +40,10 @@ def main():
     writer = tensorboard.SummaryWriter(log_dir=f"tensorboard/{tensorboard_path}")
     method = select_method(args, None, device, train_transform, test_transform, 23, writer)
     # Get train dataset
-    cur_train_datalist = get_shift_datalist('train')
+    domain_dict = {
+        'weather_coarse': 'rainy'
+    }
+    cur_train_datalist = get_shift_datalist(domain_dict=domain_dict, task_num=1, data_type='train')
     # val_data_list = get_shift_datalist('val')
     
     # train_task = [

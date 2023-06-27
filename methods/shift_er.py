@@ -1,14 +1,12 @@
 import logging
 import numpy as np
 import torch
-from torch.utils.tensorboard import SummaryWriter
 from utils.train_utils import select_model
 from utils.data_loader_shift import SHIFTMemoryDataset, SHIFTStreamDataset
 from utils.visualize import visualize_bbox
 from eval_utils.engine import evaluate
 
 logger = logging.getLogger()
-writer = SummaryWriter("tensorboard")
 
 class SHIFT_ER:
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):

@@ -145,7 +145,7 @@ def joint_parser():
     parser = argparse.ArgumentParser(description="Jointly Training")
     parser.add_argument("--upperbound", action="store_true", help="Train upperbound (all tasks)")
     parser.add_argument("--seed_num", type=str, default=1, help="seed number for joint training of two tasks")
-    parser.add_argument("--batch_size", default=16, type=int, help="Training batch size")
+    parser.add_argument("--batchsize", default=16, type=int, help="Training batch size")
     parser.add_argument("--num_epochs", default=16, type=int)
     parser.add_argument("--tensorboard_pth", default=f"tensorboard")
     parser.add_argument("--save_pth", default=f"model_checkpoints")

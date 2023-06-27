@@ -136,10 +136,10 @@ class CLAD_DER(CLAD_ER):
 
             else:
                 losses = self.model(images_stream, targets_stream)
+
                 proposals_logits = self.model.proposals_logits
                 loss = sum(loss for loss in losses.values())
                 
-            
                 
             self.optimizer.zero_grad()
             loss.backward()

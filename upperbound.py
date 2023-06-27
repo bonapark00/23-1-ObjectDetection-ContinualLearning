@@ -59,7 +59,6 @@ if not args.debug:
     for i in range(4):
         dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1],
                                     split="val", transforms=transforms.ToTensor())
-
         test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, collate_fn=collate_fn))
 else:
     logging.info("Loading test debug dataset...")

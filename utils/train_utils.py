@@ -2,8 +2,9 @@ import torch_optimizer
 from easydict import EasyDict as edict
 from torch import optim
 import torchvision
-
 from models import mnist, cifar, imagenet
+from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset, CladDistillationMemory
+from utils.data_loader_shift import SHIFTMemoryDataset, SHIFTStreamDataset, SHIFTDistillationMemory
 
 default_config = {
     'rpn_pre_nms_top_n_train': 2000,
@@ -43,6 +44,28 @@ def select_optimizer(opt_name, lr, model):
         raise NotImplementedError("Please select the opt_name [adam, sgd]")
     return opt
 
+def select_memory(dataset="clad"):
+    if dataset == "clad":
+        return CladMemoryDataset(None)
+    elif dataset == "shift":
+        return SHIFTMemoryDataset(None)
+
+def select_stream(dataset="clad"):
+    if dataset == "clad":
+        return CladStreamDataset
+    elif dataset == "shift":
+        return SHIFTStreamDataset
+    else:
+        raise NotImplementedError("Please select the dataset [clad, shift]")
+
+def select_distillation(dataset="clad"):
+    if dataset == "clad":
+        return CladDistillationMemory
+    elif dataset == "shift":
+        return SHIFTDistillationMemory
+    else:
+        raise NotImplementedError("Please select the dataset [clad, shift]")
+
 #method to select learning rate schedulaer.
 def select_scheduler(sched_name, opt, hparam=None):
     if "exp" in sched_name:
@@ -66,15 +89,8 @@ def select_scheduler(sched_name, opt, hparam=None):
 # Method to initiliaize the model. model_class is dependend to dataset
 #e.g) cifer, imagenet -> Resnet, mnist -> MLP
 def select_model(mode="clad_er", num_classes=7):
-    if mode == "clad_mir":
+    if mode == "mir":
         default_config['separate_loss'] = True
-
-    if mode == "shift_der":
-        num_classes=23
-    
-    if mode == "clad_ilod":
-   
-    
         
     model = torchvision.models.detection.fasterrcnn_resnet50_fpn(num_classes=num_classes, **default_config)
     return model

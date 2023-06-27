@@ -22,7 +22,6 @@ def main():
                         format='%(asctime)s - %(levelname)s - %(message)s',
                         handlers=[logging.FileHandler('training.log', mode='w'), 
                                 logging.StreamHandler()])
-    
     save_path = "model_checkpoints"
     os.makedirs(save_path, exist_ok=True)
 

@@ -18,7 +18,7 @@ class CladStreamDataset(Dataset):
 		self.images = []
 		self.labels = []
 		self.objects = []
-		self.dataset = dataset
+		self.dataset = 'SSLAD-2D'
 		self.transform = transform
 		self.cls_list = cls_list
 		self.data_dir = data_dir
@@ -75,7 +75,7 @@ class CladMemoryDataset(MemoryDataset):
 		self.datalist = []
 		self.images = []
 		self.objects = [] 
-		self.dataset = dataset #SSLAD-2D
+		self.dataset = 'SSLAD-2D'
 		
 		self.img_weather_count = {'Clear': 0, 'Overcast': 0, 'Rainy': 0}
 		self.img_location_count = {'Citystreet': 0, 'Countryroad': 0, 'Highway': 0}
@@ -165,6 +165,7 @@ class CladMemoryDataset(MemoryDataset):
 				img_name = sample['filepath']
 		
 		if self.data_dir is None:
+				breakpoint()
 				img_path = os.path.join("dataset", self.dataset,'labeled',sample['split'],img_name)
 		else:
 				img_path = os.path.join(self.data_dir, sample['split'],img_name)
@@ -298,7 +299,7 @@ class CladDistillationMemory(MemoryDataset):
 		self.box_regression = []  #box_logits: (512, 28)
 		# breakpoint()
 		
-		self.dataset = dataset #SSLAD-2D
+		self.dataset = 'SSLAD-2D'
 		
 		self.img_weather_count = {'Clear': 0, 'Overcast': 0, 'Rainy': 0}
 		self.img_location_count = {'Citystreet': 0, 'Countryroad': 0, 'Highway': 0}

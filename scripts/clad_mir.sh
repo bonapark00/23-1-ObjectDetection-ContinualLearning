@@ -2,21 +2,15 @@
 
 # CIL CONFIG
 NOTE="clad_mir" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
-MODE="clad_mir"
+MODE="mir"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
-SEEDS="3"
-
-
-if [ "$DATASET" == "clad" ]; then
-    MEM_SIZE=150 ONLINE_ITER=1
-    MODEL_NAME="faster_rcnn"
-    BATCHSIZE=16
-    TEMP_BATCHSIZE=8
-
-else
-    echo "Undefined setting"
-    exit 1
-fi
+SEEDS="1"
+EVAL_PERIOD=100
+MEM_SIZE=150
+ONLINE_ITER=1
+MODEL_NAME="faster_rcnn"
+BATCHSIZE=16
+TEMP_BATCHSIZE=8
 
 for RND_SEED in $SEEDS
 do
@@ -24,5 +18,5 @@ do
     --model_name $MODEL_NAME --dataset $DATASET \
     --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-    --seed_num $RND_SEED
+    --seed_num $RND_SEED --eval_period $EVAL_PERIOD
 done

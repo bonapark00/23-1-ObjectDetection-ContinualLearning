@@ -357,43 +357,42 @@ class SHIFTDistillationMemory(MemoryDataset):
 
 class SHIFTDataset(Dataset):
 
-    def __init__(self, path="./dataset/SHIFT_dataset/discrete/images", split="train", transforms="None"):
+    def __init__(self, path="./dataset/SHIFT_dataset/discrete/images", 
+                 task_num=1, domain_dict={'weather_coarse':'clear'}, split="train", transforms=None):
         self.root=path
         self.split=split
         self.transforms=transforms
 
         self.img_paths=[]
-        # self.objects=[]
-        self.data_infos=load_label_img_dic(f"{self.root}/{self.split}/front/det_2d.json")
-        
-        
-
+        self.data_infos_total = load_label_img_dic(f"{self.root}/{self.split}/front/det_2d.json")
+        # Filter out data that does not belong to the domain_dict
+        if domain_dict is not None:
+            self.data_infos = []
+            for data_info in self.data_infos_total:
+                if all([data_info['attributes'][key] == domain_dict[key] for key in domain_dict.keys()]):
+                    self.data_infos.append(data_info)
+        else:
+            self.data_infos = self.data_infos_total # If domain_dict is None, use all data
 
     def __len__(self):
         return len(self.data_infos)
     
     def __getitem__(self, idx):
-
         boxes, labels=[],[]
-
-        img_path=f"{self.root}/{self.split}/front/{self.data_infos[idx]['videoName']}/{self.data_infos[idx]['name']}"
-        img=Image.open(img_path).convert('RGB')
+        img_path = f"{self.root}/{self.split}/front/{self.data_infos[idx]['videoName']}/{self.data_infos[idx]['name']}"
+        img = Image.open(img_path).convert('RGB')
 
         if self.transforms is not None:
             img=self.transforms(img)
 
         target={}
-        target['boxes']=torch.as_tensor(self.data_infos[idx]["bboxes"], dtype=torch.float32)
-        target['labels']=torch.tensor(self.data_infos[idx]["labels"], dtype=torch.int64)
-        target['image_id']=torch.tensor([idx])
-        target['area']=(target['boxes'][:,3]-target['boxes'][:,1])*(target['boxes'][:,2]-target['boxes'][:,0])
-        target['iscrowd']=torch.zeros((len(target['boxes']),), dtype=torch.int64)
+        target['boxes'] = torch.as_tensor(self.data_infos[idx]["bboxes"], dtype=torch.float32)
+        target['labels'] = torch.tensor(self.data_infos[idx]["labels"], dtype=torch.int64)
+        target['image_id'] = torch.tensor([idx])
+        target['area'] = (target['boxes'][:,3]-target['boxes'][:,1])*(target['boxes'][:,2]-target['boxes'][:,0])
+        target['iscrowd'] = torch.zeros((len(target['boxes']),), dtype=torch.int64)
 
         return img, target
-
-
-
-        # boxes= torch.as_tensor(self.objects[idx], dtype=torch.float32)
 
 
 

@@ -220,7 +220,7 @@ def get_clad_trainval(root: str=SODA_ROOT, val_proportion= 0.1):
     train_info = []
     val_info = []
     
-    #Split from SODA10M, not CLAD-D
+    # Split from SODA10M, not CLAD-D
     splits = ['train', 'val', 'val', 'val']
     match_fns = [create_match_dict_fn_img(train_domain) for train_domain in CLADD_TRAIN_VAL_DOMAINS]
     

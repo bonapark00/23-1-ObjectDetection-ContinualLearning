@@ -109,7 +109,7 @@ def evaluate(model, data_loader, device, args=None):
                     #shift dataset
                     pass 
 
-    
+            model.roi_heads.generate_soft_proposals = False
             outputs = model(images, ssl_proposals=ssl_proposals)
         else:
             outputs = model(images)

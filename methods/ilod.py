@@ -140,7 +140,8 @@ class ILOD(ER):
 
                 # Calculate distillation loss
                 if self.model_teacher:
-                    _ = self.model_teacher(images, targets, ssl_proposals)
+                    with torch.no_grad():
+                        _ = self.model_teacher(images, targets, ssl_proposals)
                     pl_te = self.model_teacher.proposals_logits
 
                     losses = self.model(images, targets, ssl_proposals, pl_te['proposals'])

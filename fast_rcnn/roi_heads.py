@@ -680,21 +680,19 @@ class RoIHeads(nn.Module):
         selected_props, selected_cls_logits, selected_reg_logits = [], [], []
 
         for boxes, cls_logits, reg_logits in zip(proposals, cls_logits_list, reg_logits_list):
-            boxes = boxes.detach().cpu().numpy()
-            cls_logits = cls_logits.detach().cpu().numpy()
-            reg_logits = reg_logits.detach().cpu().numpy() 
+        
+            background_score = cls_logits[:, 0].reshape(-1, 1)
+            concat_all = torch.cat((boxes, cls_logits, reg_logits, background_score), dim=1)
+            sorted_indices = torch.argsort(concat_all[:, -1])  # sort along lowest background
 
-            background_score = cls_logits[:,0].reshape(-1,1)
-            concat_all = np.concatenate((boxes, cls_logits, reg_logits, background_score), axis=1)
-            sorted_indices = np.argsort(concat_all[:, -1]) #sort along lowest background 
-            preselected_boxes = concat_all[sorted_indices][:,:-1][:soft_num*2] #get rid of background score and select top 2*soft_num
-            
-            selected_idxs = np.random.randint(0, soft_num*2, soft_num)
+            preselected_boxes = concat_all[sorted_indices][:, :-1][:soft_num * 2]  # get rid of background score and select top 2*soft_num
+
+            selected_idxs = torch.randint(0, soft_num * 2, (soft_num,))
             selected_boxes = preselected_boxes[selected_idxs]
 
-            selected_props.append(torch.from_numpy(selected_boxes[:,:4]).float().to(device))
-            selected_cls_logits.append(torch.from_numpy(selected_boxes[:,4:4+num_classes]).float().to(device))
-            selected_reg_logits.append(torch.from_numpy(selected_boxes[:,4+num_classes:]).float().to(device))
+            selected_props.append(selected_boxes[:, :4].float().to(device))
+            selected_cls_logits.append(selected_boxes[:, 4:4 + num_classes].float().to(device))
+            selected_reg_logits.append(selected_boxes[:, 4 + num_classes:].float().to(device))
 
         return selected_props, selected_cls_logits, selected_reg_logits
 

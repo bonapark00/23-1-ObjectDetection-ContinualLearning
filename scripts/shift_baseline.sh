@@ -4,7 +4,7 @@
 NOTE="shift_baseline" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="baseline"
 DATASET="shift"
-SEEDS="1"
+SEEDS="2"
 EVAL_PERIOD=1000
 MEM_SIZE=150
 ONLINE_ITER=1

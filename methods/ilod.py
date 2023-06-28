@@ -47,7 +47,7 @@ class ILOD(ER):
             
         # load precomputed proposals
         img_name = sample['file_name'][:-4]
-        ssl_proposals = np.load(os.path.join('precomputed_proposals', img_name + '.npy'), allow_pickle=True)
+        ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name + '.npy'), allow_pickle=True)
         assert ssl_proposals is not None, "Precomputed proposals not found"
         ssl_proposals = torch.from_numpy(ssl_proposals).to(self.device)
 
@@ -121,7 +121,7 @@ class ILOD(ER):
                     d['labels'] = stream_data['labels'][i].to(self.device)
                     targets_stream.append(d)
 
-                ssl_proposals_stream = ssl_proposals
+                ssl_proposals_stream = [{'boxes':prop.to(self.device)} for prop in ssl_proposals] if isinstance(ssl_proposals[0], torch.Tensor) else ssl_proposals
 
             if memory_batch_size > 0:
                 #concat data from memory
@@ -132,8 +132,7 @@ class ILOD(ER):
                     d['labels'] = memory_data['labels'][i].to(self.device)
                     targets_memory.append(d)
                 
-                ssl_proposals_memory = [prop.to(self.device) for prop in memory_data['proposals']] #proposals from memory
-
+                ssl_proposals_memory = [{'boxes':prop.to(self.device)} for prop in memory_data['proposals']] #proposals from memory
                 # Concat stream data and memory data
                 images = images_stream + images_memory
                 targets = targets_stream + targets_memory
@@ -141,19 +140,19 @@ class ILOD(ER):
 
                 # Calculate distillation loss
                 if self.model_teacher:
-                    _ = self.model_teacher(images, targets)
-                    pl_te = self.model_teacher.proposal_logits
+                    _ = self.model_teacher(images, targets, ssl_proposals)
+                    pl_te = self.model_teacher.proposals_logits
 
                     losses = self.model(images, targets, ssl_proposals, pl_te['proposals'])
-                    pl_st = self.model.proposal_logits
+                    pl_st = self.model.proposals_logits
 
                     l2_loss = torch.nn.MSELoss()
 
                     #distillation loss
                     distill_cls = 0
                     for (output, target) in zip(pl_st['class_logits'], pl_te['class_logits']):
-                        output = torch.sub(output, torch.mean(output, dim=1)) #subtract mean
-                        target = torch.sub(target, torch.mean(target, dim=1)) #subtract mean
+                        output = torch.sub(output, torch.mean(output, dim=1).reshape(-1,1)) #subtract mean
+                        target = torch.sub(target, torch.mean(target, dim=1).reshape(-1,1)) #subtract mean
                         distill_cls += l2_loss(output, target)
 
                     distill_reg = 0
@@ -166,10 +165,10 @@ class ILOD(ER):
 
                 # While first task (do not have any teacher model)
                 else:
-                    losses = self.model(images, targets)
+                    losses = self.model(images, targets, ssl_proposals)
                     loss = sum(loss for loss in losses.values())
             else:
-                losses = self.model(images_stream, targets_stream)
+                losses = self.model(images_stream, targets_stream, ssl_proposals_stream)
                 loss = sum(loss for loss in losses.values())
 
             self.optimizer.zero_grad()

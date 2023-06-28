@@ -4,6 +4,7 @@ from methods.mir import MIR
 from methods.der import DER
 from methods.baseline import BASELINE
 from methods.filod import FILOD
+from methods.ilod import ILOD
 from methods.clad_er import CLAD_ER
 from methods.clad_mir import CLAD_MIR
 from methods.clad_der import CLAD_DER
@@ -49,6 +50,17 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
     
     elif args.mode == "filod":
         method = FILOD(
+            criterion=None,
+            device=device,
+            train_transform=train_transform,
+            test_transform=test_transform,
+            n_classes=n_classes,
+            writer=writer,
+            **kwargs,
+        )
+    
+    elif args.mode == "ilod":
+        method = ILOD(
             criterion=None,
             device=device,
             train_transform=train_transform,

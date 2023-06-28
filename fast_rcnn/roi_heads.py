@@ -692,9 +692,9 @@ class RoIHeads(nn.Module):
             selected_idxs = np.random.randint(0, soft_num*2, soft_num)
             selected_boxes = preselected_boxes[selected_idxs]
 
-            selected_props.append(torch.from_numpy(selected_boxes[:,:4]).to(device=device))
-            selected_cls_logits.append(torch.from_numpy(selected_boxes[:,4:4+num_classes]).to(device=device))
-            selected_reg_logits.append(torch.from_numpy(selected_boxes[:,4+num_classes:]).to(device=device))
+            selected_props.append(torch.from_numpy(selected_boxes[:,:4]).float().to(device))
+            selected_cls_logits.append(torch.from_numpy(selected_boxes[:,4:4+num_classes]).float().to(device))
+            selected_reg_logits.append(torch.from_numpy(selected_boxes[:,4+num_classes:]).float().to(device))
 
         return selected_props, selected_cls_logits, selected_reg_logits
 

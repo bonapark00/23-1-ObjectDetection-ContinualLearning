@@ -558,6 +558,7 @@ class SODADataset(Dataset):
 		target = {}
 		boxes = torch.tensor(self.objects[idx]['bbox'], dtype=torch.float32)
 		labels = torch.tensor(self.objects[idx]['category_id'])
+		target["img_path"] = img_path
 		target["boxes"] = boxes
 		target["labels"] = labels
 		target["image_id"] = torch.tensor(self.objects[idx]['image_id'])

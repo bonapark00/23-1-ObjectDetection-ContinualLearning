@@ -2,6 +2,8 @@ import math
 import sys
 import time
 
+import numpy as np
+import os
 import torch
 import torchvision.models.detection.mask_rcnn
 from .utils import MetricLogger, SmoothedValue, reduce_dict
@@ -79,6 +81,7 @@ def evaluate(model, data_loader, device, args=None):
     torch.set_num_threads(1)
     cpu_device = torch.device("cpu")
     model.eval()
+
     metric_logger = MetricLogger(delimiter="  ")
     header = "Test:"
 
@@ -92,7 +95,24 @@ def evaluate(model, data_loader, device, args=None):
         if torch.cuda.is_available():
             torch.cuda.synchronize()
         model_time = time.time()
-        outputs = model(images)
+
+        if model.__class__.__name__ == "FastRCNN":
+            ssl_proposals=[]
+            for target in targets:
+                if target['img_path'].split('/')[2] == 'SSLAD-2D':
+                    img_name = target['img_path'].split('/')[-1][:-4]
+                    precomputed_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name + '.npy'), allow_pickle=True)
+                    assert precomputed_proposals is not None, "Precomputed proposals not found"
+
+                    ssl_proposals.append({'boxes':torch.from_numpy(precomputed_proposals).to(device)})
+                else:
+                    #shift dataset
+                    pass 
+
+    
+            outputs = model(images, ssl_proposals=ssl_proposals)
+        else:
+            outputs = model(images)
 
         outputs = [{k: v.to(cpu_device) for k, v in t.items()} for t in outputs]
         model_time = time.time() - model_time

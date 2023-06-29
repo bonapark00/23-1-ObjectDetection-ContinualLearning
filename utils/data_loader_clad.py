@@ -108,7 +108,7 @@ class CladMemoryDataset(MemoryDataset):
 		target = self.objects[idx]
 		target = {'boxes':target['boxes'], 'labels':target['labels']}
 		return image, target
-	  
+
 	def show_memory_state(self):
 		print("#" * 50)
 		print("Samples in CladMemoryDataset")

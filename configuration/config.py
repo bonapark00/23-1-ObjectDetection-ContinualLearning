@@ -30,8 +30,6 @@ def base_parser():
         help="[clad, shift]",
     )
     parser.add_argument("--debug", action="store_true", help="Turn on Debug mode")
-    parser.add_argument("--continue_training", action="store_true", help="Continue training")
-    parser.add_argument("--checkpoint_path", type=str, help="Checkpoint path", default=None)
 
     parser.add_argument('--seed_num', type=str, default=1, help='# seed num of the running model')
     # Eval period

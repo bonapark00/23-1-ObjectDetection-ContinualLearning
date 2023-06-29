@@ -136,15 +136,15 @@ class ILOD(ER):
                 # Concat stream data and memory data
                 images = images_stream + images_memory
                 targets = targets_stream + targets_memory
-                ssl_proposals = ssl_proposals_stream + ssl_proposals_memory
+                ssl_proposals_all = ssl_proposals_stream + ssl_proposals_memory
 
                 # Calculate distillation loss
                 if self.model_teacher:
                     with torch.no_grad():
-                        _ = self.model_teacher(images, ssl_proposals=ssl_proposals)
+                        _ = self.model_teacher(images, ssl_proposals=ssl_proposals_all)
                     pl_te = self.model_teacher.proposals_logits
 
-                    losses = self.model(images, targets, ssl_proposals, pl_te['proposals'])
+                    losses = self.model(images, targets, ssl_proposals_all, pl_te['proposals'])
                     pl_st = self.model.proposals_logits
 
                     l2_loss = torch.nn.MSELoss()
@@ -166,7 +166,7 @@ class ILOD(ER):
 
                 # While first task (do not have any teacher model)
                 else:
-                    losses = self.model(images, targets, ssl_proposals)
+                    losses = self.model(images, targets, ssl_proposals_all)
                     loss = sum(loss for loss in losses.values())
             else:
                 losses = self.model(images_stream, targets_stream, ssl_proposals_stream)

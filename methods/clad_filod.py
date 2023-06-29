@@ -122,7 +122,8 @@ class CLAD_FILOD(CLAD_ER):
 
                 # Calculate distillation loss
                 if self.model_teacher:
-                    _ = self.model_teacher(images, targets)
+                    with torch.no_grad():
+                        _ = self.model_teacher(images, targets)
                     proposals_logits_te = self.model_teacher.proposals_logits
                     
                     losses_st = self.model(images, targets, proposals_logits_te['proposals'])

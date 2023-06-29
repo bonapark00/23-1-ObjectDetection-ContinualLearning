@@ -108,7 +108,7 @@ class CladMemoryDataset(MemoryDataset):
 		target = self.objects[idx]
 		target = {'boxes':target['boxes'], 'labels':target['labels']}
 		return image, target
-	  
+
 	def show_memory_state(self):
 		print("#" * 50)
 		print("Samples in CladMemoryDataset")
@@ -558,6 +558,7 @@ class SODADataset(Dataset):
 		target = {}
 		boxes = torch.tensor(self.objects[idx]['bbox'], dtype=torch.float32)
 		labels = torch.tensor(self.objects[idx]['category_id'])
+		target["img_path"] = img_path
 		target["boxes"] = boxes
 		target["labels"] = labels
 		target["image_id"] = torch.tensor(self.objects[idx]['image_id'])

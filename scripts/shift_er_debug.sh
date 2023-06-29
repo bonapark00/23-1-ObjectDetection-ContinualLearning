@@ -7,7 +7,6 @@ DATASET="shift" # cifar10, cifar100, tinyimagenet, imagenet, clad, shift
 SEEDS="1"
 EVAL_PERIOD=30
 
-
 if [ "$DATASET" == "shift" ]; then
     MEM_SIZE=150 ONLINE_ITER=1
     MODEL_NAME="faster_rcnn"

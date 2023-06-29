@@ -17,6 +17,7 @@ debug_imgs/
 # Ignore .npy files in outputs directory
 outputs/*.npy
 
-# Ignore data folder except .sh files
+# Ignore data folder except .sh and .py files
 dataset/*
 !dataset/*.sh
+!dataset/*.py

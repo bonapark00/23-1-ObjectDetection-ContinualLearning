@@ -5,8 +5,8 @@ from torchvision import transforms
 from torch.utils.data import random_split
 from collections import defaultdict
 from tqdm import tqdm
+import csv
 import os
-
 import logging
 from utils.preprocess_shift import get_shift_datalist, collate_fn
 from utils.data_loader_shift import SHIFTDataset
@@ -18,10 +18,16 @@ def main():
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
     # Set up logging
+    if not args.debug:
+        log_path = f"logs/{args.dataset}_{args.mode}_sd-{args.seed_num}.log"
+    else:
+        log_path = f"logs/{args.dataset}_{args.mode}_sd-{args.seed_num}_debug.log"
+
     logging.basicConfig(level=logging.INFO, 
                         format='%(asctime)s - %(levelname)s - %(message)s',
-                        handlers=[logging.FileHandler('training.log', mode='w'), 
+                        handlers=[logging.FileHandler(log_path, mode='w'), 
                                 logging.StreamHandler()])
+    
     save_path = "model_checkpoints"
     os.makedirs(save_path, exist_ok=True)
 
@@ -35,44 +41,50 @@ def main():
     ])
     
     tensorboard_path = f"{args.mode}_{args.model_name}_{args.dataset}_bs-{args.batchsize}_tbs-{args.temp_batchsize}_sd-{args.seed_num}"
-    # Remove existing tensorboard logs
-    if os.path.exists(f"tensorboard/{tensorboard_path}"):
-        os.system(f"rm -rf tensorboard/{tensorboard_path}")
+    if args.debug:
+        tensorboard_path += "_debug"
+    # # Remove existing tensorboard logs
+    # if os.path.exists(f"tensorboard/{tensorboard_path}"):
+    #     os.system(f"rm -rf tensorboard/{tensorboard_path}")
     writer = tensorboard.SummaryWriter(log_dir=f"tensorboard/{tensorboard_path}")
     method = select_method(args, None, device, train_transform, test_transform, 7, writer)
 
-    # 37041, ?, 13596, ?, 25966
+    # 37041, 25433, 13596, 39016, 25966
     domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
     # Get train dataset
     if not args.debug:
-        print("Loading train dataset...")
+        logging.info("Loading train dataset...")
         train_task = []
         for i, domain in enumerate(domain_list):
+            logging.info(f"Loading task {i+1}...")
             cur_train_datalist = get_shift_datalist(data_type="train", task_num=i+1, domain_dict=
                                                     {'weather_coarse': domain})
             train_task.append(cur_train_datalist)
     else:
-        print("Loading train debug dataset...")
+        logging.info("Loading train debug dataset...")
         train_task = []
         for i, domain in enumerate(domain_list):
+            logging.info(f"Loading task {i+1}...")
             cur_train_datalist = get_shift_datalist(data_type="train", task_num=i+1, domain_dict=
                                                     {'weather_coarse': domain})[:50]
             train_task.append(cur_train_datalist)
 
     # Get test dataset
     if not args.debug:
-        print("Loading test dataset...")
+        logging.info("Loading test dataset...")
         test_loader_list = []
         for i in range(len(domain_list)):
+            logging.info(f"Loading task {i+1}...")
             test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
-                                            split="val", transforms=transforms.ToTensor())
+                                            split="minival", transforms=transforms.ToTensor())
             test_loader_list.append(torch.utils.data.DataLoader(test_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
     else:
-        print("Loading test debug dataset...")
+        logging.info("Loading test debug dataset...")
         test_loader_list = []
         for i in range(len(domain_list)):
+            logging.info(f"Loading task {i+1}...")
             test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
-                                            split="val", transforms=transforms.ToTensor())
+                                            split="minival", transforms=transforms.ToTensor())
             test_dataset = random_split(test_dataset, [50, len(test_dataset) - 50])[0]
             test_loader_list.append(torch.utils.data.DataLoader(test_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
     
@@ -99,11 +111,24 @@ def main():
             - In each method, online_step and online_evaluate should have writer as input
     """
 
+    # Open file to write results (create if not exist, overwrite if exist)
+    filename_prefix = f"results/{args.dataset}/{args.mode}_{args.batchsize}_{args.temp_batchsize}/seed-{args.seed_num}"
+    os.makedirs(os.path.dirname(filename_prefix), exist_ok=True)
+
+    # Create csv files to write results
+    eval_results_file = open(f"{filename_prefix}_eval_results.csv", "w")
+    eval_results_writer = csv.writer(eval_results_file)
+    eval_results_writer.writerow(["test_mAP", "task_training", "task_evaluating", "data_cnt"])
+
+    task_records_file = open(f"{filename_prefix}_task_records.csv", "w")
+    task_records_writer = csv.writer(task_records_file)
+    task_records_writer.writerow(["test_mAP", "task_trained", "task_evaluating", "data_cnt"])
+
     # Train and eval
     for i, task in enumerate(selected_seed):
         # Train one task
         logging.info(f"Mode: {args.mode}, Selected seed: {selected_seed}, Current task: {task + 1} ({domain_list[task]})")
-        for data in tqdm(train_task[task], desc=f"{args.mode} - Seed {args.seed_num} Task {task + 1} ({domain_list[task]}) training"):
+        for j, data in enumerate(tqdm(train_task[task], desc=f"{args.mode} - Seed {args.seed_num} Task {task + 1} ({domain_list[task]}) training")):
             # For each sample, train the model and evaluate when eval period is reached
             samples_cnt += 1
             method.model.train()
@@ -120,6 +145,11 @@ def main():
                     eval_results["task_training"].append(task + 1)
                     eval_results["task_evaluating"].append(task_eval + 1)
                     eval_results["data_cnt"].append(samples_cnt)
+
+                    # Write current evaluation result to csv file
+                    eval_results_writer.writerow([mAP, task + 1, task_eval + 1, samples_cnt])
+                    eval_results_file.flush()
+                    os.fsync(eval_results_file.fileno())
                     
                     # Write each task evaluation result to tensorboard
                     writer.add_scalar(f"task_{task_eval + 1}/mAP", mAP, samples_cnt)
@@ -136,6 +166,11 @@ def main():
             task_records["task_evaluating"].append(task_eval + 1)
             task_records["data_cnt"].append(samples_cnt)
 
+            # Write current evaluation result to csv file
+            task_records_writer.writerow([mAP, task + 1, task_eval + 1, samples_cnt])
+            task_records_file.flush()
+            os.fsync(task_records_file.fileno())
+            
             logging.info(f"After training task {task + 1}, evaluating task {task_eval + 1}, mAP: {mAP}")
 
         # Calculate the average mAP of all tasks
@@ -150,7 +185,6 @@ def main():
     if not os.path.exists(os.path.join('outputs', args.mode, 'after_task')):
         os.makedirs(os.path.join('outputs', args.mode, 'after_task'))
 
-    
     # Save results to file
     save_path = (
         f"{args.model_name}_{args.dataset}"

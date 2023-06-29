@@ -79,6 +79,11 @@ class GeneralizedRCNN(nn.Module):
             original_image_sizes.append((val[0], val[1]))
       
         #resize images, and modify proposals into list
+        #if proposals is not a list of dict, convert it to a list of dict (to be consistent with the output of transform)
+        # if not isinstance(ssl_proposals[0], dict):
+        #     for i in range(len(ssl_proposals)):
+        #         ssl_proposals[i] = {'boxes': ssl_proposals[i]}
+
         original_images = images
         _, targets = self.transform(original_images, targets)
         images, raw_proposals = self.transform(original_images, ssl_proposals)

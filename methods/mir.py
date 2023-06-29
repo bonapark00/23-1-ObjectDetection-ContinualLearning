@@ -4,7 +4,7 @@ import torchvision
 import numpy as np
 import torch
 from methods.er import ER
-from utils.train_utils import select_stream
+from utils.train_utils import select_stream, select_model
 
 logger = logging.getLogger()
 
@@ -35,7 +35,14 @@ class MIR(ER):
                 stream_targets.append(d)
 
             loss_dict = self.model(stream_images, stream_targets)
-            losses = sum(loss for loss in loss_dict.values())
+            # Calculate total loss
+            losses = torch.tensor(0, dtype=torch.float32, device='cuda:0')
+            for key, value in loss_dict.items():
+                # if the value is a list, convert it to a tensor
+                if isinstance(value, list):
+                    value = torch.stack(value)
+
+                losses += value.sum()
             self.optimizer.zero_grad()
             losses.backward()
 
@@ -49,7 +56,9 @@ class MIR(ER):
             if len(self.memory) > 0:
                 memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
                 lr = self.optimizer.param_groups[0]['lr']
-                new_model = copy.deepcopy(self.model)
+                # new_model = copy.deepcopy(self.model)
+                new_model = select_model(mode=self.mode, num_classes=self.n_classes).to(self.device)
+                new_model.load_state_dict(self.model.state_dict())
                 for name, param in new_model.named_parameters():
                     if param.requires_grad:
                         param.data = param.data - lr * grads[name]
@@ -63,17 +72,25 @@ class MIR(ER):
                     d['labels'] = memory_cands_test['labels'][i].to(self.device)
                     targets.append(d)
                 
-                scores = torch.zeros(len(images))
+                # scores = torch.zeros(len(images))
                 with torch.no_grad():
-                    for i in range(len(images)):
-                        # Calculate loss of each sample
-                        pre_loss_dict = self.model([images[i]], [targets[i]])
-                        post_loss_dict = new_model([images[i]], [targets[i]])
-                        pre_loss = sum(loss for loss in pre_loss_dict.values())
-                        post_loss = sum(loss for loss in post_loss_dict.values())
-                        score = post_loss - pre_loss
-                        scores[i] = score.item()
-                        # print(f"Image {i}, target {i} loss difference: {score}")
+                    pre_loss_dict = self.model(images, targets)
+                    post_loss_dict = new_model(images, targets)
+                    pre_loss_classifier = pre_loss_dict['loss_classifier']
+                    pre_loss_box_reg = torch.stack(pre_loss_dict['loss_box_reg'])
+                    pre_loss_objectness = torch.stack(pre_loss_dict['loss_objectness'])
+                    pre_loss_rpn_box_reg = torch.stack(pre_loss_dict['loss_rpn_box_reg'])
+
+                    post_loss_classifier = post_loss_dict['loss_classifier']
+                    post_loss_box_reg = torch.stack(post_loss_dict['loss_box_reg'])
+                    post_loss_objectness = torch.stack(post_loss_dict['loss_objectness'])
+                    post_loss_rpn_box_reg = torch.stack(post_loss_dict['loss_rpn_box_reg'])
+
+                    samplewise_pre_loss = pre_loss_classifier + pre_loss_box_reg + pre_loss_objectness + pre_loss_rpn_box_reg
+                    samplewise_post_loss = post_loss_classifier + post_loss_box_reg + post_loss_objectness + post_loss_rpn_box_reg
+                    
+                    scores = samplewise_post_loss - samplewise_pre_loss
+
                 
                 # Fetches selected samples from the memory_cands, which are the training candidates, 
                 # based on the selected sample indices obtained using the test candidates.
@@ -94,7 +111,15 @@ class MIR(ER):
 
                 self.optimizer.zero_grad()
                 loss_dict = self.model(final_images, final_targets)
-                losses = sum(loss for loss in loss_dict.values())
+                
+                losses = torch.tensor(0, dtype=torch.float32, device='cuda:0')
+                for key, value in loss_dict.items():
+                    # if the value is a list, convert it to a tensor
+                    if isinstance(value, list):
+                        value = torch.stack(value)
+
+                    losses += value.sum()
+
                 losses.backward()
                 self.optimizer.step()
 

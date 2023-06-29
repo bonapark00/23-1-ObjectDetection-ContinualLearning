@@ -12,7 +12,6 @@ MODEL_NAME="faster_rcnn"
 BATCHSIZE=4
 TEMP_BATCHSIZE=2
 
-
 for RND_SEED in $SEEDS
 do
     python main_shift.py --mode $MODE \

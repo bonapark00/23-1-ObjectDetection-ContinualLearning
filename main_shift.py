@@ -18,10 +18,16 @@ def main():
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
     # Set up logging
+    if not args.debug:
+        log_path = f"logs/{args.mode}_{args.dataset}_sd-{args.seed_num}.log"
+    else:
+        log_path = f"logs/{args.mode}_{args.dataset}_sd-{args.seed_num}_debug.log"
+
     logging.basicConfig(level=logging.INFO, 
                         format='%(asctime)s - %(levelname)s - %(message)s',
-                        handlers=[logging.FileHandler('training.log', mode='w'), 
+                        handlers=[logging.FileHandler(log_path, mode='a' if args.continue_training else 'w'), 
                                 logging.StreamHandler()])
+    
     save_path = "model_checkpoints"
     os.makedirs(save_path, exist_ok=True)
 
@@ -35,9 +41,9 @@ def main():
     ])
     
     tensorboard_path = f"{args.mode}_{args.model_name}_{args.dataset}_bs-{args.batchsize}_tbs-{args.temp_batchsize}_sd-{args.seed_num}"
-    # Remove existing tensorboard logs
-    if os.path.exists(f"tensorboard/{tensorboard_path}"):
-        os.system(f"rm -rf tensorboard/{tensorboard_path}")
+    # # Remove existing tensorboard logs
+    # if os.path.exists(f"tensorboard/{tensorboard_path}"):
+    #     os.system(f"rm -rf tensorboard/{tensorboard_path}")
     writer = tensorboard.SummaryWriter(log_dir=f"tensorboard/{tensorboard_path}")
     method = select_method(args, None, device, train_transform, test_transform, 7, writer)
 
@@ -45,14 +51,14 @@ def main():
     domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
     # Get train dataset
     if not args.debug:
-        print("Loading train dataset...")
+        logging.info("Loading train dataset...")
         train_task = []
         for i, domain in enumerate(domain_list):
             cur_train_datalist = get_shift_datalist(data_type="train", task_num=i+1, domain_dict=
                                                     {'weather_coarse': domain})
             train_task.append(cur_train_datalist)
     else:
-        print("Loading train debug dataset...")
+        logging.info("Loading train debug dataset...")
         train_task = []
         for i, domain in enumerate(domain_list):
             cur_train_datalist = get_shift_datalist(data_type="train", task_num=i+1, domain_dict=
@@ -61,14 +67,14 @@ def main():
 
     # Get test dataset
     if not args.debug:
-        print("Loading test dataset...")
+        logging.info("Loading test dataset...")
         test_loader_list = []
         for i in range(len(domain_list)):
             test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
                                             split="val", transforms=transforms.ToTensor())
             test_loader_list.append(torch.utils.data.DataLoader(test_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
     else:
-        print("Loading test debug dataset...")
+        logging.info("Loading test debug dataset...")
         test_loader_list = []
         for i in range(len(domain_list)):
             test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
@@ -81,6 +87,10 @@ def main():
     eval_results = defaultdict(list)    # Evaluation results (any time inference, each eval period, only tasks before current task)
     task_records = defaultdict(list)    # Evaluation results after training each task
     selected_seed = task_seed_list[int(args.seed_num) - 1]
+
+    if args.continue_training:
+        logging.info("Loading checkpoint...")
+        checkpoint = torch.load(args.checkpoint_path)
 
     """
         What we need to log:
@@ -98,6 +108,11 @@ def main():
             - Tensorboard logging is done by passing writer to method constructor
             - In each method, online_step and online_evaluate should have writer as input
     """
+
+    # Open file to write results (create if not exist, overwrite if exist)
+    filename = f"results/{args.dataset}/{args.mode}_{args.batchsize}_{args.temp_batchsize}/seed-{args.seed_num}.txt"
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    result_file = open(filename, "w")
 
     # Train and eval
     for i, task in enumerate(selected_seed):

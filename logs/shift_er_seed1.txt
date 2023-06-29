@@ -1,0 +1,41 @@
+2023-06-29 04:24:27,447 - INFO - Mode: er, Selected seed: [0, 1, 2, 3, 4], Current task: 1 (clear)
+er - Seed 1 Task 1 (clear) training:   0%|          | 0/50 [00:00<?, ?it/s]/opt/conda/lib/python3.7/site-packages/torch/functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ../aten/src/ATen/native/TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+er - Seed 1 Task 1 (clear) training:   4%|▍         | 2/50 [00:02<01:02,  1.31s/it]er - Seed 1 Task 1 (clear) training:   8%|▊         | 4/50 [00:05<00:59,  1.29s/it]er - Seed 1 Task 1 (clear) training:  12%|█▏        | 6/50 [00:06<00:51,  1.16s/it]er - Seed 1 Task 1 (clear) training:  16%|█▌        | 8/50 [00:08<00:42,  1.02s/it]2023-06-29 04:24:36,809 - INFO - Train | Sample # 10 | Loss 1.3845
+er - Seed 1 Task 1 (clear) training:  20%|██        | 10/50 [00:09<00:36,  1.09it/s]er - Seed 1 Task 1 (clear) training:  24%|██▍       | 12/50 [00:11<00:36,  1.04it/s]er - Seed 1 Task 1 (clear) training:  28%|██▊       | 14/50 [00:13<00:31,  1.14it/s]er - Seed 1 Task 1 (clear) training:  32%|███▏      | 16/50 [00:14<00:30,  1.12it/s]er - Seed 1 Task 1 (clear) training:  36%|███▌      | 18/50 [00:16<00:27,  1.16it/s]2023-06-29 04:24:45,657 - INFO - Train | Sample # 20 | Loss 1.0246
+er - Seed 1 Task 1 (clear) training:  40%|████      | 20/50 [00:18<00:26,  1.11it/s]er - Seed 1 Task 1 (clear) training:  44%|████▍     | 22/50 [00:21<00:28,  1.02s/it]er - Seed 1 Task 1 (clear) training:  48%|████▊     | 24/50 [00:23<00:26,  1.03s/it]er - Seed 1 Task 1 (clear) training:  52%|█████▏    | 26/50 [00:24<00:23,  1.01it/s]er - Seed 1 Task 1 (clear) training:  56%|█████▌    | 28/50 [00:26<00:21,  1.02it/s]2023-06-29 04:24:55,992 - INFO - Train | Sample # 30 | Loss 0.9004
+2023-06-29 04:24:56,013 - INFO - Seed 1 Task 1 evaluating task 1
+er - Seed 1 Task 1 (clear) training:  58%|█████▊    | 29/50 [00:33<00:23,  1.14s/it]
+Loading train debug dataset...
+Loading test debug dataset...
+creating index...
+index created!
+Test:  [ 0/13]  eta: 0:00:03  model_time: 0.1211 (0.1211)  evaluator_time: 0.0963 (0.0963)  time: 0.3024  data: 0.0812  max mem: 4684
+Traceback (most recent call last):
+  File "main_shift.py", line 174, in <module>
+    main()
+  File "main_shift.py", line 117, in main
+    mAP = method.online_evaluate(test_loader_list[task_eval], samples_cnt)
+  File "/workspace/working_directory/i_blurry_clad-1/methods/er.py", line 165, in online_evaluate
+    coco_evaluator = evaluate(self.model, test_dataloader, device=self.device)
+  File "/opt/conda/lib/python3.7/site-packages/torch/autograd/grad_mode.py", line 28, in decorate_context
+    return func(*args, **kwargs)
+  File "/workspace/working_directory/i_blurry_clad-1/eval_utils/engine.py", line 115, in evaluate
+    outputs = model(images)
+  File "/opt/conda/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/opt/conda/lib/python3.7/site-packages/torchvision/models/detection/generalized_rcnn.py", line 104, in forward
+    proposals, scores, proposal_losses, rpn_output = self.rpn(images, features, targets)
+  File "/opt/conda/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/opt/conda/lib/python3.7/site-packages/torchvision/models/detection/rpn.py", line 408, in forward
+    boxes, scores = self.filter_proposals(proposals, objectness, images.image_sizes, num_anchors_per_level)
+  File "/opt/conda/lib/python3.7/site-packages/torchvision/models/detection/rpn.py", line 280, in filter_proposals
+    keep = box_ops.batched_nms(boxes, scores, lvl, self.nms_thresh)
+  File "/opt/conda/lib/python3.7/site-packages/torchvision/ops/boxes.py", line 66, in batched_nms
+    return _batched_nms_vanilla(boxes, scores, idxs, iou_threshold)
+  File "/opt/conda/lib/python3.7/site-packages/torch/jit/_trace.py", line 1118, in wrapper
+    return fn(*args, **kwargs)
+  File "/opt/conda/lib/python3.7/site-packages/torchvision/ops/boxes.py", line 101, in _batched_nms_vanilla
+    curr_indices = torch.where(idxs == class_id)[0]
+KeyboardInterrupt

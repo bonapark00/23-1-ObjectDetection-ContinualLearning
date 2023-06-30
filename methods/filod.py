@@ -290,7 +290,7 @@ class FILOD(ER):
         final_rpn_bbs_distillation_loss = sum(final_rpn_bbs_distillation_loss)/num_te_rpn_bbox
 
         final_rpn_loss = final_rpn_cls_distillation_loss + final_rpn_bbs_distillation_loss
-        print(f'rpn cls:{final_rpn_cls_distillation_loss} bbx:{final_rpn_bbs_distillation_loss}')
+        # print(f'rpn cls:{final_rpn_cls_distillation_loss} bbx:{final_rpn_bbs_distillation_loss}')
         final_rpn_loss.to('cuda')
 
         return final_rpn_loss

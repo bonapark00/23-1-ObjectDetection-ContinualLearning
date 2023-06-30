@@ -5,12 +5,12 @@ NOTE="shift_baseline" # Short description of the experiment. (WARNING: logs/resu
 MODE="baseline"
 DATASET="shift"
 SEEDS="1"
-EVAL_PERIOD=1000
+EVAL_PERIOD=40
 MEM_SIZE=150
 ONLINE_ITER=1
 MODEL_NAME="faster_rcnn"
-BATCHSIZE=16
-TEMP_BATCHSIZE=8
+BATCHSIZE=4
+TEMP_BATCHSIZE=2
 
 for RND_SEED in $SEEDS
 do
@@ -18,5 +18,5 @@ do
     --model_name $MODEL_NAME --dataset $DATASET \
     --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-    --seed_num $RND_SEED --eval_period $EVAL_PERIOD
+    --seed_num $RND_SEED --eval_period $EVAL_PERIOD --debug
 done

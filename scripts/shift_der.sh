@@ -4,7 +4,7 @@
 NOTE="shift_der" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="der"
 DATASET="shift" # cifar10, cifar100, tinyimagenet, imagenet
-SEEDS="2"
+SEEDS="1"
 ALPHA=0.05
 BETA=0.5
 THETA=1.0

@@ -3183,4 +3183,331 @@ IoU metric: bbox
 der - Seed 2 Task 1 (clear) training:  93%|█████████▎| 34564/37041 [13:53:06<49:16,  1.19s/it]der - Seed 2 Task 1 (clear) training:  93%|█████████▎| 34572/37041 [13:53:16<49:13,  1.20s/it]der - Seed 2 Task 1 (clear) training:  93%|█████████▎| 34580/37041 [13:53:26<49:50,  1.22s/it]der - Seed 2 Task 1 (clear) training:  93%|█████████▎| 34588/37041 [13:53:36<49:21,  1.21s/it]der - Seed 2 Task 1 (clear) training:  93%|█████████▎| 34596/37041 [13:53:45<48:48,  1.20s/it]2023-06-30 18:18:09,913 - INFO - Train | Sample # 48200 | Loss 1.0584
 der - Seed 2 Task 1 (clear) training:  93%|█████████▎| 34604/37041 [13:53:54<48:27,  1.19s/it]der - Seed 2 Task 1 (clear) training:  93%|█████████▎| 34612/37041 [13:54:04<48:38,  1.20s/it]der - Seed 2 Task 1 (clear) training:  93%|█████████▎| 34620/37041 [13:54:13<47:27,  1.18s/it]der - Seed 2 Task 1 (clear) training:  93%|█████████▎| 34628/37041 [13:54:23<48:42,  1.21s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34636/37041 [13:54:33<47:53,  1.19s/it]2023-06-30 18:18:57,878 - INFO - Train | Sample # 48240 | Loss 1.0890
 der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34644/37041 [13:54:42<48:01,  1.20s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34652/37041 [13:54:51<47:01,  1.18s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34660/37041 [13:55:01<46:34,  1.17s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34668/37041 [13:55:09<45:19,  1.15s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34676/37041 [13:55:18<44:48,  1.14s/it]2023-06-30 18:19:43,743 - INFO - Train | Sample # 48280 | Loss 1.2127
-der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34684/37041 [13:55:28<45:57,  1.17s/it]
+der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34684/37041 [13:55:28<45:57,  1.17s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34692/37041 [13:55:41<50:14,  1.28s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34700/37041 [13:55:52<50:58,  1.31s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34708/37041 [13:56:01<49:55,  1.28s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34716/37041 [13:56:10<47:39,  1.23s/it]2023-06-30 18:20:35,405 - INFO - Train | Sample # 48320 | Loss 1.3514
+der - Seed 2 Task 1 (clear) training:  94%|█████████▎| 34724/37041 [13:56:20<47:12,  1.22s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34732/37041 [13:56:31<48:19,  1.26s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34740/37041 [13:56:41<48:24,  1.26s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34748/37041 [13:56:50<47:29,  1.24s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34756/37041 [13:57:01<48:20,  1.27s/it]2023-06-30 18:21:25,507 - INFO - Train | Sample # 48360 | Loss 1.2260
+der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34764/37041 [13:57:10<46:29,  1.23s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34772/37041 [13:57:19<45:01,  1.19s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34780/37041 [13:57:29<45:20,  1.20s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34788/37041 [13:57:38<44:36,  1.19s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34796/37041 [13:57:48<44:42,  1.19s/it]2023-06-30 18:22:14,461 - INFO - Train | Sample # 48400 | Loss 1.1606
+der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34804/37041 [13:57:59<47:10,  1.27s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34812/37041 [13:58:08<45:31,  1.23s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34820/37041 [13:58:17<44:29,  1.20s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34828/37041 [13:58:27<44:42,  1.21s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34836/37041 [13:58:37<44:58,  1.22s/it]2023-06-30 18:23:02,794 - INFO - Train | Sample # 48440 | Loss 1.2198
+der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34844/37041 [13:58:47<45:26,  1.24s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34852/37041 [13:58:57<44:46,  1.23s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34860/37041 [13:59:06<43:53,  1.21s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34868/37041 [13:59:15<42:29,  1.17s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34876/37041 [13:59:25<42:34,  1.18s/it]2023-06-30 18:23:49,052 - INFO - Train | Sample # 48480 | Loss 1.1970
+der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34884/37041 [13:59:33<41:42,  1.16s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34892/37041 [13:59:43<41:45,  1.17s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34900/37041 [13:59:52<41:42,  1.17s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34908/37041 [14:00:03<43:49,  1.23s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34916/37041 [14:00:13<43:55,  1.24s/it]2023-06-30 18:24:38,035 - INFO - Train | Sample # 48520 | Loss 1.2017
+der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34924/37041 [14:00:23<42:38,  1.21s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34932/37041 [14:00:31<41:30,  1.18s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34940/37041 [14:00:41<41:36,  1.19s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34948/37041 [14:00:53<44:15,  1.27s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34956/37041 [14:01:03<44:27,  1.28s/it]2023-06-30 18:25:28,228 - INFO - Train | Sample # 48560 | Loss 1.1878
+der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34964/37041 [14:01:13<43:17,  1.25s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34972/37041 [14:01:22<41:59,  1.22s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34980/37041 [14:01:32<42:34,  1.24s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34988/37041 [14:01:42<42:07,  1.23s/it]der - Seed 2 Task 1 (clear) training:  94%|█████████▍| 34996/37041 [14:01:53<43:46,  1.28s/it]2023-06-30 18:26:18,410 - INFO - Train | Sample # 48600 | Loss 1.2616
+der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35004/37041 [14:02:03<42:58,  1.27s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35012/37041 [14:02:12<41:20,  1.22s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35020/37041 [14:02:22<42:05,  1.25s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35028/37041 [14:02:33<43:18,  1.29s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35036/37041 [14:02:44<43:24,  1.30s/it]2023-06-30 18:27:09,880 - INFO - Train | Sample # 48640 | Loss 1.5470
+der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35044/37041 [14:02:54<43:17,  1.30s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35052/37041 [14:03:03<41:25,  1.25s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35060/37041 [14:03:12<39:48,  1.21s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35068/37041 [14:03:21<38:55,  1.18s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35076/37041 [14:03:32<39:57,  1.22s/it]2023-06-30 18:27:56,576 - INFO - Train | Sample # 48680 | Loss 1.4262
+der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35084/37041 [14:03:41<39:14,  1.20s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35092/37041 [14:03:52<40:14,  1.24s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35100/37041 [14:04:01<39:44,  1.23s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35108/37041 [14:04:11<39:32,  1.23s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35116/37041 [14:04:20<38:08,  1.19s/it]2023-06-30 18:28:44,269 - INFO - Train | Sample # 48720 | Loss 1.5581
+der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35124/37041 [14:04:29<37:16,  1.17s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35132/37041 [14:04:38<37:23,  1.18s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35140/37041 [14:04:48<36:57,  1.17s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35148/37041 [14:04:58<38:10,  1.21s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35156/37041 [14:05:08<38:01,  1.21s/it]2023-06-30 18:29:32,036 - INFO - Train | Sample # 48760 | Loss 1.4749
+der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35164/37041 [14:05:17<36:53,  1.18s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35172/37041 [14:05:26<36:10,  1.16s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35180/37041 [14:05:36<36:50,  1.19s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▍| 35188/37041 [14:05:45<36:50,  1.19s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35196/37041 [14:05:54<36:21,  1.18s/it]2023-06-30 18:30:19,052 - INFO - Train | Sample # 48800 | Loss 1.3069
+der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35204/37041 [14:06:03<35:44,  1.17s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35212/37041 [14:06:12<34:55,  1.15s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35220/37041 [14:06:23<36:07,  1.19s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35228/37041 [14:06:33<36:38,  1.21s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35236/37041 [14:06:42<35:37,  1.18s/it]2023-06-30 18:31:07,951 - INFO - Train | Sample # 48840 | Loss 1.4846
+der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35244/37041 [14:06:52<37:01,  1.24s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35252/37041 [14:07:02<36:33,  1.23s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35260/37041 [14:07:11<35:12,  1.19s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35268/37041 [14:07:21<35:17,  1.19s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35276/37041 [14:07:30<35:13,  1.20s/it]2023-06-30 18:31:55,019 - INFO - Train | Sample # 48880 | Loss 1.5968
+der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35284/37041 [14:07:39<34:42,  1.19s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35292/37041 [14:07:49<34:11,  1.17s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35300/37041 [14:07:57<33:28,  1.15s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35308/37041 [14:08:06<32:59,  1.14s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35316/37041 [14:08:15<32:25,  1.13s/it]2023-06-30 18:32:39,731 - INFO - Train | Sample # 48920 | Loss 1.2147
+der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35324/37041 [14:08:24<32:24,  1.13s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35332/37041 [14:08:35<33:32,  1.18s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35340/37041 [14:08:46<35:44,  1.26s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35348/37041 [14:08:58<37:07,  1.32s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35356/37041 [14:09:08<37:02,  1.32s/it]2023-06-30 18:33:33,032 - INFO - Train | Sample # 48960 | Loss 1.6266
+der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35364/37041 [14:09:18<35:30,  1.27s/it]der - Seed 2 Task 1 (clear) training:  95%|█████████▌| 35372/37041 [14:09:28<35:31,  1.28s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35380/37041 [14:09:38<35:07,  1.27s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35388/37041 [14:09:49<35:38,  1.29s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35396/37041 [14:09:59<35:33,  1.30s/it]2023-06-30 18:34:24,178 - INFO - Train | Sample # 49000 | Loss 1.5109
+2023-06-30 18:34:24,356 - INFO - Seed 2 Task 1 evaluating task 3
+2023-06-30 18:34:43,829 - INFO - Test | Sample # 49000 | AP 0.4018
+2023-06-30 18:34:43,850 - INFO - Seed 2 Task 1 evaluating task 1
+2023-06-30 18:35:21,183 - INFO - Test | Sample # 49000 | AP 0.4303
+der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35404/37041 [14:11:06<1:32:35,  3.39s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35412/37041 [14:11:15<1:14:00,  2.73s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35420/37041 [14:11:25<1:01:50,  2.29s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35428/37041 [14:11:38<56:36,  2.11s/it]  der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35436/37041 [14:11:49<50:00,  1.87s/it]2023-06-30 18:36:15,322 - INFO - Train | Sample # 49040 | Loss 1.7829
+der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35444/37041 [14:12:00<46:05,  1.73s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35452/37041 [14:12:13<44:57,  1.70s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35460/37041 [14:12:22<39:58,  1.52s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35468/37041 [14:12:31<36:38,  1.40s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35476/37041 [14:12:43<37:08,  1.42s/it]2023-06-30 18:37:10,581 - INFO - Train | Sample # 49080 | Loss 1.7124
+der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35484/37041 [14:12:55<38:01,  1.47s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35492/37041 [14:13:06<36:37,  1.42s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35500/37041 [14:13:18<36:51,  1.43s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35508/37041 [14:13:26<34:08,  1.34s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35516/37041 [14:13:36<33:21,  1.31s/it]2023-06-30 18:38:02,808 - INFO - Train | Sample # 49120 | Loss 1.6089
+der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35524/37041 [14:13:47<33:36,  1.33s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35532/37041 [14:14:02<36:46,  1.46s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35540/37041 [14:14:14<37:08,  1.48s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35548/37041 [14:14:24<35:37,  1.43s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35556/37041 [14:14:33<32:58,  1.33s/it]2023-06-30 18:38:58,590 - INFO - Train | Sample # 49160 | Loss 1.5685
+der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35564/37041 [14:14:43<32:04,  1.30s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35572/37041 [14:14:53<31:01,  1.27s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35580/37041 [14:15:06<33:52,  1.39s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35588/37041 [14:15:19<35:46,  1.48s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35596/37041 [14:15:30<34:32,  1.43s/it]2023-06-30 18:39:54,285 - INFO - Train | Sample # 49200 | Loss 1.5688
+der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35604/37041 [14:15:39<31:52,  1.33s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35612/37041 [14:15:50<32:12,  1.35s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35620/37041 [14:16:02<33:23,  1.41s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35628/37041 [14:16:14<33:39,  1.43s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35636/37041 [14:16:24<32:09,  1.37s/it]2023-06-30 18:40:49,046 - INFO - Train | Sample # 49240 | Loss 1.4511
+der - Seed 2 Task 1 (clear) training:  96%|█████████▌| 35644/37041 [14:16:33<30:35,  1.31s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35652/37041 [14:16:42<28:48,  1.24s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35660/37041 [14:16:51<27:42,  1.20s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35668/37041 [14:17:00<27:14,  1.19s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35676/37041 [14:17:12<28:40,  1.26s/it]2023-06-30 18:41:36,526 - INFO - Train | Sample # 49280 | Loss 1.4258
+der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35684/37041 [14:17:21<28:02,  1.24s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35692/37041 [14:17:30<27:18,  1.21s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35700/37041 [14:17:41<27:51,  1.25s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35708/37041 [14:17:50<27:09,  1.22s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35716/37041 [14:18:00<26:57,  1.22s/it]2023-06-30 18:42:27,306 - INFO - Train | Sample # 49320 | Loss 1.2424
+der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35724/37041 [14:18:12<28:36,  1.30s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35732/37041 [14:18:24<29:19,  1.34s/it]der - Seed 2 Task 1 (clear) training:  96%|█████████▋| 35740/37041 [14:18:34<28:56,  1.33s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35748/37041 [14:18:44<28:01,  1.30s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35756/37041 [14:18:53<26:39,  1.24s/it]2023-06-30 18:43:17,640 - INFO - Train | Sample # 49360 | Loss 1.5128
+der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35764/37041 [14:19:02<26:10,  1.23s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35772/37041 [14:19:13<26:21,  1.25s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35780/37041 [14:19:22<26:04,  1.24s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35788/37041 [14:19:32<25:52,  1.24s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35796/37041 [14:19:41<24:59,  1.20s/it]2023-06-30 18:44:05,831 - INFO - Train | Sample # 49400 | Loss 1.4341
+der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35804/37041 [14:19:50<24:27,  1.19s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35812/37041 [14:20:00<24:39,  1.20s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35820/37041 [14:20:12<26:19,  1.29s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35828/37041 [14:20:23<26:00,  1.29s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35836/37041 [14:20:34<26:45,  1.33s/it]2023-06-30 18:44:58,903 - INFO - Train | Sample # 49440 | Loss 1.2943
+der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35844/37041 [14:20:43<25:30,  1.28s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35852/37041 [14:20:53<24:44,  1.25s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35860/37041 [14:21:02<23:55,  1.22s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35868/37041 [14:21:12<24:05,  1.23s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35876/37041 [14:21:22<23:47,  1.23s/it]2023-06-30 18:45:47,466 - INFO - Train | Sample # 49480 | Loss 1.5223
+der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35884/37041 [14:21:32<24:05,  1.25s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35892/37041 [14:21:42<23:35,  1.23s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35900/37041 [14:21:51<22:52,  1.20s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35908/37041 [14:22:00<22:34,  1.20s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35916/37041 [14:22:09<22:06,  1.18s/it]2023-06-30 18:46:33,940 - INFO - Train | Sample # 49520 | Loss 1.0650
+der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35924/37041 [14:22:19<21:50,  1.17s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35932/37041 [14:22:28<21:59,  1.19s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35940/37041 [14:22:37<21:29,  1.17s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35948/37041 [14:22:46<20:55,  1.15s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35956/37041 [14:22:57<22:03,  1.22s/it]2023-06-30 18:47:23,158 - INFO - Train | Sample # 49560 | Loss 1.4750
+der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35964/37041 [14:23:08<22:17,  1.24s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35972/37041 [14:23:17<21:47,  1.22s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35980/37041 [14:23:27<21:26,  1.21s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35988/37041 [14:23:36<21:19,  1.21s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 35996/37041 [14:23:45<20:29,  1.18s/it]2023-06-30 18:48:09,858 - INFO - Train | Sample # 49600 | Loss 1.4494
+der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36004/37041 [14:23:54<20:19,  1.18s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36012/37041 [14:24:05<20:38,  1.20s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36020/37041 [14:24:14<20:19,  1.19s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36028/37041 [14:24:24<20:16,  1.20s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36036/37041 [14:24:33<20:00,  1.19s/it]2023-06-30 18:48:57,432 - INFO - Train | Sample # 49640 | Loss 1.3600
+der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36044/37041 [14:24:42<19:23,  1.17s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36052/37041 [14:24:51<19:12,  1.17s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36060/37041 [14:25:02<19:58,  1.22s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36068/37041 [14:25:12<20:01,  1.23s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36076/37041 [14:25:22<19:41,  1.22s/it]2023-06-30 18:49:46,449 - INFO - Train | Sample # 49680 | Loss 1.0046
+der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36084/37041 [14:25:31<19:08,  1.20s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36092/37041 [14:25:40<18:44,  1.18s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36100/37041 [14:25:49<18:08,  1.16s/it]der - Seed 2 Task 1 (clear) training:  97%|█████████▋| 36108/37041 [14:25:58<17:51,  1.15s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36116/37041 [14:26:08<18:27,  1.20s/it]2023-06-30 18:50:33,953 - INFO - Train | Sample # 49720 | Loss 1.1363
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36124/37041 [14:26:19<18:37,  1.22s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36132/37041 [14:26:28<18:17,  1.21s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36140/37041 [14:26:38<18:31,  1.23s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36148/37041 [14:26:47<17:54,  1.20s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36156/37041 [14:26:57<17:42,  1.20s/it]2023-06-30 18:51:21,490 - INFO - Train | Sample # 49760 | Loss 1.1713
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36164/37041 [14:27:06<17:15,  1.18s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36172/37041 [14:27:16<17:12,  1.19s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36180/37041 [14:27:25<16:43,  1.17s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36188/37041 [14:27:34<16:39,  1.17s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36196/37041 [14:27:43<16:08,  1.15s/it]2023-06-30 18:52:06,931 - INFO - Train | Sample # 49800 | Loss 1.2164
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36204/37041 [14:27:51<15:44,  1.13s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36212/37041 [14:28:00<15:31,  1.12s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36220/37041 [14:28:09<15:27,  1.13s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36228/37041 [14:28:18<15:12,  1.12s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36236/37041 [14:28:28<15:24,  1.15s/it]2023-06-30 18:52:53,165 - INFO - Train | Sample # 49840 | Loss 1.0961
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36244/37041 [14:28:38<15:27,  1.16s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36252/37041 [14:28:46<14:58,  1.14s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36260/37041 [14:28:55<14:38,  1.13s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36268/37041 [14:29:04<14:28,  1.12s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36276/37041 [14:29:13<14:33,  1.14s/it]2023-06-30 18:53:38,240 - INFO - Train | Sample # 49880 | Loss 0.9219
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36284/37041 [14:29:23<14:32,  1.15s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36292/37041 [14:29:33<14:50,  1.19s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36300/37041 [14:29:42<14:21,  1.16s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36308/37041 [14:29:51<14:09,  1.16s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36316/37041 [14:30:02<14:35,  1.21s/it]2023-06-30 18:54:26,978 - INFO - Train | Sample # 49920 | Loss 1.2137
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36324/37041 [14:30:12<14:33,  1.22s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36332/37041 [14:30:23<15:13,  1.29s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36340/37041 [14:30:33<14:43,  1.26s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36348/37041 [14:30:41<13:55,  1.21s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36356/37041 [14:30:50<13:25,  1.18s/it]2023-06-30 18:55:14,845 - INFO - Train | Sample # 49960 | Loss 1.2941
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36364/37041 [14:30:59<13:08,  1.16s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36372/37041 [14:31:08<12:48,  1.15s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36380/37041 [14:31:17<12:34,  1.14s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36388/37041 [14:31:26<12:20,  1.13s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36396/37041 [14:31:36<12:20,  1.15s/it]2023-06-30 18:56:00,171 - INFO - Train | Sample # 50000 | Loss 1.2879
+2023-06-30 18:56:00,289 - INFO - Seed 2 Task 1 evaluating task 3
+
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:30  model_time: 0.4527 (0.4527)  evaluator_time: 0.1991 (0.1991)  time: 1.1775  data: 0.4844  max mem: 19191
+Test:  [25/26]  eta: 0:00:01  model_time: 0.4513 (0.4490)  evaluator_time: 0.0930 (0.1030)  time: 1.0480  data: 0.4546  max mem: 19191
+Test: Total time: 0:00:27 (1.0507 s / it)
+Averaged stats: model_time: 0.4513 (0.4490)  evaluator_time: 0.0930 (0.1030)
+Accumulating evaluation results...
+DONE (t=0.25s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.263
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.442
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.277
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.127
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.491
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.594
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.213
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.336
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.343
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.192
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.573
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.677
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:12  model_time: 0.4421 (0.4421)  evaluator_time: 0.0325 (0.0325)  time: 0.9025  data: 0.3863  max mem: 19191
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4428 (0.4307)  evaluator_time: 0.0528 (0.0560)  time: 0.9172  data: 0.3883  max mem: 19191
+Test: Total time: 0:00:12 (0.9173 s / it)
+Averaged stats: model_time: 0.4428 (0.4307)  evaluator_time: 0.0528 (0.0560)
+Accumulating evaluation results...
+DONE (t=0.13s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.223
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.363
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.240
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.116
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.398
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.582
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.196
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.312
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.314
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.164
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.567
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.689
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:27  model_time: 0.4442 (0.4442)  evaluator_time: 0.1387 (0.1387)  time: 1.0525  data: 0.4242  max mem: 19191
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4462 (0.4435)  evaluator_time: 0.0796 (0.0794)  time: 0.9892  data: 0.4226  max mem: 19191
+Test: Total time: 0:00:25 (0.9868 s / it)
+Averaged stats: model_time: 0.4462 (0.4435)  evaluator_time: 0.0796 (0.0794)
+Accumulating evaluation results...
+DONE (t=0.33s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.247
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.422
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.257
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.128
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.453
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.540
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.213
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.338
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.343
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.198
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.577
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.655
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:12  model_time: 0.4436 (0.4436)  evaluator_time: 0.0325 (0.0325)  time: 0.9061  data: 0.3884  max mem: 19191
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4498 (0.4362)  evaluator_time: 0.0788 (0.0859)  time: 0.9987  data: 0.4350  max mem: 19191
+Test: Total time: 0:00:13 (0.9988 s / it)
+Averaged stats: model_time: 0.4498 (0.4362)  evaluator_time: 0.0788 (0.0859)
+Accumulating evaluation results...
+DONE (t=0.21s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.256
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.402
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.286
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.129
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.474
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.654
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.210
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.325
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.328
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.172
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.598
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.721
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:30  model_time: 0.4565 (0.4565)  evaluator_time: 0.2641 (0.2641)  time: 1.1553  data: 0.3938  max mem: 19191
+Test:  [25/26]  eta: 0:00:01  model_time: 0.4501 (0.4473)  evaluator_time: 0.1030 (0.1104)  time: 1.0215  data: 0.4219  max mem: 19191
+Test: Total time: 0:00:26 (1.0224 s / it)
+Averaged stats: model_time: 0.4501 (0.4473)  evaluator_time: 0.1030 (0.1104)
+Accumulating evaluation results...
+DONE (t=0.33s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.250
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.430
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.258
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.129
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.459
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.567
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.212
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.340
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.349
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.206
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.566
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.673
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:12  model_time: 0.4433 (0.4433)  evaluator_time: 0.0307 (0.0307)  time: 0.8893  data: 0.3738  max mem: 19191
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4472 (0.4346)  evaluator_time: 0.0472 (0.0575)  time: 0.9074  data: 0.3738  max mem: 19191
+Test: Total time: 0:00:12 (0.9075 s / it)
+Averaged stats: model_time: 0.4472 (0.4346)  evaluator_time: 0.0472 (0.0575)
+Accumulating evaluation results...
+DONE (t=0.14s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.240
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.378
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.259
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.116
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.463
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.6302023-06-30 18:56:18,460 - INFO - Test | Sample # 50000 | AP 0.3782
+2023-06-30 18:56:18,480 - INFO - Seed 2 Task 1 evaluating task 1
+2023-06-30 18:56:54,806 - INFO - Test | Sample # 50000 | AP 0.4276
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36404/37041 [14:32:39<33:50,  3.19s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36412/37041 [14:32:48<26:54,  2.57s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36420/37041 [14:32:58<22:23,  2.16s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36428/37041 [14:33:09<19:46,  1.94s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36436/37041 [14:33:22<18:25,  1.83s/it]2023-06-30 18:57:47,695 - INFO - Train | Sample # 50040 | Loss 1.4284
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36444/37041 [14:33:32<16:37,  1.67s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36452/37041 [14:33:42<15:00,  1.53s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36460/37041 [14:33:51<13:51,  1.43s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36468/37041 [14:34:05<14:37,  1.53s/it]der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36476/37041 [14:34:19<14:59,  1.59s/it]2023-06-30 18:58:48,371 - INFO - Train | Sample # 50080 | Loss 1.4452
+der - Seed 2 Task 1 (clear) training:  98%|█████████▊| 36484/37041 [14:34:33<15:11,  1.64s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36492/37041 [14:34:44<14:03,  1.54s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36500/37041 [14:34:53<13:00,  1.44s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36508/37041 [14:35:06<12:59,  1.46s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36516/37041 [14:35:21<13:53,  1.59s/it]2023-06-30 18:59:52,017 - INFO - Train | Sample # 50120 | Loss 1.3528
+der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36524/37041 [14:35:37<14:49,  1.72s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36532/37041 [14:35:52<15:01,  1.77s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36540/37041 [14:36:04<14:02,  1.68s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36548/37041 [14:36:13<12:40,  1.54s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36556/37041 [14:36:27<12:47,  1.58s/it]2023-06-30 19:00:57,880 - INFO - Train | Sample # 50160 | Loss 1.6023
+der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36564/37041 [14:36:43<13:32,  1.70s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▊| 36572/37041 [14:36:59<14:13,  1.82s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36580/37041 [14:37:13<13:43,  1.79s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36588/37041 [14:37:23<12:13,  1.62s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36596/37041 [14:37:33<11:04,  1.49s/it]2023-06-30 19:02:00,539 - INFO - Train | Sample # 50200 | Loss 1.2400
+der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36604/37041 [14:37:45<11:07,  1.53s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36612/37041 [14:38:02<12:06,  1.69s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36620/37041 [14:38:17<12:14,  1.74s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36628/37041 [14:38:32<12:16,  1.78s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36636/37041 [14:38:42<11:02,  1.63s/it]2023-06-30 19:03:08,430 - INFO - Train | Sample # 50240 | Loss 1.5514
+der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36644/37041 [14:38:53<10:12,  1.54s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36652/37041 [14:39:05<09:59,  1.54s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36660/37041 [14:39:22<10:50,  1.71s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36668/37041 [14:39:37<10:56,  1.76s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36676/37041 [14:39:52<10:53,  1.79s/it]2023-06-30 19:04:18,444 - INFO - Train | Sample # 50280 | Loss 1.1315
+der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36684/37041 [14:40:03<09:56,  1.67s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36692/37041 [14:40:13<09:00,  1.55s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36700/37041 [14:40:23<08:15,  1.45s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36708/37041 [14:40:37<08:33,  1.54s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36716/37041 [14:40:52<08:51,  1.64s/it]2023-06-30 19:05:21,111 - INFO - Train | Sample # 50320 | Loss 1.3543
+der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36724/37041 [14:41:06<08:46,  1.66s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36732/37041 [14:41:14<07:41,  1.49s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36740/37041 [14:41:23<06:56,  1.38s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36748/37041 [14:41:35<06:48,  1.40s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36756/37041 [14:41:48<06:57,  1.46s/it]2023-06-30 19:06:15,685 - INFO - Train | Sample # 50360 | Loss 1.4115
+der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36764/37041 [14:42:00<06:55,  1.50s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36772/37041 [14:42:12<06:36,  1.48s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36780/37041 [14:42:21<05:57,  1.37s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36788/37041 [14:42:30<05:28,  1.30s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36796/37041 [14:42:39<05:05,  1.25s/it]2023-06-30 19:07:05,155 - INFO - Train | Sample # 50400 | Loss 1.4163
+der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36804/37041 [14:42:50<05:02,  1.28s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36812/37041 [14:42:58<04:40,  1.22s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36820/37041 [14:43:09<04:33,  1.24s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36828/37041 [14:43:18<04:21,  1.23s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36836/37041 [14:43:27<04:03,  1.19s/it]2023-06-30 19:07:52,282 - INFO - Train | Sample # 50440 | Loss 1.1471
+der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36844/37041 [14:43:37<03:59,  1.21s/it]der - Seed 2 Task 1 (clear) training:  99%|█████████▉| 36852/37041 [14:43:48<03:55,  1.25s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36860/37041 [14:43:58<03:50,  1.28s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36868/37041 [14:44:09<03:42,  1.29s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36876/37041 [14:44:18<03:23,  1.23s/it]2023-06-30 19:08:42,111 - INFO - Train | Sample # 50480 | Loss 1.6681
+der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36884/37041 [14:44:27<03:06,  1.19s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36892/37041 [14:44:36<02:54,  1.17s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36900/37041 [14:44:45<02:43,  1.16s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36908/37041 [14:44:54<02:34,  1.16s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36916/37041 [14:45:04<02:30,  1.20s/it]2023-06-30 19:09:29,106 - INFO - Train | Sample # 50520 | Loss 1.6023
+der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36924/37041 [14:45:14<02:19,  1.19s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36932/37041 [14:45:22<02:06,  1.16s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36940/37041 [14:45:31<01:55,  1.14s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36948/37041 [14:45:40<01:45,  1.14s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36956/37041 [14:45:50<01:40,  1.18s/it]2023-06-30 19:10:15,992 - INFO - Train | Sample # 50560 | Loss 1.4718
+der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36964/37041 [14:46:01<01:33,  1.22s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36972/37041 [14:46:10<01:23,  1.20s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36980/37041 [14:46:19<01:12,  1.19s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36988/37041 [14:46:29<01:02,  1.18s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 36996/37041 [14:46:38<00:53,  1.18s/it]2023-06-30 19:11:02,875 - INFO - Train | Sample # 50600 | Loss 1.2359
+der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 37004/37041 [14:46:47<00:43,  1.17s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 37012/37041 [14:46:57<00:34,  1.19s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 37020/37041 [14:47:07<00:25,  1.20s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 37028/37041 [14:47:17<00:15,  1.22s/it]der - Seed 2 Task 1 (clear) training: 100%|█████████▉| 37036/37041 [14:47:27<00:06,  1.21s/it]der - Seed 2 Task 1 (clear) training: 100%|██████████| 37041/37041 [14:47:27<00:00,  1.44s/it]
+2023-06-30 19:12:01,116 - INFO - Test | Sample # 50637 | AP 0.3692
+2023-06-30 19:12:01,135 - INFO - After training task 1, evaluating task 3, mAP: 0.369156906490271
+2023-06-30 19:12:36,940 - INFO - Test | Sample # 50637 | AP 0.4286
+2023-06-30 19:12:36,972 - INFO - After training task 1, evaluating task 1, mAP: 0.4286395013294914
+2023-06-30 19:13:19,589 - INFO - Test | Sample # 50637 | AP 0.3331
+2023-06-30 19:13:19,615 - INFO - After training task 1, evaluating task 4, mAP: 0.33312358334511577
+2023-06-30 19:13:50,839 - INFO - Test | Sample # 50637 | AP 0.4569
+2023-06-30 19:13:50,866 - INFO - After training task 1, evaluating task 2, mAP: 0.4569328397189592
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.205
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.309
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.311
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.155
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.572
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.725
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:28  model_time: 0.4442 (0.4442)  evaluator_time: 0.1689 (0.1689)  time: 1.1051  data: 0.4453  max mem: 19191
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4467 (0.4439)  evaluator_time: 0.0792 (0.0805)  time: 0.9817  data: 0.4131  max mem: 19191
+Test: Total time: 0:00:25 (0.9842 s / it)
+Averaged stats: model_time: 0.4467 (0.4439)  evaluator_time: 0.0792 (0.0805)
+Accumulating evaluation results...
+DONE (t=0.31s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.262
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.428
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.289
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.124
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.483
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.580
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.213
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.331
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.338
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.190
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.560
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.670
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:13  model_time: 0.4514 (0.4514)  evaluator_time: 0.0559 (0.0559)  time: 0.9797  data: 0.4306  max mem: 19191
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4500 (0.4371)  evaluator_time: 0.0654 (0.0725)  time: 0.9548  data: 0.4040  max mem: 19191
+Test: Total time: 0:00:13 (0.9549 s / it)
+Averaged stats: model_time: 0.4500 (0.4371)  evaluator_time: 0.0654 (0.0725)
+Accumulating evaluation results...
+DONE (t=0.14s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.232
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.369
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.246
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.121
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.476
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.547
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.211
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.312
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.318
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.170
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.586
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.673
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:27  model_time: 0.4524 (0.4524)  evaluator_time: 0.1719 (0.1719)  time: 1.0693  data: 0.4040  max mem: 19191
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4459 (0.4435)  evaluator_time: 0.0821 (0.0911)  time: 0.9721  data: 0.3972  max mem: 19191
+Test: Total time: 0:00:25 (0.9734 s / it)
+Averaged stats: model_time: 0.4459 (0.4435)  evaluator_time: 0.0821 (0.0911)
+Accumulating evaluation results...
+DONE (t=0.29s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.265
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.429
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.284
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.128
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.497
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.638
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.222
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.341
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.349
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.185
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.589
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.739
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:30  model_time: 0.4461 (0.4461)  evaluator_time: 0.1314 (0.1314)  time: 0.9883  data: 0.3673  max mem: 19191
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4437 (0.4704)  evaluator_time: 0.0465 (0.0648)  time: 0.9731  data: 0.3919  max mem: 19191
+Test: Total time: 0:00:30 (0.9724 s / it)
+Averaged stats: model_time: 0.4437 (0.4704)  evaluator_time: 0.0465 (0.0648)
+Accumulating evaluation results...
+DONE (t=0.27s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.211
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.333
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.238
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.088
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.424
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.514
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.188
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.280
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.284
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.132
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.517
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.630
+creating index...
+index created!
+Test:  [ 0/23]  eta: 0:00:20  model_time: 0.4411 (0.4411)  evaluator_time: 0.0424 (0.0424)  time: 0.9079  data: 0.3829  max mem: 19191
+Test:  [22/23]  eta: 0:00:00  model_time: 0.4447 (0.4448)  evaluator_time: 0.0630 (0.0754)  time: 0.9689  data: 0.4005  max mem: 19191
+Test: Total time: 0:00:22 (0.9615 s / it)
+Averaged stats: model_time: 0.4447 (0.4448)  evaluator_time: 0.0630 (0.0754)
+Accumulating evaluation results...
+DONE (t=0.27s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.290
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.457
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.322
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.145
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.532
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.545
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.241
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.380
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.386
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.235
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.606
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.657
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:25  model_time: 0.4654 (0.4654)  evaluator_time: 0.0671 (0.0671)  time: 0.9933  data: 0.4200  max mem: 19191
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4419 (0.4343)  evaluator_time: 0.0474 (0.0606)  time: 0.9109  data: 0.3758  max mem: 19191
+Test: Total time: 0:00:23 (0.9182 s / it)
+Averaged stats: model_time: 0.4419 (0.4343)  evaluator_time: 0.0474 (0.0606)
+Accumulating evaluation results...
+DONE (t=0.27s).2023-06-30 19:14:25,188 - INFO - Test | Sample # 50637 | AP 0.1984
+2023-06-30 19:14:25,225 - INFO - After training task 1, evaluating task 5, mAP: 0.19841346722483885
+2023-06-30 19:14:25,226 - INFO - After training task 1, average mAP of all tasks: 0.3407859807300553
+2023-06-30 19:14:25,226 - INFO - Mode: der, Selected seed: [2, 0, 3, 1, 4], Current task: 4 (rainy)
+der - Seed 2 Task 4 (rainy) training:   0%|          | 0/39016 [00:00<?, ?it/s]2023-06-30 19:14:34,240 - INFO - Train | Sample # 50640 | Loss 1.4273
+der - Seed 2 Task 4 (rainy) training:   0%|          | 3/39016 [00:09<33:00:49,  3.05s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 11/39016 [00:18<26:49:22,  2.48s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 19/39016 [00:27<22:28:06,  2.07s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 27/39016 [00:36<19:23:32,  1.79s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 35/39016 [00:46<17:28:40,  1.61s/it]2023-06-30 19:15:20,740 - INFO - Train | Sample # 50680 | Loss 1.5674
+der - Seed 2 Task 4 (rainy) training:   0%|          | 43/39016 [00:55<16:09:51,  1.49s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 51/39016 [01:04<14:55:59,  1.38s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 59/39016 [01:14<14:16:25,  1.32s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 67/39016 [01:23<13:49:45,  1.28s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 75/39016 [01:33<13:36:25,  1.26s/it]2023-06-30 19:16:07,227 - INFO - Train | Sample # 50720 | Loss 1.2965
+der - Seed 2 Task 4 (rainy) training:   0%|          | 83/39016 [01:42<13:09:02,  1.22s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 91/39016 [01:52<13:16:48,  1.23s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 99/39016 [02:02<13:33:07,  1.25s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 107/39016 [02:12<13:15:52,  1.23s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 115/39016 [02:20<12:50:34,  1.19s/it]2023-06-30 19:16:56,585 - INFO - Train | Sample # 50760 | Loss 1.0449
+der - Seed 2 Task 4 (rainy) training:   0%|          | 123/39016 [02:31<13:27:41,  1.25s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 131/39016 [02:44<14:30:28,  1.34s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 139/39016 [02:57<15:35:34,  1.44s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 147/39016 [03:08<15:17:17,  1.42s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 155/39016 [03:17<14:17:34,  1.32s/it]2023-06-30 19:17:51,318 - INFO - Train | Sample # 50800 | Loss 1.3358
+der - Seed 2 Task 4 (rainy) training:   0%|          | 163/39016 [03:26<13:33:13,  1.26s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 171/39016 [03:38<14:30:39,  1.34s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 179/39016 [03:53<16:09:38,  1.50s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 187/39016 [04:09<17:38:15,  1.64s/it]der - Seed 2 Task 4 (rainy) training:   0%|          | 195/39016 [04:24<18:39:23,  1.73s/it]2023-06-30 19:19:03,754 - INFO - Train | Sample # 50840 | Loss 0.9243
+der - Seed 2 Task 4 (rainy) training:   1%|          | 203/39016 [04:39<18:51:00,  1.75s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 211/39016 [04:54<19:19:08,  1.79s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 219/39016 [05:10<20:15:00,  1.88s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 227/39016 [05:30<22:11:17,  2.06s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 235/39016 [05:47<22:22:53,  2.08s/it]2023-06-30 19:20:30,107 - INFO - Train | Sample # 50880 | Loss 0.9448
+der - Seed 2 Task 4 (rainy) training:   1%|          | 243/39016 [06:05<22:44:02,  2.11s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 251/39016 [06:18<21:10:38,  1.97s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 259/39016 [06:35<21:40:54,  2.01s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 267/39016 [06:52<22:16:47,  2.07s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 275/39016 [07:08<22:04:44,  2.05s/it]2023-06-30 19:21:50,476 - INFO - Train | Sample # 50920 | Loss 0.8654
+der - Seed 2 Task 4 (rainy) training:   1%|          | 283/39016 [07:25<22:17:46,  2.07s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 291/39016 [07:38<20:50:20,  1.94s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 299/39016 [07:50<19:18:27,  1.80s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 307/39016 [08:04<18:58:42,  1.77s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 315/39016 [08:21<20:11:11,  1.88s/it]2023-06-30 19:23:02,212 - INFO - Train | Sample # 50960 | Loss 0.8207
+der - Seed 2 Task 4 (rainy) training:   1%|          | 323/39016 [08:37<20:43:57,  1.93s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 331/39016 [08:53<20:59:37,  1.95s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 339/39016 [09:09<20:52:44,  1.94s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 347/39016 [09:20<19:21:11,  1.80s/it]der - Seed 2 Task 4 (rainy) training:   1%|          | 355/39016 [09:36<19:56:12,  1.86s/it]

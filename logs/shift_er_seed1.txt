@@ -1,0 +1,20 @@
+2023-06-30 19:16:57,927 - INFO - Loading train dataset...
+2023-06-30 19:16:57,927 - INFO - Loading task 1...
+2023-06-30 19:17:16,762 - INFO - Loading task 2...
+2023-06-30 19:17:33,182 - INFO - Loading task 3...
+2023-06-30 19:17:47,554 - INFO - Loading task 4...
+2023-06-30 19:18:03,319 - INFO - Loading task 5...
+2023-06-30 19:18:22,968 - INFO - Loading test dataset...
+2023-06-30 19:18:22,969 - INFO - Loading task 1...
+2023-06-30 19:18:23,127 - INFO - Loading task 2...
+2023-06-30 19:18:23,318 - INFO - Loading task 3...
+2023-06-30 19:18:23,470 - INFO - Loading task 4...
+2023-06-30 19:18:23,603 - INFO - Loading task 5...
+2023-06-30 19:18:23,728 - INFO - Mode: er, Selected seed: [0, 1, 2, 3, 4], Current task: 1 (clear)
+er - Seed 1 Task 1 (clear) training:   0%|          | 0/37041 [00:00<?, ?it/s]/opt/conda/lib/python3.7/site-packages/torch/functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ../aten/src/ATen/native/TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+er - Seed 1 Task 1 (clear) training:   0%|          | 8/37041 [00:08<11:08:53,  1.08s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 16/37041 [00:25<14:10:55,  1.38s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 24/37041 [00:38<15:12:18,  1.48s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 32/37041 [00:51<15:38:06,  1.52s/it]2023-06-30 19:19:30,824 - INFO - Train | Sample # 40 | Loss 0.7023
+er - Seed 1 Task 1 (clear) training:   0%|          | 40/37041 [01:07<17:05:44,  1.66s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 48/37041 [01:27<19:42:33,  1.92s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 56/37041 [01:44<20:16:11,  1.97s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 64/37041 [02:02<20:56:21,  2.04s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 72/37041 [02:16<19:57:40,  1.94s/it]2023-06-30 19:20:54,960 - INFO - Train | Sample # 80 | Loss 1.1325
+er - Seed 1 Task 1 (clear) training:   0%|          | 80/37041 [02:32<20:10:13,  1.96s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 88/37041 [02:51<21:28:51,  2.09s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 96/37041 [03:07<21:17:20,  2.07s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 104/37041 [03:24<21:36:17,  2.11s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 112/37041 [03:39<20:53:27,  2.04s/it]2023-06-30 19:22:15,905 - INFO - Train | Sample # 120 | Loss 1.2390
+er - Seed 1 Task 1 (clear) training:   0%|          | 120/37041 [03:52<19:26:44,  1.90s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 128/37041 [04:06<19:04:53,  1.86s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 136/37041 [04:24<20:18:48,  1.98s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 144/37041 [04:44<21:45:04,  2.12s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 152/37041 [05:01<21:57:44,  2.14s/it]2023-06-30 19:23:38,284 - INFO - Train | Sample # 160 | Loss 0.9736
+er - Seed 1 Task 1 (clear) training:   0%|          | 160/37041 [05:14<20:16:20,  1.98s/it]er - Seed 1 Task 1 (clear) training:   0%|          | 168/37041 [05:26<18:47:08,  1.83s/it]

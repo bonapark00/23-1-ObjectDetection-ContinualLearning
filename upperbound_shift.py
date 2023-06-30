@@ -9,13 +9,20 @@ from eval_utils.engine import evaluate
 import logging, os, torch
 from tqdm import tqdm
 from torchvision import transforms
+import csv
 from torch.utils.tensorboard import SummaryWriter
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    handlers=[logging.FileHandler('training.log', mode='w'), 
-                            logging.StreamHandler()])
 
 args = config.joint_parser()
+
+# Setup logging
+# Setup logging
+log_path = f"logs/{args.dataset}_joint_{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}"
+log_path += "_debug.log" if args.debug else ".log"
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers=[logging.FileHandler(log_path, mode='w'), 
+                            logging.StreamHandler()])
 task_seed_list = [[0,1,2], [2,0,3],[4,1,3]]
 
 if args.upperbound:
@@ -28,9 +35,9 @@ else:
 
 # Set up logging
 if args.upperbound:
-    tensorboard_pth = os.path.join(args.tensorboard_pth, "joint", f"upperbound")
+    tensorboard_pth = os.path.join(args.tensorboard_pth, args.dataset, "joint", f"upperbound")
 else:
-    tensorboard_pth = os.path.join(args.tensorboard_pth, "joint", f"seed_{args.seed_num}")
+    tensorboard_pth = os.path.join(args.tensorboard_pth, args.dataset, "joint", f"seed_{args.seed_num}")
 
 writer = SummaryWriter(log_dir=tensorboard_pth)
 
@@ -103,6 +110,15 @@ eval_results = defaultdict(list)
 epoch_results = defaultdict(list)
 eval_count = 1
 
+# Open file to write results (create if not exist, overwrite if exist)
+filename_prefix = f"results/{args.dataset}_joint_{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}"
+os.makedirs(os.path.dirname(filename_prefix), exist_ok=True)
+
+# Create csv file to write results
+eval_results_file = open(f"{filename_prefix}_eval_results.csv", "w")
+eval_results_writer = csv.writer(eval_results_file)
+eval_results_writer.writerow(["epoch", "test_mAP", "task_evaluating", "data_cnt"])
+
 # Train the model for num_epochs
 logging.info("Start training...")
 logging.info(f"upperbound: {args.upperbound}, seed_num: {args.seed_num}, num_epochs: {args.num_epochs}")
@@ -139,6 +155,12 @@ for ep in range(args.num_epochs):
                 eval_results["test_mAP"].append(mAP)
                 eval_results["task_evaluating"].append(task_eval + 1)
                 eval_results["data_cnt"].append(samples_cnt)
+
+                # Write the evaluation results to csv file
+                eval_results_writer.writerow([ep + 1, mAP, task_eval + 1, samples_cnt])
+                eval_results_file.flush()
+                os.fsync(eval_results_file.fileno())
+
                 writer.add_scalar(f'mAP/task{task_eval + 1}', mAP, samples_cnt)
             
             # Write the average mAP of all tasks to tensorboard
@@ -147,9 +169,9 @@ for ep in range(args.num_epochs):
 
     # After training one epoch is done, save the model
     if args.upperbound:
-        save_path = os.path.join("model_checkpoints", "joint", "upperbound")
+        save_path = os.path.join("model_checkpoints", args.dataset, "joint", "upperbound")
     else:
-        save_path = os.path.join("model_checkpoints", "joint", f"seed_{args.seed_num}")
+        save_path = os.path.join("model_checkpoints", args.dataset, "joint", f"seed_{args.seed_num}")
         
     logging.info(f"Saving model at epoch {ep + 1}...")
 
@@ -158,7 +180,7 @@ for ep in range(args.num_epochs):
         os.makedirs(save_path)
     torch.save(model.state_dict(), os.path.join(save_path, f"epoch_{ep + 1}.pth"))
 
-    # # After training one epoch is done, starts evaluating each task
+    # After training one epoch is done, starts evaluating each task
     # task_eval_results = []
     # for task_eval in [0, 1, 2, 3]:
     #     mAP = online_evaluate(model, test_loader_list[task_eval], samples_cnt, device)
@@ -166,11 +188,12 @@ for ep in range(args.num_epochs):
     # epoch_mAP = sum(task_eval_results) / float(len(task_eval_results))
     # epoch_results["epoch_mAP"].append(epoch_mAP)
 
+logging.info("Training is done! Saving the evaluation results...")
 # Create the save path if not exist
 if args.upperbound:
-    save_path = os.path.join("outputs", "joint", "upperbound")
+    save_path = os.path.join("outputs", args.dataset, "joint", "upperbound")
 else:
-    save_path = os.path.join("outputs", "joint", f"seed_{args.seed_num}")
+    save_path = os.path.join("outputs", args.dataset, "joint", f"seed_{args.seed_num}")
 
 if not os.path.exists(save_path):
     os.makedirs(save_path)

@@ -4,7 +4,7 @@
 NOTE="shift_filod" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="filod"
 DATASET="shift" # cifar10, cifar100, tinyimagenet, imagenet
-SEEDS="3"
+SEEDS="2"
 MEM_SIZE=150
 ONLINE_ITER=1
 MODEL_NAME="faster_rcnn"

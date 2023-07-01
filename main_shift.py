@@ -185,6 +185,7 @@ def main():
     if not os.path.exists(os.path.join('outputs', args.mode, 'after_task')):
         os.makedirs(os.path.join('outputs', args.mode, 'after_task'))
 
+    logging.info("Training finished, writing results to file")
     # Save results to file
     save_path = (
         f"{args.model_name}_{args.dataset}"

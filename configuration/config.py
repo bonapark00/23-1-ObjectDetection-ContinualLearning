@@ -144,6 +144,7 @@ def base_parser():
 
 def joint_parser():
     parser = argparse.ArgumentParser(description="Jointly Training")
+    parser.add_argument("--dataset", type=str, default="clad", help="dataset name")
     parser.add_argument("--upperbound", action="store_true", help="Train upperbound (all tasks)")
     parser.add_argument("--seed_num", type=str, default=1, help="seed number for joint training of two tasks")
     parser.add_argument("--batchsize", default=16, type=int, help="Training batch size")

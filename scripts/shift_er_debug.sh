@@ -5,7 +5,7 @@ NOTE="shift_er" # Short description of the experiment. (WARNING: logs/results wi
 MODE="er"
 DATASET="shift" # cifar10, cifar100, tinyimagenet, imagenet, clad, shift
 SEEDS="1"
-EVAL_PERIOD=30
+EVAL_PERIOD=40
 
 if [ "$DATASET" == "shift" ]; then
     MEM_SIZE=150 ONLINE_ITER=1

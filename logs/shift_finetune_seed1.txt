@@ -1,0 +1,21 @@
+2023-06-30 23:39:44,838 - INFO - Finetune method is selected.
+2023-06-30 23:40:12,742 - INFO - Loading train dataset...
+2023-06-30 23:40:12,742 - INFO - Loading task 1...
+2023-06-30 23:40:28,613 - INFO - Loading task 2...
+2023-06-30 23:40:43,006 - INFO - Loading task 3...
+2023-06-30 23:40:56,903 - INFO - Loading task 4...
+2023-06-30 23:41:10,855 - INFO - Loading task 5...
+2023-06-30 23:41:25,931 - INFO - Loading test dataset...
+2023-06-30 23:41:25,932 - INFO - Loading task 1...
+2023-06-30 23:41:26,035 - INFO - Loading task 2...
+2023-06-30 23:41:26,134 - INFO - Loading task 3...
+2023-06-30 23:41:26,232 - INFO - Loading task 4...
+2023-06-30 23:41:26,346 - INFO - Loading task 5...
+2023-06-30 23:41:26,451 - INFO - Mode: finetune, Selected seed: [0, 1, 2, 3, 4], Current task: 1 (clear)
+finetune - Seed 1 Task 1 (clear) training:   0%|          | 0/37041 [00:00<?, ?it/s]/opt/conda/lib/python3.7/site-packages/torch/functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ../aten/src/ATen/native/TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+finetune - Seed 1 Task 1 (clear) training:   0%|          | 16/37041 [00:21<13:57:22,  1.36s/it]finetune - Seed 1 Task 1 (clear) training:   0%|          | 32/37041 [00:43<13:59:10,  1.36s/it]finetune - Seed 1 Task 1 (clear) training:   0%|          | 48/37041 [01:03<13:34:38,  1.32s/it]finetune - Seed 1 Task 1 (clear) training:   0%|          | 64/37041 [01:25<13:48:09,  1.34s/it]2023-06-30 23:43:10,675 - INFO - Train | Sample # 80 | Loss 1.2334
+finetune - Seed 1 Task 1 (clear) training:   0%|          | 80/37041 [01:44<13:21:30,  1.30s/it]finetune - Seed 1 Task 1 (clear) training:   0%|          | 96/37041 [02:03<12:59:39,  1.27s/it]finetune - Seed 1 Task 1 (clear) training:   0%|          | 112/37041 [02:24<12:58:38,  1.27s/it]finetune - Seed 1 Task 1 (clear) training:   0%|          | 128/37041 [02:42<12:35:12,  1.23s/it]finetune - Seed 1 Task 1 (clear) training:   0%|          | 144/37041 [03:01<12:34:33,  1.23s/it]2023-06-30 23:44:47,351 - INFO - Train | Sample # 160 | Loss 1.0896
+finetune - Seed 1 Task 1 (clear) training:   0%|          | 160/37041 [03:21<12:31:31,  1.22s/it]finetune - Seed 1 Task 1 (clear) training:   0%|          | 176/37041 [03:40<12:23:18,  1.21s/it]finetune - Seed 1 Task 1 (clear) training:   1%|          | 192/37041 [03:59<12:24:29,  1.21s/it]finetune - Seed 1 Task 1 (clear) training:   1%|          | 208/37041 [04:18<12:13:23,  1.19s/it]finetune - Seed 1 Task 1 (clear) training:   1%|          | 224/37041 [04:39<12:42:25,  1.24s/it]2023-06-30 23:46:28,162 - INFO - Train | Sample # 240 | Loss 0.8090
+finetune - Seed 1 Task 1 (clear) training:   1%|          | 240/37041 [05:02<13:11:21,  1.29s/it]finetune - Seed 1 Task 1 (clear) training:   1%|          | 256/37041 [05:22<13:05:01,  1.28s/it]finetune - Seed 1 Task 1 (clear) training:   1%|          | 272/37041 [05:42<13:07:04,  1.28s/it]finetune - Seed 1 Task 1 (clear) training:   1%|          | 288/37041 [06:02<12:54:51,  1.26s/it]finetune - Seed 1 Task 1 (clear) training:   1%|          | 304/37041 [06:21<12:44:58,  1.25s/it]2023-06-30 23:48:09,300 - INFO - Train | Sample # 320 | Loss 1.1157
+finetune - Seed 1 Task 1 (clear) training:   1%|          | 320/37041 [06:43<13:00:34,  1.28s/it]finetune - Seed 1 Task 1 (clear) training:   1%|          | 336/37041 [07:05<13:22:21,  1.31s/it]finetune - Seed 1 Task 1 (clear) training:   1%|          | 352/37041 [07:23<12:51:35,  1.26s/it]

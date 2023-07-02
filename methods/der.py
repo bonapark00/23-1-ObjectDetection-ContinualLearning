@@ -78,7 +78,6 @@ class DER(ER):
         self.count_log += (stream_batch_size + memory_batch_size)
 
         for i in range(iterations):
-            self.model.train()
             memory_data = self.memory.get_batch(memory_batch_size) if memory_batch_size > 0 else None
             images_stream = []; images_memory = []
             targets_stream = []; targets_memory = []

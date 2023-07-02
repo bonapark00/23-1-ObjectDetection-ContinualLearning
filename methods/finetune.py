@@ -102,7 +102,6 @@ class FINETUNE:
         sample_dataset = stream_classname(sample, dataset=self.dataset, transform=None, cls_list=None)
 
         for i in range(iterations):
-            self.model.train()
             images_stream = []; targets_stream = []
 
             # Get stream data from stream dataset

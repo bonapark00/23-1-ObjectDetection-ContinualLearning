@@ -93,7 +93,6 @@ def main():
     pl_te = model.proposals_logits
     breakpoint()
 
-    model.train()
     output = model(images, targets, ssl_proposals, pl_te['proposals'])
     pl_st = model.proposals_logits
 

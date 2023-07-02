@@ -108,7 +108,6 @@ for i, task in enumerate(selected_seed):
     for it in range(args.num_iters):
         logging.info(f"Task {task + 1}, Iter {it + 1} / {args.num_iters}")
         for data in tqdm(train_loader_list[task], desc=f"Seed {selected_seed}, Task {task + 1}, Iter {it + 1} / {args.num_iters}"):
-            model.train()
             samples_cnt += args.batch_size
 
             # Load the data and send to device

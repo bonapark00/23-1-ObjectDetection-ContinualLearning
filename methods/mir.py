@@ -17,7 +17,6 @@ class MIR(ER):
         """
         
         """
-        self.model.train()
         total_loss, num_data = 0.0, 0.0
 
         assert stream_batch_size > 0

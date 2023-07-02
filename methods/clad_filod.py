@@ -90,8 +90,6 @@ class CLAD_FILOD(CLAD_ER):
         sample_dataset = CladStreamDataset(sample, dataset="SSLAD-2D", transform=None, cls_list=None)
         memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
         self.count_log += (stream_batch_size + memory_batch_size)
-
-        self.model.train()
         
         for i in range(iterations):
             memory_data = self.memory.get_batch(memory_batch_size) if memory_batch_size > 0 else None

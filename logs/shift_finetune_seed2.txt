@@ -3826,4 +3826,1082 @@ DONE (t=0.17s).2023-07-02 04:13:15,601 - INFO - Test | Sample # 62000 | AP 0.264
 finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12003/39016 [5:27:31<13:14:21,  1.76s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12019/39016 [5:27:55<12:42:23,  1.69s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12035/39016 [5:28:26<13:08:00,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12051/39016 [5:29:02<14:15:48,  1.90s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12067/39016 [5:29:41<15:32:55,  2.08s/it]2023-07-02 04:35:36,018 - INFO - Train | Sample # 62720 | Loss 0.5857
 finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12083/39016 [5:30:23<16:44:58,  2.24s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12099/39016 [5:30:53<15:52:15,  2.12s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12115/39016 [5:31:20<14:51:28,  1.99s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12131/39016 [5:31:48<14:24:04,  1.93s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12147/39016 [5:32:14<13:42:56,  1.84s/it]2023-07-02 04:37:51,210 - INFO - Train | Sample # 62800 | Loss 0.4823
 finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12163/39016 [5:32:39<13:05:03,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███       | 12179/39016 [5:33:03<12:31:11,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███▏      | 12195/39016 [5:33:31<12:37:27,  1.69s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███▏      | 12211/39016 [5:33:52<11:46:33,  1.58s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███▏      | 12227/39016 [5:34:17<11:40:03,  1.57s/it]2023-07-02 04:39:59,634 - INFO - Train | Sample # 62880 | Loss 1.0128
-finetune - Seed 2 Task 4 (rainy) training:  31%|███▏      | 12243/39016 [5:34:47<12:25:44,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███▏      | 12259/39016 [5:35:13<12:20:02,  1.66s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███▏      | 12275/39016 [5:35:40<12:17:05,  1.65s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12291/39016 [5:36:10<12:47:47,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12307/39016 [5:36:42<13:26:20,  1.81s/it]
+finetune - Seed 2 Task 4 (rainy) training:  31%|███▏      | 12243/39016 [5:34:47<12:25:44,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███▏      | 12259/39016 [5:35:13<12:20:02,  1.66s/it]finetune - Seed 2 Task 4 (rainy) training:  31%|███▏      | 12275/39016 [5:35:40<12:17:05,  1.65s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12291/39016 [5:36:10<12:47:47,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12307/39016 [5:36:42<13:26:20,  1.81s/it]2023-07-02 04:42:20,493 - INFO - Train | Sample # 62960 | Loss 0.8019
+finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12323/39016 [5:37:09<13:12:13,  1.78s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12339/39016 [5:37:41<13:36:40,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12355/39016 [5:38:12<13:49:07,  1.87s/it]2023-07-02 04:43:24,757 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 04:43:42,568 - INFO - Test | Sample # 63000 | AP 0.3218
+2023-07-02 04:43:42,591 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 04:44:17,082 - INFO - Test | Sample # 63000 | AP 0.2805
+2023-07-02 04:44:17,120 - INFO - Seed 2 Task 4 evaluating task 4
+
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.146
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.264
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.152
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.081
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.258
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.446
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.126
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.208
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.214
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.115
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.388
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.532
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:23  model_time: 0.4493 (0.4493)  evaluator_time: 0.1825 (0.1825)  time: 0.9045  data: 0.2480  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4495 (0.4517)  evaluator_time: 0.0940 (0.1104)  time: 0.8919  data: 0.3104  max mem: 18895
+Test: Total time: 0:00:23 (0.9191 s / it)
+Averaged stats: model_time: 0.4495 (0.4517)  evaluator_time: 0.0940 (0.1104)
+Accumulating evaluation results...
+DONE (t=0.28s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.143
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.264
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.137
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.065
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.273
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.347
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.132
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.219
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.226
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.109
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.393
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.518
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:29  model_time: 0.4534 (0.4534)  evaluator_time: 0.1451 (0.1451)  time: 0.9612  data: 0.3389  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4506 (0.4587)  evaluator_time: 0.0647 (0.0899)  time: 0.9004  data: 0.3297  max mem: 18895
+Test: Total time: 0:00:27 (0.8993 s / it)
+Averaged stats: model_time: 0.4506 (0.4587)  evaluator_time: 0.0647 (0.0899)
+Accumulating evaluation results...
+DONE (t=0.37s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.161
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.288
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.172
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.078
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.323
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.304
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.151
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.246
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.252
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.130
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.457
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.465
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:11  model_time: 0.4395 (0.4395)  evaluator_time: 0.0471 (0.0471)  time: 0.7911  data: 0.2854  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4484 (0.4400)  evaluator_time: 0.0940 (0.1123)  time: 0.9100  data: 0.3302  max mem: 18895
+Test: Total time: 0:00:12 (0.9101 s / it)
+Averaged stats: model_time: 0.4484 (0.4400)  evaluator_time: 0.0940 (0.1123)
+Accumulating evaluation results...
+DONE (t=0.23s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.191
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.322
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.205
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.096
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.388
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.468
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.179
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.277
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.282
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.153
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.536
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.573
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:26  model_time: 0.4736 (0.4736)  evaluator_time: 0.1991 (0.1991)  time: 1.0012  data: 0.3051  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4502 (0.4662)  evaluator_time: 0.1295 (0.1280)  time: 0.9895  data: 0.3676  max mem: 18895
+Test: Total time: 0:00:25 (0.9779 s / it)
+Averaged stats: model_time: 0.4502 (0.4662)  evaluator_time: 0.1295 (0.1280)
+Accumulating evaluation results...
+DONE (t=0.42s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.158
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.280
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.161
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.078
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.299
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.362
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.154
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.250
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.257
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.137
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.431
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.549
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:31  model_time: 0.5037 (0.5037)  evaluator_time: 0.1733 (0.1733)  time: 1.0179  data: 0.3173  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4432 (0.4493)  evaluator_time: 0.0919 (0.1213)  time: 0.9282  data: 0.3508  max mem: 18895
+Test: Total time: 0:00:29 (0.9503 s / it)
+Averaged stats: model_time: 0.4432 (0.4493)  evaluator_time: 0.0919 (0.1213)
+Accumulating evaluation results...
+DONE (t=0.40s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.200
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.352
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.208
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.097
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.387
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.370
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.193
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.299
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.305
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.172
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.527
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.5322023-07-02 04:44:58,037 - INFO - Test | Sample # 63000 | AP 0.3523
+finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12363/39016 [5:39:45<35:35:15,  4.81s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12371/39016 [5:40:11<32:08:42,  4.34s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12387/39016 [5:40:44<26:56:57,  3.64s/it]2023-07-02 04:46:19,610 - INFO - Train | Sample # 63040 | Loss 0.5702
+finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12403/39016 [5:41:07<22:05:26,  2.99s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12419/39016 [5:41:31<18:51:01,  2.55s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12435/39016 [5:42:03<17:32:16,  2.38s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12451/39016 [5:42:30<16:00:57,  2.17s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12467/39016 [5:42:55<14:39:26,  1.99s/it]2023-07-02 04:48:34,801 - INFO - Train | Sample # 63120 | Loss 0.2859
+finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12483/39016 [5:43:23<14:05:09,  1.91s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12499/39016 [5:43:47<13:10:01,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12515/39016 [5:44:09<12:15:34,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12531/39016 [5:44:34<12:04:09,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12547/39016 [5:45:04<12:33:08,  1.71s/it]2023-07-02 04:50:43,290 - INFO - Train | Sample # 63200 | Loss 0.4344
+finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12563/39016 [5:45:31<12:28:26,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12579/39016 [5:46:01<12:51:14,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12595/39016 [5:46:34<13:33:15,  1.85s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12611/39016 [5:46:59<12:56:32,  1.76s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12627/39016 [5:47:25<12:37:10,  1.72s/it]2023-07-02 04:53:07,469 - INFO - Train | Sample # 63280 | Loss 0.1951
+finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12643/39016 [5:47:56<13:07:10,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12659/39016 [5:48:28<13:30:55,  1.85s/it]finetune - Seed 2 Task 4 (rainy) training:  32%|███▏      | 12675/39016 [5:48:55<13:15:19,  1.81s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12691/39016 [5:49:29<13:52:24,  1.90s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12707/39016 [5:49:56<13:22:21,  1.83s/it]2023-07-02 04:55:29,379 - INFO - Train | Sample # 63360 | Loss 0.1885
+finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12723/39016 [5:50:19<12:29:53,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12739/39016 [5:50:52<13:17:37,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12755/39016 [5:51:24<13:45:23,  1.89s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12771/39016 [5:51:52<13:21:55,  1.83s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12787/39016 [5:52:18<12:56:51,  1.78s/it]2023-07-02 04:57:59,994 - INFO - Train | Sample # 63440 | Loss 0.0880
+finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12803/39016 [5:52:48<13:06:22,  1.80s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12819/39016 [5:53:14<12:43:05,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12835/39016 [5:53:41<12:37:00,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12851/39016 [5:54:05<12:06:17,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12867/39016 [5:54:36<12:37:12,  1.74s/it]2023-07-02 05:00:13,552 - INFO - Train | Sample # 63520 | Loss 0.3069
+finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12883/39016 [5:55:02<12:25:21,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12899/39016 [5:55:31<12:38:15,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12915/39016 [5:55:56<12:10:14,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12931/39016 [5:56:25<12:26:41,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12947/39016 [5:56:55<12:47:02,  1.77s/it]2023-07-02 05:02:36,828 - INFO - Train | Sample # 63600 | Loss 0.6589
+finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12963/39016 [5:57:24<13:00:09,  1.80s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12979/39016 [5:57:50<12:32:36,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 12995/39016 [5:58:21<13:01:56,  1.80s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 13011/39016 [5:58:51<13:10:05,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 13027/39016 [5:59:22<13:20:38,  1.85s/it]2023-07-02 05:05:01,326 - INFO - Train | Sample # 63680 | Loss 0.3665
+finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 13043/39016 [5:59:50<13:11:15,  1.83s/it]finetune - Seed 2 Task 4 (rainy) training:  33%|███▎      | 13059/39016 [6:00:18<12:56:23,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▎      | 13075/39016 [6:00:41<12:14:33,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▎      | 13091/39016 [6:01:12<12:46:31,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▎      | 13107/39016 [6:01:40<12:36:11,  1.75s/it]2023-07-02 05:07:16,830 - INFO - Train | Sample # 63760 | Loss 0.8921
+finetune - Seed 2 Task 4 (rainy) training:  34%|███▎      | 13123/39016 [6:02:05<12:17:58,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▎      | 13139/39016 [6:02:29<11:46:41,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▎      | 13155/39016 [6:02:57<11:57:33,  1.66s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13171/39016 [6:03:25<12:11:04,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13187/39016 [6:03:50<11:50:48,  1.65s/it]2023-07-02 05:09:24,867 - INFO - Train | Sample # 63840 | Loss 0.8281
+finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13203/39016 [6:04:12<11:18:54,  1.58s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13219/39016 [6:04:33<10:44:02,  1.50s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13235/39016 [6:04:54<10:14:37,  1.43s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13251/39016 [6:05:27<11:40:08,  1.63s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13267/39016 [6:06:00<12:31:57,  1.75s/it]2023-07-02 05:11:41,315 - INFO - Train | Sample # 63920 | Loss 0.4863
+finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13283/39016 [6:06:29<12:42:24,  1.78s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13299/39016 [6:07:01<13:11:30,  1.85s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13315/39016 [6:07:28<12:49:30,  1.80s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13331/39016 [6:07:57<12:48:49,  1.80s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13347/39016 [6:08:29<13:15:27,  1.86s/it]2023-07-02 05:14:09,179 - INFO - Train | Sample # 64000 | Loss 0.8354
+2023-07-02 05:14:10,150 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 05:14:28,028 - INFO - Test | Sample # 64000 | AP 0.3548
+2023-07-02 05:14:28,048 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 05:15:04,726 - INFO - Test | Sample # 64000 | AP 0.3030
+2023-07-02 05:15:04,793 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 05:15:46,263 - INFO - Test | Sample # 64000 | AP 0.3423
+finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13363/39016 [6:10:33<25:55:02,  3.64s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13379/39016 [6:11:01<21:52:12,  3.07s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13395/39016 [6:11:34<19:34:55,  2.75s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13411/39016 [6:11:57<16:46:03,  2.36s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13427/39016 [6:12:26<15:37:14,  2.20s/it]2023-07-02 05:18:04,153 - INFO - Train | Sample # 64080 | Loss 0.4449
+finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13443/39016 [6:12:52<14:24:40,  2.03s/it]finetune - Seed 2 Task 4 (rainy) training:  34%|███▍      | 13459/39016 [6:13:18<13:31:31,  1.91s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13475/39016 [6:13:41<12:29:50,  1.76s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13491/39016 [6:14:06<12:06:35,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13507/39016 [6:14:32<11:52:47,  1.68s/it]2023-07-02 05:20:09,416 - INFO - Train | Sample # 64160 | Loss 0.0988
+finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13523/39016 [6:14:58<11:50:39,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13539/39016 [6:15:23<11:35:49,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13555/39016 [6:15:52<11:54:01,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13571/39016 [6:16:21<12:14:53,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13587/39016 [6:16:47<12:00:10,  1.70s/it]2023-07-02 05:22:26,449 - INFO - Train | Sample # 64240 | Loss 0.0899
+finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13603/39016 [6:17:15<12:03:07,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13619/39016 [6:17:44<12:18:04,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13635/39016 [6:18:14<12:33:34,  1.78s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▍      | 13651/39016 [6:18:43<12:39:05,  1.80s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13667/39016 [6:19:08<12:09:41,  1.73s/it]2023-07-02 05:24:43,676 - INFO - Train | Sample # 64320 | Loss 0.4994
+finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13683/39016 [6:19:32<11:33:29,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13699/39016 [6:19:59<11:42:55,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13715/39016 [6:20:24<11:31:20,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13731/39016 [6:20:50<11:24:33,  1.62s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13747/39016 [6:21:16<11:27:01,  1.63s/it]2023-07-02 05:26:57,848 - INFO - Train | Sample # 64400 | Loss 0.5667
+finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13763/39016 [6:21:47<12:05:21,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13779/39016 [6:22:16<12:15:21,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13795/39016 [6:22:48<12:44:07,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13811/39016 [6:23:17<12:41:53,  1.81s/it]finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13827/39016 [6:23:45<12:35:28,  1.80s/it]2023-07-02 05:29:26,694 - INFO - Train | Sample # 64480 | Loss 1.0091
+finetune - Seed 2 Task 4 (rainy) training:  35%|███▌      | 13843/39016 [6:24:15<12:49:13,  1.83s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 13859/39016 [6:24:43<12:36:19,  1.80s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 13875/39016 [6:25:16<13:04:04,  1.87s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 13891/39016 [6:25:40<12:20:06,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 13907/39016 [6:26:08<12:20:00,  1.77s/it]2023-07-02 05:31:51,310 - INFO - Train | Sample # 64560 | Loss 0.5409
+finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 13923/39016 [6:26:40<12:49:07,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 13939/39016 [6:27:01<11:38:43,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 13955/39016 [6:27:30<11:57:33,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 13971/39016 [6:28:03<12:38:05,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 13987/39016 [6:28:27<11:57:36,  1.72s/it]2023-07-02 05:34:05,352 - INFO - Train | Sample # 64640 | Loss 0.2047
+finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 14003/39016 [6:28:53<11:50:27,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 14019/39016 [6:29:21<11:53:10,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 14035/39016 [6:29:49<11:54:14,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 14051/39016 [6:30:07<10:45:53,  1.55s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 14067/39016 [6:30:39<11:39:19,  1.68s/it]2023-07-02 05:36:21,130 - INFO - Train | Sample # 64720 | Loss 0.7504
+finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 14083/39016 [6:31:10<12:05:56,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 14099/39016 [6:31:31<11:10:43,  1.62s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 14115/39016 [6:31:52<10:33:36,  1.53s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▌      | 14131/39016 [6:32:19<10:55:55,  1.58s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▋      | 14147/39016 [6:32:54<12:08:46,  1.76s/it]2023-07-02 05:38:25,035 - INFO - Train | Sample # 64800 | Loss 0.6987
+finetune - Seed 2 Task 4 (rainy) training:  36%|███▋      | 14163/39016 [6:33:12<10:54:24,  1.58s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▋      | 14179/39016 [6:33:31<10:01:20,  1.45s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▋      | 14195/39016 [6:33:56<10:16:58,  1.49s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▋      | 14211/39016 [6:34:24<10:48:18,  1.57s/it]finetune - Seed 2 Task 4 (rainy) training:  36%|███▋      | 14227/39016 [6:34:42<9:52:44,  1.43s/it] 2023-07-02 05:40:19,373 - INFO - Train | Sample # 64880 | Loss 0.5289
+finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14243/39016 [6:35:08<10:17:53,  1.50s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14259/39016 [6:35:36<10:48:37,  1.57s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14275/39016 [6:36:02<10:48:45,  1.57s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14291/39016 [6:36:26<10:45:45,  1.57s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14307/39016 [6:36:58<11:35:13,  1.69s/it]2023-07-02 05:42:40,350 - INFO - Train | Sample # 64960 | Loss 0.4807
+finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14323/39016 [6:37:28<11:57:26,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14339/39016 [6:37:47<10:48:38,  1.58s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14355/39016 [6:38:20<11:46:27,  1.72s/it]2023-07-02 05:43:32,494 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 05:43:52,207 - INFO - Test | Sample # 65000 | AP 0.2003
+2023-07-02 05:43:52,229 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 05:44:23,144 - INFO - Test | Sample # 65000 | AP 0.1747
+2023-07-02 05:44:23,182 - INFO - Seed 2 Task 4 evaluating task 4
+
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:12  model_time: 0.4431 (0.4431)  evaluator_time: 0.0577 (0.0577)  time: 0.8880  data: 0.3712  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4506 (0.4411)  evaluator_time: 0.1123 (0.1537)  time: 0.9601  data: 0.3465  max mem: 18895
+Test: Total time: 0:00:13 (0.9603 s / it)
+Averaged stats: model_time: 0.4506 (0.4411)  evaluator_time: 0.1123 (0.1537)
+Accumulating evaluation results...
+DONE (t=0.25s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.213
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.355
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.225
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.095
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.423
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.520
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.182
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.289
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.296
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.158
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.522
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.652
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:26  model_time: 0.4524 (0.4524)  evaluator_time: 0.2654 (0.2654)  time: 1.0225  data: 0.2886  max mem: 18895
+Test:  [25/26]  eta: 0:00:01  model_time: 0.4477 (0.4534)  evaluator_time: 0.1296 (0.1615)  time: 0.9905  data: 0.3660  max mem: 18895
+Test: Total time: 0:00:26 (1.0093 s / it)
+Averaged stats: model_time: 0.4477 (0.4534)  evaluator_time: 0.1296 (0.1615)
+Accumulating evaluation results...
+DONE (t=0.58s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.175
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.303
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.184
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.085
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.348
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.403
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.165
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.269
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.279
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.154
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.467
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.594
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:29  model_time: 0.4483 (0.4483)  evaluator_time: 0.1879 (0.1879)  time: 0.9473  data: 0.2907  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4496 (0.4518)  evaluator_time: 0.0947 (0.1672)  time: 0.9573  data: 0.3149  max mem: 18895
+Test: Total time: 0:00:30 (0.9764 s / it)
+Averaged stats: model_time: 0.4496 (0.4518)  evaluator_time: 0.0947 (0.1672)
+Accumulating evaluation results...
+DONE (t=0.49s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.201
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.342
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.214
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.105
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.381
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.376
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.187
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.291
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.299
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.167
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.520
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.551
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:12  model_time: 0.4381 (0.4381)  evaluator_time: 0.0266 (0.0266)  time: 0.8614  data: 0.3702  max mem: 18895
+Test:  [13/14]  eta: 0:00:01  model_time: 0.4497 (0.4638)  evaluator_time: 0.0711 (0.1016)  time: 1.0187  data: 0.4290  max mem: 18895
+Test: Total time: 0:00:14 (1.0188 s / it)
+Averaged stats: model_time: 0.4497 (0.4638)  evaluator_time: 0.0711 (0.1016)
+Accumulating evaluation results...
+DONE (t=0.15s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.113
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.200
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.122
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.064
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.207
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.287
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.101
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.179
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.182
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.097
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.308
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.400
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:28  model_time: 0.5092 (0.5092)  evaluator_time: 0.2639 (0.2639)  time: 1.0854  data: 0.2839  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4436 (0.4459)  evaluator_time: 0.0661 (0.0715)  time: 0.8379  data: 0.3091  max mem: 18895
+Test: Total time: 0:00:22 (0.8473 s / it)
+Averaged stats: model_time: 0.4436 (0.4459)  evaluator_time: 0.0661 (0.0715)
+Accumulating evaluation results...
+DONE (t=0.26s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.099
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.175
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.096
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.053
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.195
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.189
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.096
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.162
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.165
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.079
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.294
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.339
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:33  model_time: 0.4918 (0.4918)  evaluator_time: 0.1163 (0.1163)  time: 1.0916  data: 0.4535  max mem: 18895
+Test:  [30/31]  eta: 0:00:01  model_time: 0.4471 (0.4672)  evaluator_time: 0.0651 (0.1018)  time: 1.0118  data: 0.4213  max mem: 18895
+Test: Total time: 0:00:31 (1.0186 s / it)
+Averaged stats: model_time: 0.4471 (0.4672)  evaluator_time: 0.0651 (0.1018)
+Accumulating evaluation results...
+DONE (t=0.37s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.144
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.240
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.162
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.076
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.251
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.2712023-07-02 05:45:07,539 - INFO - Test | Sample # 65000 | AP 0.2400
+finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14363/39016 [6:39:55<32:39:49,  4.77s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14371/39016 [6:40:20<29:24:24,  4.30s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14387/39016 [6:40:41<23:17:29,  3.40s/it]2023-07-02 05:46:36,419 - INFO - Train | Sample # 65040 | Loss 0.8575
+finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14403/39016 [6:41:26<22:01:37,  3.22s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14419/39016 [6:42:01<19:48:27,  2.90s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14435/39016 [6:42:37<18:35:12,  2.72s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14451/39016 [6:43:04<16:22:11,  2.40s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14467/39016 [6:43:24<13:59:54,  2.05s/it]2023-07-02 05:49:02,614 - INFO - Train | Sample # 65120 | Loss 0.6653
+finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14483/39016 [6:43:52<13:21:19,  1.96s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14499/39016 [6:44:23<13:22:30,  1.96s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14515/39016 [6:44:47<12:26:20,  1.83s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14531/39016 [6:45:17<12:30:04,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14547/39016 [6:45:53<13:15:00,  1.95s/it]2023-07-02 05:51:32,381 - INFO - Train | Sample # 65200 | Loss 0.2303
+finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14563/39016 [6:46:20<12:44:23,  1.88s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14579/39016 [6:46:49<12:38:08,  1.86s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14595/39016 [6:47:20<12:50:20,  1.89s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14611/39016 [6:47:49<12:37:11,  1.86s/it]finetune - Seed 2 Task 4 (rainy) training:  37%|███▋      | 14627/39016 [6:48:15<12:03:49,  1.78s/it]2023-07-02 05:53:56,254 - INFO - Train | Sample # 65280 | Loss 0.7327
+finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14643/39016 [6:48:44<12:08:44,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14659/39016 [6:49:12<12:02:57,  1.78s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14675/39016 [6:49:36<11:26:58,  1.69s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14691/39016 [6:49:59<11:02:13,  1.63s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14707/39016 [6:50:29<11:23:55,  1.69s/it]2023-07-02 05:56:11,212 - INFO - Train | Sample # 65360 | Loss 0.4763
+finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14723/39016 [6:51:00<11:57:22,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14739/39016 [6:51:22<11:05:16,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14755/39016 [6:51:53<11:40:53,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14771/39016 [6:52:23<12:02:49,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14787/39016 [6:52:48<11:34:34,  1.72s/it]2023-07-02 05:58:25,958 - INFO - Train | Sample # 65440 | Loss 0.1839
+finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14803/39016 [6:53:14<11:23:32,  1.69s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14819/39016 [6:53:45<11:46:08,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14835/39016 [6:54:13<11:47:19,  1.76s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14851/39016 [6:54:40<11:39:44,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14867/39016 [6:55:15<12:35:37,  1.88s/it]2023-07-02 06:00:57,651 - INFO - Train | Sample # 65520 | Loss 0.8039
+finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14883/39016 [6:55:46<12:42:17,  1.90s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14899/39016 [6:56:08<11:34:56,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14915/39016 [6:56:41<12:17:23,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14931/39016 [6:57:09<12:08:07,  1.81s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14947/39016 [6:57:32<11:20:02,  1.70s/it]2023-07-02 06:03:08,399 - INFO - Train | Sample # 65600 | Loss 0.6720
+finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14963/39016 [6:57:58<11:12:38,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14979/39016 [6:58:29<11:41:25,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 14995/39016 [6:58:56<11:35:46,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  38%|███▊      | 15011/39016 [6:59:19<10:56:26,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▊      | 15027/39016 [6:59:49<11:22:29,  1.71s/it]2023-07-02 06:05:25,012 - INFO - Train | Sample # 65680 | Loss 0.8522
+finetune - Seed 2 Task 4 (rainy) training:  39%|███▊      | 15043/39016 [7:00:13<11:03:40,  1.66s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▊      | 15059/39016 [7:00:37<10:42:26,  1.61s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▊      | 15075/39016 [7:01:04<10:52:24,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▊      | 15091/39016 [7:01:31<10:53:24,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▊      | 15107/39016 [7:01:56<10:44:22,  1.62s/it]2023-07-02 06:07:36,329 - INFO - Train | Sample # 65760 | Loss 0.7047
+finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15123/39016 [7:02:24<11:04:28,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15139/39016 [7:02:58<11:59:07,  1.81s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15155/39016 [7:03:26<11:45:47,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15171/39016 [7:03:54<11:42:52,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15187/39016 [7:04:20<11:30:11,  1.74s/it]2023-07-02 06:09:56,329 - INFO - Train | Sample # 65840 | Loss 0.3977
+finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15203/39016 [7:04:45<11:06:28,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15219/39016 [7:05:06<10:20:23,  1.56s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15235/39016 [7:05:31<10:22:18,  1.57s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15251/39016 [7:06:00<10:51:37,  1.65s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15267/39016 [7:06:24<10:30:10,  1.59s/it]2023-07-02 06:12:01,707 - INFO - Train | Sample # 65920 | Loss 0.6473
+finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15283/39016 [7:06:49<10:29:05,  1.59s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15299/39016 [7:07:16<10:42:23,  1.63s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15315/39016 [7:07:49<11:33:04,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15331/39016 [7:08:14<11:05:29,  1.69s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15347/39016 [7:08:41<11:04:38,  1.68s/it]2023-07-02 06:14:20,020 - INFO - Train | Sample # 66000 | Loss 0.7238
+2023-07-02 06:14:20,280 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 06:14:37,650 - INFO - Test | Sample # 66000 | AP 0.2989
+2023-07-02 06:14:37,676 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 06:15:12,757 - INFO - Test | Sample # 66000 | AP 0.2825
+2023-07-02 06:15:12,789 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 06:15:55,031 - INFO - Test | Sample # 66000 | AP 0.3121
+finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15363/39016 [7:10:42<22:43:48,  3.46s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15379/39016 [7:11:11<19:27:28,  2.96s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15395/39016 [7:11:39<17:03:35,  2.60s/it]finetune - Seed 2 Task 4 (rainy) training:  39%|███▉      | 15411/39016 [7:12:03<14:49:50,  2.26s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15427/39016 [7:12:27<13:22:04,  2.04s/it]2023-07-02 06:18:04,122 - INFO - Train | Sample # 66080 | Loss 1.0336
+finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15443/39016 [7:12:53<12:30:28,  1.91s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15459/39016 [7:13:26<12:50:32,  1.96s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15475/39016 [7:13:54<12:20:43,  1.89s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15491/39016 [7:14:22<12:08:53,  1.86s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15507/39016 [7:14:52<12:08:47,  1.86s/it]2023-07-02 06:20:30,522 - INFO - Train | Sample # 66160 | Loss 0.8827
+finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15523/39016 [7:15:20<11:52:04,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15539/39016 [7:15:49<11:50:50,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15555/39016 [7:16:17<11:46:13,  1.81s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15571/39016 [7:16:42<11:16:09,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15587/39016 [7:17:09<11:12:54,  1.72s/it]2023-07-02 06:22:52,777 - INFO - Train | Sample # 66240 | Loss 0.7872
+finetune - Seed 2 Task 4 (rainy) training:  40%|███▉      | 15603/39016 [7:17:42<11:46:59,  1.81s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15619/39016 [7:18:06<11:11:24,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15635/39016 [7:18:33<11:09:24,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15651/39016 [7:19:19<13:20:26,  2.06s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15667/39016 [7:19:52<13:23:31,  2.06s/it]2023-07-02 06:25:43,518 - INFO - Train | Sample # 66320 | Loss 0.5383
+finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15683/39016 [7:20:34<14:29:00,  2.23s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15699/39016 [7:21:07<14:10:53,  2.19s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15715/39016 [7:21:35<13:15:28,  2.05s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15731/39016 [7:22:10<13:28:18,  2.08s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15747/39016 [7:22:36<12:39:10,  1.96s/it]2023-07-02 06:28:12,746 - INFO - Train | Sample # 66400 | Loss 0.2666
+finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15763/39016 [7:23:00<11:44:47,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15779/39016 [7:23:31<11:54:30,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  40%|████      | 15795/39016 [7:23:59<11:49:17,  1.83s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15811/39016 [7:24:23<11:08:53,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15827/39016 [7:24:55<11:36:05,  1.80s/it]2023-07-02 06:30:37,151 - INFO - Train | Sample # 66480 | Loss 0.5193
+finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15843/39016 [7:25:25<11:48:08,  1.83s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15859/39016 [7:25:45<10:40:03,  1.66s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15875/39016 [7:26:19<11:29:14,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15891/39016 [7:26:48<11:30:40,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15907/39016 [7:27:08<10:27:45,  1.63s/it]2023-07-02 06:32:40,312 - INFO - Train | Sample # 66560 | Loss 0.6508
+finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15923/39016 [7:27:29<9:52:46,  1.54s/it] finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15939/39016 [7:28:00<10:39:13,  1.66s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15955/39016 [7:28:29<10:58:46,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15971/39016 [7:28:47<9:47:09,  1.53s/it] finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 15987/39016 [7:29:16<10:18:51,  1.61s/it]2023-07-02 06:34:52,134 - INFO - Train | Sample # 66640 | Loss 0.2620
+finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 16003/39016 [7:29:41<10:12:10,  1.60s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 16019/39016 [7:30:05<10:03:50,  1.58s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 16035/39016 [7:30:26<9:29:46,  1.49s/it] finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 16051/39016 [7:30:57<10:20:42,  1.62s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 16067/39016 [7:31:27<10:50:02,  1.70s/it]2023-07-02 06:36:59,968 - INFO - Train | Sample # 66720 | Loss 0.4241
+finetune - Seed 2 Task 4 (rainy) training:  41%|████      | 16083/39016 [7:31:48<10:09:38,  1.60s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████▏     | 16099/39016 [7:32:19<10:47:48,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████▏     | 16115/39016 [7:32:51<11:21:09,  1.78s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████▏     | 16131/39016 [7:33:12<10:27:40,  1.65s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████▏     | 16147/39016 [7:33:41<10:45:40,  1.69s/it]2023-07-02 06:39:23,393 - INFO - Train | Sample # 66800 | Loss 0.3896
+finetune - Seed 2 Task 4 (rainy) training:  41%|████▏     | 16163/39016 [7:34:12<11:12:48,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  41%|████▏     | 16179/39016 [7:34:36<10:41:03,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16195/39016 [7:34:58<10:02:05,  1.58s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16211/39016 [7:35:21<9:49:55,  1.55s/it] finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16227/39016 [7:35:44<9:37:31,  1.52s/it]2023-07-02 06:41:15,390 - INFO - Train | Sample # 66880 | Loss 0.2410
+finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16243/39016 [7:36:04<9:02:27,  1.43s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16259/39016 [7:36:31<9:29:21,  1.50s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16275/39016 [7:36:58<9:49:52,  1.56s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16291/39016 [7:37:22<9:48:55,  1.55s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16307/39016 [7:37:49<10:03:05,  1.59s/it]2023-07-02 06:43:34,876 - INFO - Train | Sample # 66960 | Loss 0.8019
+finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16323/39016 [7:38:23<11:02:46,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16339/39016 [7:38:49<10:48:11,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16355/39016 [7:39:17<10:51:38,  1.73s/it]2023-07-02 06:44:30,197 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 06:44:49,978 - INFO - Test | Sample # 67000 | AP 0.3026
+2023-07-02 06:44:50,010 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 06:45:24,413 - INFO - Test | Sample # 67000 | AP 0.2833
+2023-07-02 06:45:24,490 - INFO - Seed 2 Task 4 evaluating task 4
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.147
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.225
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.227
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.111
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.407
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.405
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:13  model_time: 0.4567 (0.4567)  evaluator_time: 0.0609 (0.0609)  time: 0.9429  data: 0.4016  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4514 (0.4446)  evaluator_time: 0.0634 (0.0854)  time: 0.9030  data: 0.3503  max mem: 18895
+Test: Total time: 0:00:12 (0.9031 s / it)
+Averaged stats: model_time: 0.4514 (0.4446)  evaluator_time: 0.0634 (0.0854)
+Accumulating evaluation results...
+DONE (t=0.17s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.176
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.299
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.188
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.087
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.393
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.428
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.170
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.263
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.268
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.127
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.492
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.655
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:28  model_time: 0.4556 (0.4556)  evaluator_time: 0.1633 (0.1633)  time: 1.1081  data: 0.4670  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4523 (0.4521)  evaluator_time: 0.0803 (0.1044)  time: 0.9490  data: 0.3707  max mem: 18895
+Test: Total time: 0:00:25 (0.9702 s / it)
+Averaged stats: model_time: 0.4523 (0.4521)  evaluator_time: 0.0803 (0.1044)
+Accumulating evaluation results...
+DONE (t=0.30s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.160
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.283
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.159
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.088
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.297
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.356
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.151
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.238
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.244
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.127
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.395
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.577
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:42  model_time: 0.5371 (0.5371)  evaluator_time: 0.2259 (0.2259)  time: 1.3707  data: 0.5312  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4486 (0.4600)  evaluator_time: 0.0660 (0.0986)  time: 0.8925  data: 0.3442  max mem: 18895
+Test: Total time: 0:00:29 (0.9597 s / it)
+Averaged stats: model_time: 0.4486 (0.4600)  evaluator_time: 0.0660 (0.0986)
+Accumulating evaluation results...
+DONE (t=0.53s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.185
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.312
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.191
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.096
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.347
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.364
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.169
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.264
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.269
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.141
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.441
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.576
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:11  model_time: 0.4732 (0.4732)  evaluator_time: 0.0663 (0.0663)  time: 0.8411  data: 0.2820  max mem: 18895
+Test:  [13/14]  eta: 0:00:01  model_time: 0.4675 (0.4634)  evaluator_time: 0.0832 (0.1178)  time: 1.0242  data: 0.4166  max mem: 18895
+Test: Total time: 0:00:14 (1.0243 s / it)
+Averaged stats: model_time: 0.4675 (0.4634)  evaluator_time: 0.0832 (0.1178)
+Accumulating evaluation results...
+DONE (t=0.16s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.183
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.303
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.195
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.102
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.388
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.409
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.168
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.273
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.279
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.152
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.513
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.608
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:25  model_time: 0.4560 (0.4560)  evaluator_time: 0.1712 (0.1712)  time: 0.9798  data: 0.3331  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4506 (0.4575)  evaluator_time: 0.0926 (0.1079)  time: 0.9142  data: 0.3321  max mem: 18895
+Test: Total time: 0:00:23 (0.9229 s / it)
+Averaged stats: model_time: 0.4506 (0.4575)  evaluator_time: 0.0926 (0.1079)
+Accumulating evaluation results...
+DONE (t=0.30s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.165
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.283
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.173
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.098
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.317
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.317
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.150
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.259
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.266
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.152
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.447
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.505
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:33  model_time: 0.4818 (0.4818)  evaluator_time: 0.1197 (0.1197)  time: 1.0745  data: 0.4471  max mem: 18895
+Test:  [30/31]  eta: 0:00:01  model_time: 0.4472 (0.4661)  evaluator_time: 0.0844 (0.1416)  time: 0.9904  data: 0.3588  max mem: 18895
+Test: Total time: 0:00:31 (1.0038 s / it)
+Averaged stats: model_time: 0.4472 (0.4661)  evaluator_time: 0.0844 (0.1416)
+Accumulating evaluation results...
+DONE (t=0.36s).2023-07-02 06:46:06,316 - INFO - Test | Sample # 67000 | AP 0.3259
+finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16363/39016 [7:40:54<30:17:36,  4.81s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16371/39016 [7:41:21<27:34:27,  4.38s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16387/39016 [7:41:41<21:44:10,  3.46s/it]2023-07-02 06:47:21,363 - INFO - Train | Sample # 67040 | Loss 0.7105
+finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16403/39016 [7:42:09<18:25:58,  2.93s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16419/39016 [7:42:40<16:31:21,  2.63s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16435/39016 [7:43:04<14:23:15,  2.29s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16451/39016 [7:43:28<12:57:03,  2.07s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16467/39016 [7:43:57<12:28:17,  1.99s/it]2023-07-02 06:49:40,580 - INFO - Train | Sample # 67120 | Loss 0.5891
+finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16483/39016 [7:44:29<12:29:31,  2.00s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16499/39016 [7:44:50<11:12:39,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16515/39016 [7:45:19<11:10:05,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16531/39016 [7:45:51<11:33:48,  1.85s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16547/39016 [7:46:14<10:46:14,  1.73s/it]2023-07-02 06:51:57,314 - INFO - Train | Sample # 67200 | Loss 0.3217
+finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16563/39016 [7:46:46<11:20:07,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  42%|████▏     | 16579/39016 [7:47:15<11:18:07,  1.81s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16595/39016 [7:47:38<10:32:03,  1.69s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16611/39016 [7:48:05<10:34:38,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16627/39016 [7:48:33<10:35:29,  1.70s/it]2023-07-02 06:54:10,883 - INFO - Train | Sample # 67280 | Loss 0.4033
+finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16643/39016 [7:48:58<10:24:42,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16659/39016 [7:49:21<9:53:04,  1.59s/it] finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16675/39016 [7:49:52<10:35:22,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16691/39016 [7:50:22<10:50:48,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16707/39016 [7:50:46<10:26:41,  1.69s/it]2023-07-02 06:56:26,969 - INFO - Train | Sample # 67360 | Loss 0.2709
+finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16723/39016 [7:51:15<10:38:45,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16739/39016 [7:51:43<10:42:21,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16755/39016 [7:52:04<9:53:48,  1.60s/it] finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16771/39016 [7:52:34<10:21:26,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16787/39016 [7:53:05<10:51:58,  1.76s/it]2023-07-02 06:58:41,990 - INFO - Train | Sample # 67440 | Loss 0.0905
+finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16803/39016 [7:53:31<10:36:06,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16819/39016 [7:53:58<10:35:09,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16835/39016 [7:54:29<10:55:23,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16851/39016 [7:54:58<11:01:40,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16867/39016 [7:55:27<11:00:17,  1.79s/it]2023-07-02 07:01:12,315 - INFO - Train | Sample # 67520 | Loss 0.5589
+finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16883/39016 [7:56:01<11:41:06,  1.90s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16899/39016 [7:56:35<12:02:26,  1.96s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16915/39016 [7:57:14<12:58:29,  2.11s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16931/39016 [7:57:54<13:38:51,  2.22s/it]finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16947/39016 [7:58:17<12:09:29,  1.98s/it]2023-07-02 07:03:57,017 - INFO - Train | Sample # 67600 | Loss 0.2876
+finetune - Seed 2 Task 4 (rainy) training:  43%|████▎     | 16963/39016 [7:58:46<11:53:50,  1.94s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▎     | 16979/39016 [7:59:13<11:23:48,  1.86s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▎     | 16995/39016 [7:59:43<11:25:30,  1.87s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▎     | 17011/39016 [8:00:12<11:15:30,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▎     | 17027/39016 [8:00:42<11:21:16,  1.86s/it]2023-07-02 07:06:22,055 - INFO - Train | Sample # 67680 | Loss 0.9994
+finetune - Seed 2 Task 4 (rainy) training:  44%|████▎     | 17043/39016 [8:01:11<11:14:54,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▎     | 17059/39016 [8:01:38<10:58:52,  1.80s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17075/39016 [8:02:10<11:16:56,  1.85s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17091/39016 [8:02:38<11:08:12,  1.83s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17107/39016 [8:03:05<10:50:49,  1.78s/it]2023-07-02 07:08:44,192 - INFO - Train | Sample # 67760 | Loss 0.7754
+finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17123/39016 [8:03:32<10:40:18,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17139/39016 [8:04:02<10:52:38,  1.79s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17155/39016 [8:04:26<10:18:06,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17171/39016 [8:04:53<10:20:48,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17187/39016 [8:05:26<10:55:06,  1.80s/it]2023-07-02 07:10:59,788 - INFO - Train | Sample # 67840 | Loss 0.6588
+finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17203/39016 [8:05:47<10:05:15,  1.66s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17219/39016 [8:06:07<9:20:21,  1.54s/it] finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17235/39016 [8:06:33<9:25:44,  1.56s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17251/39016 [8:06:53<8:53:52,  1.47s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17267/39016 [8:07:10<8:10:19,  1.35s/it]2023-07-02 07:12:52,397 - INFO - Train | Sample # 67920 | Loss 0.9482
+finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17283/39016 [8:07:41<9:13:12,  1.53s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17299/39016 [8:08:08<9:28:38,  1.57s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17315/39016 [8:08:33<9:29:04,  1.57s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17331/39016 [8:09:00<9:38:09,  1.60s/it]finetune - Seed 2 Task 4 (rainy) training:  44%|████▍     | 17347/39016 [8:09:33<10:32:05,  1.75s/it]2023-07-02 07:15:11,104 - INFO - Train | Sample # 68000 | Loss 0.5920
+2023-07-02 07:15:11,922 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 07:15:29,694 - INFO - Test | Sample # 68000 | AP 0.3213
+2023-07-02 07:15:29,770 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 07:16:05,777 - INFO - Test | Sample # 68000 | AP 0.3161
+2023-07-02 07:16:05,833 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 07:16:45,280 - INFO - Test | Sample # 68000 | AP 0.3402
+finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17363/39016 [8:11:32<20:47:16,  3.46s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17379/39016 [8:12:04<18:07:16,  3.02s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17395/39016 [8:12:35<16:06:20,  2.68s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17411/39016 [8:12:57<13:44:50,  2.29s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17427/39016 [8:13:23<12:31:12,  2.09s/it]2023-07-02 07:19:06,381 - INFO - Train | Sample # 68080 | Loss 0.6381
+finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17443/39016 [8:13:56<12:27:56,  2.08s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17459/39016 [8:14:27<12:13:33,  2.04s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17475/39016 [8:14:51<11:13:02,  1.87s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17491/39016 [8:15:25<11:43:55,  1.96s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17507/39016 [8:15:55<11:30:41,  1.93s/it]2023-07-02 07:21:28,364 - INFO - Train | Sample # 68160 | Loss 0.1948
+finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17523/39016 [8:16:17<10:32:20,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17539/39016 [8:16:49<10:58:57,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▍     | 17555/39016 [8:17:20<11:09:58,  1.87s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17571/39016 [8:17:48<10:53:22,  1.83s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17587/39016 [8:18:21<11:15:35,  1.89s/it]2023-07-02 07:24:00,680 - INFO - Train | Sample # 68240 | Loss 0.2602
+finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17603/39016 [8:18:51<11:12:26,  1.88s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17619/39016 [8:19:17<10:46:19,  1.81s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17635/39016 [8:19:44<10:31:33,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17651/39016 [8:20:16<10:56:45,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17667/39016 [8:20:44<10:46:51,  1.82s/it]2023-07-02 07:26:17,687 - INFO - Train | Sample # 68320 | Loss 1.1802
+finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17683/39016 [8:21:07<10:07:53,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17699/39016 [8:21:35<10:08:08,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17715/39016 [8:22:04<10:16:48,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17731/39016 [8:22:28<9:56:10,  1.68s/it] finetune - Seed 2 Task 4 (rainy) training:  45%|████▌     | 17747/39016 [8:22:53<9:38:55,  1.63s/it]2023-07-02 07:28:36,075 - INFO - Train | Sample # 68400 | Loss 0.7818
+finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17763/39016 [8:23:25<10:18:52,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17779/39016 [8:23:53<10:17:28,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17795/39016 [8:24:17<9:53:00,  1.68s/it] finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17811/39016 [8:24:44<9:56:25,  1.69s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17827/39016 [8:25:15<10:21:04,  1.76s/it]2023-07-02 07:30:57,399 - INFO - Train | Sample # 68480 | Loss 0.6404
+finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17843/39016 [8:25:47<10:43:27,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17859/39016 [8:26:19<11:00:31,  1.87s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17875/39016 [8:26:49<11:04:00,  1.88s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17891/39016 [8:27:12<10:15:57,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17907/39016 [8:27:44<10:38:17,  1.81s/it]2023-07-02 07:33:24,699 - INFO - Train | Sample # 68560 | Loss 0.0853
+finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17923/39016 [8:28:13<10:38:22,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17939/39016 [8:28:32<9:34:04,  1.63s/it] finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17955/39016 [8:28:56<9:21:51,  1.60s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17971/39016 [8:29:31<10:19:06,  1.77s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 17987/39016 [8:29:57<10:07:08,  1.73s/it]2023-07-02 07:35:27,171 - INFO - Train | Sample # 68640 | Loss 0.2820
+finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 18003/39016 [8:30:15<8:58:40,  1.54s/it] finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 18019/39016 [8:30:48<9:53:22,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▌     | 18035/39016 [8:31:17<10:07:22,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▋     | 18051/39016 [8:31:42<9:50:25,  1.69s/it] finetune - Seed 2 Task 4 (rainy) training:  46%|████▋     | 18067/39016 [8:32:05<9:19:58,  1.60s/it]2023-07-02 07:37:49,847 - INFO - Train | Sample # 68720 | Loss 0.3648
+finetune - Seed 2 Task 4 (rainy) training:  46%|████▋     | 18083/39016 [8:32:38<10:08:56,  1.75s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▋     | 18099/39016 [8:33:11<10:39:59,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▋     | 18115/39016 [8:33:40<10:40:48,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  46%|████▋     | 18131/39016 [8:34:14<11:07:22,  1.92s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18147/39016 [8:34:43<11:00:09,  1.90s/it]2023-07-02 07:40:21,677 - INFO - Train | Sample # 68800 | Loss 0.4513
+finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18163/39016 [8:35:10<10:33:35,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18179/39016 [8:35:43<10:56:33,  1.89s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18195/39016 [8:36:08<10:26:49,  1.81s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18211/39016 [8:36:34<10:02:05,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18227/39016 [8:36:54<9:14:28,  1.60s/it] 2023-07-02 07:42:28,074 - INFO - Train | Sample # 68880 | Loss 0.5899
+finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18243/39016 [8:37:16<8:52:24,  1.54s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18259/39016 [8:37:43<9:06:21,  1.58s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18275/39016 [8:38:06<8:47:59,  1.53s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18291/39016 [8:38:36<9:28:36,  1.65s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18307/39016 [8:39:03<9:30:23,  1.65s/it]2023-07-02 07:44:40,367 - INFO - Train | Sample # 68960 | Loss 0.3686
+finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18323/39016 [8:39:28<9:22:24,  1.63s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18339/39016 [8:39:54<9:20:47,  1.63s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18355/39016 [8:40:20<9:17:40,  1.62s/it]2023-07-02 07:45:32,733 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 07:45:53,261 - INFO - Test | Sample # 69000 | AP 0.3101
+2023-07-02 07:45:53,302 - INFO - Seed 2 Task 4 evaluating task 1
+
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.191
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.326
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.208
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.110
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.364
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.321
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.171
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.287
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.292
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.174
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.485
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.508
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:11  model_time: 0.4379 (0.4379)  evaluator_time: 0.0460 (0.0460)  time: 0.8093  data: 0.3098  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4444 (0.4392)  evaluator_time: 0.1147 (0.1363)  time: 0.9434  data: 0.3457  max mem: 18895
+Test: Total time: 0:00:13 (0.9435 s / it)
+Averaged stats: model_time: 0.4444 (0.4392)  evaluator_time: 0.1147 (0.1363)
+Accumulating evaluation results...
+DONE (t=0.36s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.190
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.321
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.211
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.098
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.422
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.346
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.176
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.275
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.283
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.146
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.539
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.548
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:31  model_time: 0.5224 (0.5224)  evaluator_time: 0.3563 (0.3563)  time: 1.2208  data: 0.3254  max mem: 18895
+Test:  [25/26]  eta: 0:00:01  model_time: 0.4536 (0.4580)  evaluator_time: 0.1648 (0.1795)  time: 0.9920  data: 0.3313  max mem: 18895
+Test: Total time: 0:00:26 (1.0062 s / it)
+Averaged stats: model_time: 0.4536 (0.4580)  evaluator_time: 0.1648 (0.1795)
+Accumulating evaluation results...
+DONE (t=0.46s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.176
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.316
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.179
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.100
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.354
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.291
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.157
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.260
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.271
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.155
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.474
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.471
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:31  model_time: 0.4840 (0.4840)  evaluator_time: 0.1623 (0.1623)  time: 1.0155  data: 0.3392  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4420 (0.4472)  evaluator_time: 0.0730 (0.1169)  time: 0.8526  data: 0.2923  max mem: 18895
+Test: Total time: 0:00:28 (0.9088 s / it)
+Averaged stats: model_time: 0.4420 (0.4472)  evaluator_time: 0.0730 (0.1169)
+Accumulating evaluation results...
+DONE (t=0.43s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.202
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.340
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.217
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.105
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.413
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.320
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.178
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.289
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.298
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.163
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.540
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.488
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:16  model_time: 0.4715 (0.4715)  evaluator_time: 0.0765 (0.0765)  time: 1.1536  data: 0.5297  max mem: 18895
+Test:  [13/14]  eta: 0:00:01  model_time: 0.4524 (0.4577)  evaluator_time: 0.0899 (0.1289)  time: 1.0518  data: 0.4391  max mem: 18895
+Test: Total time: 0:00:14 (1.0519 s / it)
+Averaged stats: model_time: 0.4524 (0.4577)  evaluator_time: 0.0899 (0.1289)
+Accumulating evaluation results...
+DONE (t=0.16s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.187
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.310
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.201
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.095
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.376
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.451
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.158
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.247
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.253
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.136
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.482
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.554
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:25  model_time: 0.4536 (0.4536)  evaluator_time: 0.2285 (0.2285)  time: 0.9727  data: 0.2713  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4503 (0.4498)  evaluator_time: 0.1163 (0.1295)  time: 0.9306  data: 0.3232  max mem: 18895
+Test: Total time: 0:00:24 (0.9259 s / it)
+Averaged stats: model_time: 0.4503 (0.4498)  evaluator_time: 0.1163 (0.1295)
+Accumulating evaluation results...
+DONE (t=0.36s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.161
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.282
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.166
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.087
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.297
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.380
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.146
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.240
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.249
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.129
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.431
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.5242023-07-02 07:46:25,594 - INFO - Test | Sample # 69000 | AP 0.2820
+2023-07-02 07:46:25,613 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 07:47:07,019 - INFO - Test | Sample # 69000 | AP 0.3185
+finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18363/39016 [8:41:54<26:48:02,  4.67s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18371/39016 [8:42:21<24:29:00,  4.27s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18387/39016 [8:42:50<20:13:03,  3.53s/it]2023-07-02 07:48:30,226 - INFO - Train | Sample # 69040 | Loss 0.9663
+finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18403/39016 [8:43:18<17:08:23,  2.99s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18419/39016 [8:43:44<14:46:41,  2.58s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18435/39016 [8:44:08<12:55:34,  2.26s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18451/39016 [8:44:40<12:32:32,  2.20s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18467/39016 [8:45:10<11:54:35,  2.09s/it]2023-07-02 07:50:46,235 - INFO - Train | Sample # 69120 | Loss 0.4525
+finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18483/39016 [8:45:34<10:53:24,  1.91s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18499/39016 [8:46:05<10:55:29,  1.92s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18515/39016 [8:46:37<11:05:49,  1.95s/it]finetune - Seed 2 Task 4 (rainy) training:  47%|████▋     | 18531/39016 [8:46:58<9:58:38,  1.75s/it] finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18547/39016 [8:47:25<9:49:52,  1.73s/it]2023-07-02 07:53:05,990 - INFO - Train | Sample # 69200 | Loss 0.9030
+finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18563/39016 [8:47:55<10:07:57,  1.78s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18579/39016 [8:48:22<9:57:10,  1.75s/it] finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18595/39016 [8:48:44<9:18:43,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18611/39016 [8:49:18<10:04:06,  1.78s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18627/39016 [8:49:47<10:12:12,  1.80s/it]2023-07-02 07:55:18,026 - INFO - Train | Sample # 69280 | Loss 0.5574
+finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18643/39016 [8:50:05<9:02:59,  1.60s/it] finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18659/39016 [8:50:36<9:34:23,  1.69s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18675/39016 [8:51:11<10:24:17,  1.84s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18691/39016 [8:51:32<9:27:20,  1.67s/it] finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18707/39016 [8:51:52<8:45:11,  1.55s/it]2023-07-02 07:57:34,417 - INFO - Train | Sample # 69360 | Loss 0.5738
+finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18723/39016 [8:52:23<9:26:35,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18739/39016 [8:52:51<9:33:58,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18755/39016 [8:53:08<8:28:41,  1.51s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18771/39016 [8:53:34<8:40:15,  1.54s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18787/39016 [8:54:05<9:21:19,  1.66s/it]2023-07-02 07:59:44,449 - INFO - Train | Sample # 69440 | Loss 0.7246
+finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18803/39016 [8:54:32<9:20:41,  1.66s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18819/39016 [8:54:58<9:13:26,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18835/39016 [8:55:24<9:14:16,  1.65s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18851/39016 [8:55:55<9:45:30,  1.74s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18867/39016 [8:56:18<9:12:33,  1.65s/it]2023-07-02 08:01:58,955 - INFO - Train | Sample # 69520 | Loss 0.7026
+finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18883/39016 [8:56:48<9:35:09,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18899/39016 [8:57:21<10:08:55,  1.82s/it]finetune - Seed 2 Task 4 (rainy) training:  48%|████▊     | 18915/39016 [8:57:46<9:44:53,  1.75s/it] finetune - Seed 2 Task 4 (rainy) training:  49%|████▊     | 18931/39016 [8:58:14<9:40:13,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▊     | 18947/39016 [8:58:40<9:33:22,  1.71s/it]2023-07-02 08:04:19,636 - INFO - Train | Sample # 69600 | Loss 0.6958
+finetune - Seed 2 Task 4 (rainy) training:  49%|████▊     | 18963/39016 [8:59:07<9:30:45,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▊     | 18979/39016 [8:59:35<9:34:47,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▊     | 18995/39016 [9:00:05<9:47:20,  1.76s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▊     | 19011/39016 [9:00:34<9:52:08,  1.78s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19027/39016 [9:00:58<9:25:28,  1.70s/it]2023-07-02 08:06:37,628 - INFO - Train | Sample # 69680 | Loss 0.6888
+finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19043/39016 [9:01:27<9:32:46,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19059/39016 [9:01:54<9:29:41,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19075/39016 [9:02:19<9:14:37,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19091/39016 [9:02:47<9:25:54,  1.70s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19107/39016 [9:03:13<9:17:24,  1.68s/it]2023-07-02 08:08:54,273 - INFO - Train | Sample # 69760 | Loss 0.4851
+finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19123/39016 [9:03:43<9:32:08,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19139/39016 [9:04:07<9:11:21,  1.66s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19155/39016 [9:04:35<9:17:13,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19171/39016 [9:05:04<9:30:09,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19187/39016 [9:05:29<9:16:49,  1.68s/it]2023-07-02 08:11:07,514 - INFO - Train | Sample # 69840 | Loss 0.5126
+finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19203/39016 [9:05:56<9:16:21,  1.68s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19219/39016 [9:06:25<9:25:39,  1.71s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19235/39016 [9:06:48<8:56:06,  1.63s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19251/39016 [9:07:11<8:37:48,  1.57s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19267/39016 [9:07:34<8:23:54,  1.53s/it]2023-07-02 08:13:16,565 - INFO - Train | Sample # 69920 | Loss 0.6858
+finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19283/39016 [9:08:04<8:59:07,  1.64s/it]finetune - Seed 2 Task 4 (rainy) training:  49%|████▉     | 19299/39016 [9:08:29<8:53:24,  1.62s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19315/39016 [9:09:07<10:06:43,  1.85s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19331/39016 [9:09:38<10:11:08,  1.86s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19347/39016 [9:09:57<9:06:40,  1.67s/it] 2023-07-02 08:15:28,677 - INFO - Train | Sample # 70000 | Loss 0.1927
+2023-07-02 08:15:29,072 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 08:15:47,278 - INFO - Test | Sample # 70000 | AP 0.2900
+2023-07-02 08:15:47,291 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 08:16:22,084 - INFO - Test | Sample # 70000 | AP 0.2888
+2023-07-02 08:16:22,109 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 08:16:59,147 - INFO - Test | Sample # 70000 | AP 0.3323
+finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19363/39016 [9:11:46<17:34:38,  3.22s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19379/39016 [9:12:19<15:36:29,  2.86s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19395/39016 [9:12:41<13:13:53,  2.43s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19411/39016 [9:13:01<11:16:16,  2.07s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19427/39016 [9:13:33<11:06:04,  2.04s/it]2023-07-02 08:19:16,837 - INFO - Train | Sample # 70080 | Loss 0.9307
+finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19443/39016 [9:14:05<11:04:37,  2.04s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19459/39016 [9:14:25<9:43:52,  1.79s/it] finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19475/39016 [9:14:49<9:19:20,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19491/39016 [9:15:14<9:02:35,  1.67s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|████▉     | 19507/39016 [9:15:35<8:24:43,  1.55s/it]2023-07-02 08:21:07,311 - INFO - Train | Sample # 70160 | Loss 0.2924
+finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19523/39016 [9:15:55<7:53:46,  1.46s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19539/39016 [9:16:12<7:18:27,  1.35s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19555/39016 [9:16:29<6:49:35,  1.26s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19571/39016 [9:16:46<6:29:59,  1.20s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19587/39016 [9:17:03<6:15:36,  1.16s/it]2023-07-02 08:22:33,382 - INFO - Train | Sample # 70240 | Loss 0.7523
+finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19603/39016 [9:17:21<6:10:07,  1.14s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19619/39016 [9:17:38<6:00:50,  1.12s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19635/39016 [9:17:55<5:55:28,  1.10s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19651/39016 [9:18:12<5:51:06,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19667/39016 [9:18:29<5:49:29,  1.08s/it]2023-07-02 08:24:00,481 - INFO - Train | Sample # 70320 | Loss 0.1834
+finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19683/39016 [9:18:48<5:59:15,  1.11s/it]finetune - Seed 2 Task 4 (rainy) training:  50%|█████     | 19699/39016 [9:19:04<5:51:11,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19715/39016 [9:19:22<5:53:13,  1.10s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19731/39016 [9:19:39<5:48:09,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19747/39016 [9:19:56<5:43:41,  1.07s/it]2023-07-02 08:25:25,002 - INFO - Train | Sample # 70400 | Loss 0.2615
+finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19763/39016 [9:20:12<5:41:00,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19779/39016 [9:20:29<5:38:18,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19795/39016 [9:20:46<5:36:46,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19811/39016 [9:21:02<5:35:52,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19827/39016 [9:21:21<5:44:26,  1.08s/it]2023-07-02 08:26:49,913 - INFO - Train | Sample # 70480 | Loss 0.4520
+finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19843/39016 [9:21:38<5:42:17,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19859/39016 [9:21:55<5:41:49,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19875/39016 [9:22:11<5:39:04,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19891/39016 [9:22:28<5:36:12,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19907/39016 [9:22:45<5:35:17,  1.05s/it]2023-07-02 08:28:14,175 - INFO - Train | Sample # 70560 | Loss 0.5764
+finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19923/39016 [9:23:01<5:34:49,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19939/39016 [9:23:18<5:33:19,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19955/39016 [9:23:36<5:36:46,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19971/39016 [9:23:52<5:35:58,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████     | 19987/39016 [9:24:09<5:34:29,  1.05s/it]2023-07-02 08:29:38,429 - INFO - Train | Sample # 70640 | Loss 0.3726
+finetune - Seed 2 Task 4 (rainy) training:  51%|█████▏    | 20003/39016 [9:24:26<5:32:39,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████▏    | 20019/39016 [9:24:42<5:31:21,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████▏    | 20035/39016 [9:24:59<5:31:36,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████▏    | 20051/39016 [9:25:16<5:30:34,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  51%|█████▏    | 20067/39016 [9:25:32<5:28:56,  1.04s/it]2023-07-02 08:31:02,137 - INFO - Train | Sample # 70720 | Loss 0.2058
+finetune - Seed 2 Task 4 (rainy) training:  51%|█████▏    | 20083/39016 [9:25:49<5:31:13,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20099/39016 [9:26:06<5:31:52,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20115/39016 [9:26:24<5:34:23,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20131/39016 [9:26:40<5:32:17,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20147/39016 [9:26:57<5:30:45,  1.05s/it]2023-07-02 08:32:26,498 - INFO - Train | Sample # 70800 | Loss 0.9549
+finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20163/39016 [9:27:14<5:29:57,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20179/39016 [9:27:31<5:29:22,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20195/39016 [9:27:47<5:29:16,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20211/39016 [9:28:04<5:29:06,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20227/39016 [9:28:21<5:28:15,  1.05s/it]2023-07-02 08:33:50,517 - INFO - Train | Sample # 70880 | Loss 0.9845
+finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20243/39016 [9:28:38<5:29:35,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20259/39016 [9:28:55<5:28:03,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20275/39016 [9:29:11<5:27:35,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20291/39016 [9:29:28<5:27:55,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20307/39016 [9:29:45<5:26:36,  1.05s/it]2023-07-02 08:35:14,288 - INFO - Train | Sample # 70960 | Loss 0.3989
+finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20323/39016 [9:30:02<5:26:01,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20339/39016 [9:30:18<5:25:07,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20355/39016 [9:30:35<5:24:23,  1.04s/it]2023-07-02 08:35:47,673 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 08:36:02,253 - INFO - Test | Sample # 71000 | AP 0.3678
+2023-07-02 08:36:02,302 - INFO - Seed 2 Task 4 evaluating task 1
+
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:31  model_time: 0.4435 (0.4435)  evaluator_time: 0.1565 (0.1565)  time: 1.0290  data: 0.4097  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4530 (0.4622)  evaluator_time: 0.0928 (0.1096)  time: 0.9256  data: 0.3408  max mem: 18895
+Test: Total time: 0:00:29 (0.9403 s / it)
+Averaged stats: model_time: 0.4530 (0.4622)  evaluator_time: 0.0928 (0.1096)
+Accumulating evaluation results...
+DONE (t=0.60s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.189
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.319
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.203
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.099
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.360
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.348
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.160
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.258
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.266
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.146
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.472
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.473
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:12  model_time: 0.4451 (0.4451)  evaluator_time: 0.0343 (0.0343)  time: 0.8879  data: 0.3914  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4506 (0.4383)  evaluator_time: 0.0722 (0.0685)  time: 0.8939  data: 0.3671  max mem: 18895
+Test: Total time: 0:00:12 (0.8940 s / it)
+Averaged stats: model_time: 0.4506 (0.4383)  evaluator_time: 0.0722 (0.0685)
+Accumulating evaluation results...
+DONE (t=0.14s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.169
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.290
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.180
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.101
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.310
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.387
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.150
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.258
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.260
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.147
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.447
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.593
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:24  model_time: 0.4768 (0.4768)  evaluator_time: 0.1035 (0.1035)  time: 0.9302  data: 0.3209  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4503 (0.4555)  evaluator_time: 0.0716 (0.0743)  time: 0.9391  data: 0.3747  max mem: 18895
+Test: Total time: 0:00:24 (0.9326 s / it)
+Averaged stats: model_time: 0.4503 (0.4555)  evaluator_time: 0.0716 (0.0743)
+Accumulating evaluation results...
+DONE (t=0.24s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.162
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.289
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.161
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.088
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.306
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.357
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.149
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.248
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.252
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.137
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.409
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.554
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:27  model_time: 0.4386 (0.4386)  evaluator_time: 0.0813 (0.0813)  time: 0.8787  data: 0.3336  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4518 (0.4541)  evaluator_time: 0.0563 (0.0656)  time: 0.9222  data: 0.3621  max mem: 18895
+Test: Total time: 0:00:27 (0.8954 s / it)
+Averaged stats: model_time: 0.4518 (0.4541)  evaluator_time: 0.0563 (0.0656)
+Accumulating evaluation results...
+DONE (t=0.29s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.192
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.332
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.203
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.105
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.366
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.339
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.179
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.280
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.283
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.160
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.496
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.498
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:10  model_time: 0.4429 (0.4429)  evaluator_time: 0.0339 (0.0339)  time: 0.7709  data: 0.2683  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4422 (0.4292)  evaluator_time: 0.0557 (0.0668)  time: 0.7725  data: 0.2564  max mem: 18895
+Test: Total time: 0:00:10 (0.7725 s / it)
+Averaged stats: model_time: 0.4422 (0.4292)  evaluator_time: 0.0557 (0.0668)
+Accumulating evaluation results...
+DONE (t=0.15s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.220
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.368
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.236
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.112
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.436
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.465
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.199
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.305
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.309
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.177
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.563
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.615
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:21  model_time: 0.4416 (0.4416)  evaluator_time: 0.1239 (0.1239)  time: 0.8415  data: 0.2587  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4407 (0.4377)  evaluator_time: 0.0741 (0.0784)  time: 0.7910  data: 0.2536  max mem: 18895
+Test: Total time: 0:00:20 (0.7933 s / it)
+Averaged stats: model_time: 0.4407 (0.4377)  evaluator_time: 0.0741 (0.0784)
+Accumulating evaluation results...
+DONE (t=0.29s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.192
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.348
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.200
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.101
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.373
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.3862023-07-02 08:36:30,042 - INFO - Test | Sample # 71000 | AP 0.3481
+2023-07-02 08:36:30,061 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 08:37:02,339 - INFO - Test | Sample # 71000 | AP 0.3622
+finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20363/39016 [9:31:50<18:17:52,  3.53s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20371/39016 [9:32:06<16:00:01,  3.09s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20387/39016 [9:32:22<12:46:45,  2.47s/it]2023-07-02 08:37:51,578 - INFO - Train | Sample # 71040 | Loss 0.0946
+finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20403/39016 [9:32:39<10:32:11,  2.04s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20419/39016 [9:32:55<8:57:34,  1.73s/it] finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20435/39016 [9:33:12<7:51:52,  1.52s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20451/39016 [9:33:29<7:07:21,  1.38s/it]finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20467/39016 [9:33:45<6:34:44,  1.28s/it]2023-07-02 08:39:14,323 - INFO - Train | Sample # 71120 | Loss 0.3916
+finetune - Seed 2 Task 4 (rainy) training:  52%|█████▏    | 20483/39016 [9:34:02<6:11:39,  1.20s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20499/39016 [9:34:18<5:56:43,  1.16s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20515/39016 [9:34:35<5:45:21,  1.12s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20531/39016 [9:34:52<5:37:47,  1.10s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20547/39016 [9:35:08<5:33:25,  1.08s/it]2023-07-02 08:40:37,879 - INFO - Train | Sample # 71200 | Loss 1.0698
+finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20563/39016 [9:35:25<5:30:06,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20579/39016 [9:35:42<5:27:30,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20595/39016 [9:35:59<5:24:35,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20611/39016 [9:36:15<5:22:44,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20627/39016 [9:36:32<5:21:11,  1.05s/it]2023-07-02 08:42:01,194 - INFO - Train | Sample # 71280 | Loss 0.7706
+finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20643/39016 [9:36:49<5:22:13,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20659/39016 [9:37:07<5:26:44,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20675/39016 [9:37:24<5:26:06,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20691/39016 [9:37:42<5:35:07,  1.10s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20707/39016 [9:38:01<5:41:56,  1.12s/it]2023-07-02 08:43:31,919 - INFO - Train | Sample # 71360 | Loss 0.6083
+finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20723/39016 [9:38:19<5:44:18,  1.13s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20739/39016 [9:38:37<5:38:17,  1.11s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20755/39016 [9:38:54<5:33:36,  1.10s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20771/39016 [9:39:11<5:32:34,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20787/39016 [9:39:29<5:33:52,  1.10s/it]2023-07-02 08:44:58,207 - INFO - Train | Sample # 71440 | Loss 0.3458
+finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20803/39016 [9:39:46<5:29:23,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20819/39016 [9:40:02<5:25:23,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20835/39016 [9:40:19<5:22:25,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20851/39016 [9:40:36<5:19:33,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  53%|█████▎    | 20867/39016 [9:40:52<5:17:13,  1.05s/it]2023-07-02 08:46:21,626 - INFO - Train | Sample # 71520 | Loss 0.6976
+finetune - Seed 2 Task 4 (rainy) training:  54%|█████▎    | 20883/39016 [9:41:09<5:17:32,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▎    | 20899/39016 [9:41:26<5:19:29,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▎    | 20915/39016 [9:41:43<5:18:13,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▎    | 20931/39016 [9:42:00<5:18:17,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▎    | 20947/39016 [9:42:16<5:15:49,  1.05s/it]2023-07-02 08:47:45,629 - INFO - Train | Sample # 71600 | Loss 0.3028
+finetune - Seed 2 Task 4 (rainy) training:  54%|█████▎    | 20963/39016 [9:42:33<5:14:25,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 20979/39016 [9:42:51<5:21:20,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 20995/39016 [9:43:08<5:22:17,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21011/39016 [9:43:25<5:18:26,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21027/39016 [9:43:41<5:15:25,  1.05s/it]2023-07-02 08:49:10,481 - INFO - Train | Sample # 71680 | Loss 0.2204
+finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21043/39016 [9:43:58<5:13:18,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21059/39016 [9:44:15<5:15:25,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21075/39016 [9:44:32<5:14:58,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21091/39016 [9:44:48<5:12:50,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21107/39016 [9:45:06<5:15:10,  1.06s/it]2023-07-02 08:50:34,861 - INFO - Train | Sample # 71760 | Loss 0.2183
+finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21123/39016 [9:45:22<5:14:35,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21139/39016 [9:45:40<5:16:13,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21155/39016 [9:45:57<5:17:13,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21171/39016 [9:46:13<5:14:57,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21187/39016 [9:46:30<5:12:51,  1.05s/it]2023-07-02 08:51:59,902 - INFO - Train | Sample # 71840 | Loss 0.8026
+finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21203/39016 [9:46:47<5:14:29,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21219/39016 [9:47:04<5:13:19,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21235/39016 [9:47:21<5:12:38,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  54%|█████▍    | 21251/39016 [9:47:38<5:14:19,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21267/39016 [9:47:55<5:14:07,  1.06s/it]2023-07-02 08:53:24,760 - INFO - Train | Sample # 71920 | Loss 0.4190
+finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21283/39016 [9:48:12<5:13:24,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21299/39016 [9:48:29<5:10:48,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21315/39016 [9:48:45<5:09:39,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21331/39016 [9:49:02<5:09:06,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21347/39016 [9:49:19<5:11:34,  1.06s/it]2023-07-02 08:54:50,044 - INFO - Train | Sample # 72000 | Loss 0.8432
+2023-07-02 08:54:50,190 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 08:55:05,116 - INFO - Test | Sample # 72000 | AP 0.3482
+2023-07-02 08:55:05,152 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 08:55:33,403 - INFO - Test | Sample # 72000 | AP 0.3126
+2023-07-02 08:55:33,423 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 08:56:07,624 - INFO - Test | Sample # 72000 | AP 0.3469
+finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21363/39016 [9:50:55<12:24:48,  2.53s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21379/39016 [9:51:12<10:13:58,  2.09s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21395/39016 [9:51:28<8:41:09,  1.77s/it] finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21411/39016 [9:51:46<7:42:17,  1.58s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21427/39016 [9:52:03<6:53:44,  1.41s/it]2023-07-02 08:57:31,727 - INFO - Train | Sample # 72080 | Loss 0.2290
+finetune - Seed 2 Task 4 (rainy) training:  55%|█████▍    | 21443/39016 [9:52:19<6:19:32,  1.30s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21459/39016 [9:52:36<5:56:11,  1.22s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21475/39016 [9:52:52<5:41:42,  1.17s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21491/39016 [9:53:09<5:32:18,  1.14s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21507/39016 [9:53:27<5:25:52,  1.12s/it]2023-07-02 08:58:57,061 - INFO - Train | Sample # 72160 | Loss 0.9563
+finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21523/39016 [9:53:44<5:25:15,  1.12s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21539/39016 [9:54:02<5:22:31,  1.11s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21555/39016 [9:54:19<5:19:48,  1.10s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21571/39016 [9:54:37<5:18:42,  1.10s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21587/39016 [9:54:54<5:17:06,  1.09s/it]2023-07-02 09:00:23,386 - INFO - Train | Sample # 72240 | Loss 0.6207
+finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21603/39016 [9:55:11<5:14:18,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21619/39016 [9:55:28<5:10:37,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21635/39016 [9:55:44<5:08:32,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  55%|█████▌    | 21651/39016 [9:56:01<5:07:32,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21667/39016 [9:56:18<5:05:14,  1.06s/it]2023-07-02 09:01:47,100 - INFO - Train | Sample # 72320 | Loss 0.3212
+finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21683/39016 [9:56:34<5:03:02,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21699/39016 [9:56:51<5:00:48,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21715/39016 [9:57:07<4:59:45,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21731/39016 [9:57:25<5:04:10,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21747/39016 [9:57:42<5:05:59,  1.06s/it]2023-07-02 09:03:11,533 - INFO - Train | Sample # 72400 | Loss 0.2429
+finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21763/39016 [9:57:59<5:03:54,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21779/39016 [9:58:16<5:04:11,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21795/39016 [9:58:34<5:09:29,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21811/39016 [9:58:51<5:10:40,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21827/39016 [9:59:08<5:06:58,  1.07s/it]2023-07-02 09:04:37,335 - INFO - Train | Sample # 72480 | Loss 0.1170
+finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21843/39016 [9:59:25<5:03:55,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21859/39016 [9:59:41<5:00:51,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21875/39016 [9:59:58<4:58:47,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21891/39016 [10:00:14<4:58:25,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21907/39016 [10:00:32<5:00:56,  1.06s/it]2023-07-02 09:06:01,180 - INFO - Train | Sample # 72560 | Loss 0.4878
+finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21923/39016 [10:00:48<5:00:35,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▌    | 21939/39016 [10:01:05<4:58:39,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▋    | 21955/39016 [10:01:22<5:00:35,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▋    | 21971/39016 [10:01:40<5:02:38,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▋    | 21987/39016 [10:01:57<5:05:49,  1.08s/it]2023-07-02 09:07:27,219 - INFO - Train | Sample # 72640 | Loss 0.8650
+finetune - Seed 2 Task 4 (rainy) training:  56%|█████▋    | 22003/39016 [10:02:15<5:05:27,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▋    | 22019/39016 [10:02:31<5:01:22,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  56%|█████▋    | 22035/39016 [10:02:48<4:58:23,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22051/39016 [10:03:04<4:55:57,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22067/39016 [10:03:22<5:02:07,  1.07s/it]2023-07-02 09:08:51,415 - INFO - Train | Sample # 72720 | Loss 0.3143
+finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22083/39016 [10:03:39<4:59:47,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22099/39016 [10:03:55<4:57:52,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22115/39016 [10:04:13<5:01:08,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22131/39016 [10:04:34<5:21:44,  1.14s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22147/39016 [10:04:51<5:16:53,  1.13s/it]2023-07-02 09:10:23,678 - INFO - Train | Sample # 72800 | Loss 0.5933
+finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22163/39016 [10:05:11<5:25:52,  1.16s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22179/39016 [10:05:28<5:18:10,  1.13s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22195/39016 [10:05:46<5:13:23,  1.12s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22211/39016 [10:06:02<5:05:49,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22227/39016 [10:06:19<5:01:17,  1.08s/it]2023-07-02 09:11:48,249 - INFO - Train | Sample # 72880 | Loss 0.9434
+finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22243/39016 [10:06:36<4:58:15,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22259/39016 [10:06:52<4:56:11,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22275/39016 [10:07:09<4:54:00,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22291/39016 [10:07:26<4:52:36,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22307/39016 [10:07:42<4:51:11,  1.05s/it]2023-07-02 09:13:11,241 - INFO - Train | Sample # 72960 | Loss 0.1532
+finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22323/39016 [10:07:59<4:49:11,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22339/39016 [10:08:15<4:47:49,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22355/39016 [10:08:33<4:54:18,  1.06s/it]2023-07-02 09:13:45,666 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 09:13:59,805 - INFO - Test | Sample # 73000 | AP 0.2881
+2023-07-02 09:13:59,820 - INFO - Seed 2 Task 4 evaluating task 1
+
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.172
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.281
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.289
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.164
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.502
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.523
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:25  model_time: 0.4383 (0.4383)  evaluator_time: 0.1038 (0.1038)  time: 0.8218  data: 0.2682  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4384 (0.4374)  evaluator_time: 0.0483 (0.0666)  time: 0.7682  data: 0.2539  max mem: 18895
+Test: Total time: 0:00:24 (0.7757 s / it)
+Averaged stats: model_time: 0.4384 (0.4374)  evaluator_time: 0.0483 (0.0666)
+Accumulating evaluation results...
+DONE (t=0.30s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.207
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.362
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.226
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.116
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.398
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.346
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.187
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.299
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.306
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.180
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.533
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.497
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:11  model_time: 0.4416 (0.4416)  evaluator_time: 0.0475 (0.0475)  time: 0.7870  data: 0.2785  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4443 (0.4303)  evaluator_time: 0.0866 (0.0948)  time: 0.8022  data: 0.2595  max mem: 18895
+Test: Total time: 0:00:11 (0.8023 s / it)
+Averaged stats: model_time: 0.4443 (0.4303)  evaluator_time: 0.0866 (0.0948)
+Accumulating evaluation results...
+DONE (t=0.18s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.206
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.348
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.217
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.090
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.433
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.557
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.190
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.306
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.314
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.163
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.561
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.691
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:23  model_time: 0.4437 (0.4437)  evaluator_time: 0.1797 (0.1797)  time: 0.8957  data: 0.2483  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4429 (0.4397)  evaluator_time: 0.1085 (0.1071)  time: 0.8229  data: 0.2558  max mem: 18895
+Test: Total time: 0:00:21 (0.8215 s / it)
+Averaged stats: model_time: 0.4429 (0.4397)  evaluator_time: 0.1085 (0.1071)
+Accumulating evaluation results...
+DONE (t=0.35s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.178
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.313
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.176
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.086
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.348
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.443
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.164
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.282
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.292
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.153
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.505
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.612
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:26  model_time: 0.4426 (0.4426)  evaluator_time: 0.1168 (0.1168)  time: 0.8403  data: 0.2552  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4420 (0.4657)  evaluator_time: 0.0684 (0.0932)  time: 0.8331  data: 0.2499  max mem: 18895
+Test: Total time: 0:00:25 (0.8336 s / it)
+Averaged stats: model_time: 0.4420 (0.4657)  evaluator_time: 0.0684 (0.0932)
+Accumulating evaluation results...
+DONE (t=0.37s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.203
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.347
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.208
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.091
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.402
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.425
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.183
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.306
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.314
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.167
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.556
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.589
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:10  model_time: 0.4360 (0.4360)  evaluator_time: 0.0220 (0.0220)  time: 0.7614  data: 0.2866  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4396 (0.4269)  evaluator_time: 0.0473 (0.0467)  time: 0.7568  data: 0.2641  max mem: 18895
+Test: Total time: 0:00:10 (0.7569 s / it)
+Averaged stats: model_time: 0.4396 (0.4269)  evaluator_time: 0.0473 (0.0467)
+Accumulating evaluation results...
+DONE (t=0.12s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.175
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.288
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.191
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.098
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.355
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.308
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.169
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.258
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.260
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.142
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.503
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.473
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:22  model_time: 0.4940 (0.4940)  evaluator_time: 0.0816 (0.0816)  time: 0.8791  data: 0.2921  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4411 (0.4399)  evaluator_time: 0.0428 (0.0479)  time: 0.7593  data: 0.2510  max mem: 18895
+Test: Total time: 0:00:19 (0.7670 s / it)
+Averaged stats: model_time: 0.4411 (0.4399)  evaluator_time: 0.0428 (0.0479)
+Accumulating evaluation results...
+DONE (t=0.20s).2023-07-02 09:14:26,661 - INFO - Test | Sample # 73000 | AP 0.2822
+2023-07-02 09:14:26,677 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 09:14:58,281 - INFO - Test | Sample # 73000 | AP 0.3033
+finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22363/39016 [10:09:45<16:01:59,  3.47s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22371/39016 [10:10:02<14:03:54,  3.04s/it]finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22387/39016 [10:10:19<11:17:04,  2.44s/it]2023-07-02 09:15:47,841 - INFO - Train | Sample # 73040 | Loss 0.6138
+finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22403/39016 [10:10:35<9:19:04,  2.02s/it] finetune - Seed 2 Task 4 (rainy) training:  57%|█████▋    | 22419/39016 [10:10:52<7:56:27,  1.72s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22435/39016 [10:11:09<7:01:29,  1.53s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22451/39016 [10:11:25<6:21:39,  1.38s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22467/39016 [10:11:42<5:52:31,  1.28s/it]2023-07-02 09:17:11,378 - INFO - Train | Sample # 73120 | Loss 0.1593
+finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22483/39016 [10:11:59<5:33:06,  1.21s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22499/39016 [10:12:16<5:20:56,  1.17s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22515/39016 [10:12:33<5:15:04,  1.15s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22531/39016 [10:12:50<5:06:35,  1.12s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22547/39016 [10:13:07<4:59:52,  1.09s/it]2023-07-02 09:18:36,057 - INFO - Train | Sample # 73200 | Loss 0.8478
+finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22563/39016 [10:13:23<4:55:20,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22579/39016 [10:13:40<4:51:28,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22595/39016 [10:13:57<4:51:55,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22611/39016 [10:14:14<4:50:59,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22627/39016 [10:14:31<4:49:29,  1.06s/it]2023-07-02 09:20:00,172 - INFO - Train | Sample # 73280 | Loss 0.1025
+finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22643/39016 [10:14:47<4:47:54,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22659/39016 [10:15:04<4:46:00,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22675/39016 [10:15:21<4:44:50,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22691/39016 [10:15:37<4:44:47,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22707/39016 [10:15:54<4:44:54,  1.05s/it]2023-07-02 09:21:24,355 - INFO - Train | Sample # 73360 | Loss 0.4697
+finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22723/39016 [10:16:12<4:47:46,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22739/39016 [10:16:29<4:49:12,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22755/39016 [10:16:46<4:47:48,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22771/39016 [10:17:04<4:51:24,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22787/39016 [10:17:21<4:50:54,  1.08s/it]2023-07-02 09:22:51,107 - INFO - Train | Sample # 73440 | Loss 0.3670
+finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22803/39016 [10:17:39<4:53:35,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  58%|█████▊    | 22819/39016 [10:17:55<4:50:19,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▊    | 22835/39016 [10:18:12<4:47:12,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▊    | 22851/39016 [10:18:30<4:54:08,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▊    | 22867/39016 [10:18:48<4:53:38,  1.09s/it]2023-07-02 09:24:18,842 - INFO - Train | Sample # 73520 | Loss 0.8845
+finetune - Seed 2 Task 4 (rainy) training:  59%|█████▊    | 22883/39016 [10:19:06<4:57:37,  1.11s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▊    | 22899/39016 [10:19:23<4:52:32,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▊    | 22915/39016 [10:19:40<4:48:51,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 22931/39016 [10:19:56<4:45:18,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 22947/39016 [10:20:13<4:43:14,  1.06s/it]2023-07-02 09:25:42,297 - INFO - Train | Sample # 73600 | Loss 0.7692
+finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 22963/39016 [10:20:30<4:41:34,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 22979/39016 [10:20:46<4:41:03,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 22995/39016 [10:21:03<4:38:46,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23011/39016 [10:21:19<4:37:11,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23027/39016 [10:21:36<4:36:52,  1.04s/it]2023-07-02 09:27:06,118 - INFO - Train | Sample # 73680 | Loss 0.5486
+finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23043/39016 [10:21:53<4:41:29,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23059/39016 [10:22:10<4:39:24,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23075/39016 [10:22:27<4:41:22,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23091/39016 [10:22:44<4:41:20,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23107/39016 [10:23:01<4:40:04,  1.06s/it]2023-07-02 09:28:30,580 - INFO - Train | Sample # 73760 | Loss 0.8767
+finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23123/39016 [10:23:18<4:39:35,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23139/39016 [10:23:35<4:38:34,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23155/39016 [10:23:52<4:38:35,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23171/39016 [10:24:08<4:38:15,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23187/39016 [10:24:26<4:39:18,  1.06s/it]2023-07-02 09:29:56,870 - INFO - Train | Sample # 73840 | Loss 0.8410
+finetune - Seed 2 Task 4 (rainy) training:  59%|█████▉    | 23203/39016 [10:24:44<4:47:41,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23219/39016 [10:25:01<4:44:27,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23235/39016 [10:25:18<4:40:32,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23251/39016 [10:25:34<4:38:25,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23267/39016 [10:25:51<4:36:32,  1.05s/it]2023-07-02 09:31:20,225 - INFO - Train | Sample # 73920 | Loss 0.8654
+finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23283/39016 [10:26:08<4:34:49,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23299/39016 [10:26:24<4:32:47,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23315/39016 [10:26:41<4:32:18,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23331/39016 [10:26:57<4:30:59,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23347/39016 [10:27:14<4:30:23,  1.04s/it]2023-07-02 09:32:42,665 - INFO - Train | Sample # 74000 | Loss 0.2451
+2023-07-02 09:32:42,804 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 09:32:57,221 - INFO - Test | Sample # 74000 | AP 0.3112
+2023-07-02 09:32:57,249 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 09:33:24,598 - INFO - Test | Sample # 74000 | AP 0.3128
+2023-07-02 09:33:24,660 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 09:33:57,384 - INFO - Test | Sample # 74000 | AP 0.3238
+finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23363/39016 [10:28:45<10:34:32,  2.43s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23379/39016 [10:29:02<8:47:18,  2.02s/it] finetune - Seed 2 Task 4 (rainy) training:  60%|█████▉    | 23395/39016 [10:29:18<7:30:18,  1.73s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23411/39016 [10:29:36<6:42:06,  1.55s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23427/39016 [10:29:53<6:02:08,  1.39s/it]2023-07-02 09:35:22,057 - INFO - Train | Sample # 74080 | Loss 0.1124
+finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23443/39016 [10:30:09<5:33:49,  1.29s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23459/39016 [10:30:26<5:13:31,  1.21s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23475/39016 [10:30:43<4:59:46,  1.16s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23491/39016 [10:30:59<4:50:24,  1.12s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23507/39016 [10:31:16<4:43:33,  1.10s/it]2023-07-02 09:36:45,038 - INFO - Train | Sample # 74160 | Loss 0.5734
+finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23523/39016 [10:31:32<4:38:33,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23539/39016 [10:31:49<4:37:17,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23555/39016 [10:32:09<4:46:54,  1.11s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23571/39016 [10:32:26<4:43:31,  1.10s/it]finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23587/39016 [10:32:43<4:41:27,  1.09s/it]2023-07-02 09:38:12,493 - INFO - Train | Sample # 74240 | Loss 0.6697
+finetune - Seed 2 Task 4 (rainy) training:  60%|██████    | 23603/39016 [10:33:00<4:37:19,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23619/39016 [10:33:16<4:34:10,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23635/39016 [10:33:33<4:32:21,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23651/39016 [10:33:50<4:30:12,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23667/39016 [10:34:07<4:31:05,  1.06s/it]2023-07-02 09:39:36,840 - INFO - Train | Sample # 74320 | Loss 0.9192
+finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23683/39016 [10:34:24<4:31:52,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23699/39016 [10:34:41<4:31:05,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23715/39016 [10:34:58<4:28:51,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23731/39016 [10:35:14<4:28:00,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23747/39016 [10:35:31<4:27:15,  1.05s/it]2023-07-02 09:41:00,491 - INFO - Train | Sample # 74400 | Loss 0.7529
+finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23763/39016 [10:35:48<4:26:10,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23779/39016 [10:36:04<4:24:48,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23795/39016 [10:36:21<4:25:25,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23811/39016 [10:36:38<4:24:51,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23827/39016 [10:36:55<4:25:23,  1.05s/it]2023-07-02 09:42:24,292 - INFO - Train | Sample # 74480 | Loss 0.8239
+finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23843/39016 [10:37:12<4:26:30,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23859/39016 [10:37:30<4:31:03,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23875/39016 [10:37:46<4:28:06,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████    | 23891/39016 [10:38:03<4:24:55,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████▏   | 23907/39016 [10:38:19<4:23:17,  1.05s/it]2023-07-02 09:43:48,397 - INFO - Train | Sample # 74560 | Loss 0.7520
+finetune - Seed 2 Task 4 (rainy) training:  61%|██████▏   | 23923/39016 [10:38:36<4:21:46,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████▏   | 23939/39016 [10:38:53<4:23:50,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████▏   | 23955/39016 [10:39:10<4:23:06,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████▏   | 23971/39016 [10:39:26<4:22:52,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  61%|██████▏   | 23987/39016 [10:39:43<4:23:22,  1.05s/it]2023-07-02 09:45:12,860 - INFO - Train | Sample # 74640 | Loss 0.6075
+finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24003/39016 [10:40:00<4:23:25,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24019/39016 [10:40:17<4:24:24,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24035/39016 [10:40:34<4:21:50,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24051/39016 [10:40:50<4:20:38,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24067/39016 [10:41:07<4:21:11,  1.05s/it]2023-07-02 09:46:37,052 - INFO - Train | Sample # 74720 | Loss 0.4035
+finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24083/39016 [10:41:25<4:23:32,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24099/39016 [10:41:42<4:24:57,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24115/39016 [10:41:58<4:22:34,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24131/39016 [10:42:15<4:20:46,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24147/39016 [10:42:32<4:20:17,  1.05s/it]2023-07-02 09:48:01,595 - INFO - Train | Sample # 74800 | Loss 0.7875
+finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24163/39016 [10:42:49<4:21:34,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24179/39016 [10:43:06<4:19:56,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24195/39016 [10:43:22<4:18:21,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24211/39016 [10:43:39<4:16:55,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24227/39016 [10:43:55<4:16:52,  1.04s/it]2023-07-02 09:49:24,927 - INFO - Train | Sample # 74880 | Loss 0.8754
+finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24243/39016 [10:44:12<4:17:50,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24259/39016 [10:44:29<4:18:12,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24275/39016 [10:44:47<4:21:16,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24291/39016 [10:45:03<4:19:26,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24307/39016 [10:45:20<4:17:19,  1.05s/it]2023-07-02 09:50:49,188 - INFO - Train | Sample # 74960 | Loss 0.8677
+finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24323/39016 [10:45:36<4:16:25,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24339/39016 [10:45:53<4:16:01,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24355/39016 [10:46:10<4:15:28,  1.05s/it]2023-07-02 09:51:22,746 - INFO - Seed 2 Task 4 evaluating task 3
+
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.160
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.282
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.167
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.085
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.314
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.287
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.150
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.232
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.235
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.129
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.416
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.415
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:24  model_time: 0.4420 (0.4420)  evaluator_time: 0.0751 (0.0751)  time: 0.8007  data: 0.2600  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4403 (0.4388)  evaluator_time: 0.0325 (0.0440)  time: 0.7553  data: 0.2538  max mem: 18895
+Test: Total time: 0:00:23 (0.7581 s / it)
+Averaged stats: model_time: 0.4403 (0.4388)  evaluator_time: 0.0325 (0.0440)
+Accumulating evaluation results...
+DONE (t=0.24s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.186
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.303
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.198
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.097
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.368
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.298
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.173
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.260
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.262
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.143
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.492
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.395
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:10  model_time: 0.4435 (0.4435)  evaluator_time: 0.0345 (0.0345)  time: 0.7830  data: 0.2828  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4422 (0.4290)  evaluator_time: 0.0446 (0.0586)  time: 0.7679  data: 0.2596  max mem: 18895
+Test: Total time: 0:00:10 (0.7680 s / it)
+Averaged stats: model_time: 0.4422 (0.4290)  evaluator_time: 0.0446 (0.0586)
+Accumulating evaluation results...
+DONE (t=0.13s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.184
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.311
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.198
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.096
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.394
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.455
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.164
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.246
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.250
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.125
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.527
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.530
+creating index...
+index created!
+Test:  [ 0/26]  eta: 0:00:21  model_time: 0.4440 (0.4440)  evaluator_time: 0.1000 (0.1000)  time: 0.8212  data: 0.2526  max mem: 18895
+Test:  [25/26]  eta: 0:00:00  model_time: 0.4413 (0.4382)  evaluator_time: 0.0725 (0.0711)  time: 0.7834  data: 0.2533  max mem: 18895
+Test: Total time: 0:00:20 (0.7874 s / it)
+Averaged stats: model_time: 0.4413 (0.4382)  evaluator_time: 0.0725 (0.0711)
+Accumulating evaluation results...
+DONE (t=0.23s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.174
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.313
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.173
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.088
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.344
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.361
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.156
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.243
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.248
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.133
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.450
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.454
+creating index...
+index created!
+Test:  [ 0/31]  eta: 0:00:24  model_time: 0.4391 (0.4391)  evaluator_time: 0.0755 (0.0755)  time: 0.7912  data: 0.2575  max mem: 18895
+Test:  [30/31]  eta: 0:00:00  model_time: 0.4403 (0.4396)  evaluator_time: 0.0401 (0.0560)  time: 0.7625  data: 0.2552  max mem: 18895
+Test: Total time: 0:00:24 (0.7751 s / it)
+Averaged stats: model_time: 0.4403 (0.4396)  evaluator_time: 0.0401 (0.0560)
+Accumulating evaluation results...
+DONE (t=0.24s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.189
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.324
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.206
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.093
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.393
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.326
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.171
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.262
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.267
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.140
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.518
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.422
+creating index...
+index created!
+Test:  [ 0/14]  eta: 0:00:10  model_time: 0.4445 (0.4445)  evaluator_time: 0.0470 (0.0470)  time: 0.7699  data: 0.2596  max mem: 18895
+Test:  [13/14]  eta: 0:00:00  model_time: 0.4418 (0.4297)  evaluator_time: 0.0660 (0.0747)  time: 0.8112  data: 0.2882  max mem: 18895
+Test: Total time: 0:00:11 (0.8113 s / it)
+Averaged stats: model_time: 0.4418 (0.4297)  evaluator_time: 0.0660 (0.0747)
+Accumulating evaluation results...
+DONE (t=0.14s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.158
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.266
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.172
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.081
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.304
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.447
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.153
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.232
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.237
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.117
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.447
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.5822023-07-02 09:51:37,809 - INFO - Test | Sample # 75000 | AP 0.2660
+2023-07-02 09:51:37,828 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 09:52:06,489 - INFO - Test | Sample # 75000 | AP 0.2205
+2023-07-02 09:52:06,506 - INFO - Seed 2 Task 4 evaluating task 4
+2023-07-02 09:52:39,572 - INFO - Test | Sample # 75000 | AP 0.2705
+finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24363/39016 [10:47:27<14:43:02,  3.62s/it]finetune - Seed 2 Task 4 (rainy) training:  62%|██████▏   | 24371/39016 [10:47:43<12:49:58,  3.15s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24387/39016 [10:48:00<10:13:49,  2.52s/it]2023-07-02 09:53:29,297 - INFO - Train | Sample # 75040 | Loss 1.0533
+finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24403/39016 [10:48:17<8:25:23,  2.08s/it] finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24419/39016 [10:48:33<7:08:26,  1.76s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24435/39016 [10:48:50<6:14:53,  1.54s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24451/39016 [10:49:06<5:37:26,  1.39s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24467/39016 [10:49:23<5:10:24,  1.28s/it]2023-07-02 09:54:51,724 - INFO - Train | Sample # 75120 | Loss 0.3860
+finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24483/39016 [10:49:39<4:51:56,  1.21s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24499/39016 [10:49:56<4:41:57,  1.17s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24515/39016 [10:50:13<4:31:53,  1.12s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24531/39016 [10:50:30<4:28:25,  1.11s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24547/39016 [10:50:46<4:22:06,  1.09s/it]2023-07-02 09:56:15,793 - INFO - Train | Sample # 75200 | Loss 0.2955
+finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24563/39016 [10:51:03<4:18:30,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24579/39016 [10:51:20<4:15:28,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24595/39016 [10:51:36<4:14:10,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24611/39016 [10:51:54<4:16:27,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24627/39016 [10:52:12<4:21:22,  1.09s/it]2023-07-02 09:57:41,795 - INFO - Train | Sample # 75280 | Loss 1.0984
+finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24643/39016 [10:52:29<4:18:59,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24659/39016 [10:52:46<4:17:44,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24675/39016 [10:53:03<4:14:46,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24691/39016 [10:53:20<4:14:11,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24707/39016 [10:53:37<4:13:37,  1.06s/it]2023-07-02 09:59:06,269 - INFO - Train | Sample # 75360 | Loss 0.7910
+finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24723/39016 [10:53:54<4:12:30,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24739/39016 [10:54:10<4:10:51,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24755/39016 [10:54:27<4:11:50,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  63%|██████▎   | 24771/39016 [10:54:44<4:09:47,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▎   | 24787/39016 [10:55:01<4:08:08,  1.05s/it]2023-07-02 10:00:29,708 - INFO - Train | Sample # 75440 | Loss 0.1858
+finetune - Seed 2 Task 4 (rainy) training:  64%|██████▎   | 24803/39016 [10:55:17<4:06:37,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▎   | 24819/39016 [10:55:34<4:08:45,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▎   | 24835/39016 [10:55:51<4:08:57,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▎   | 24851/39016 [10:56:09<4:12:07,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▎   | 24867/39016 [10:56:26<4:14:18,  1.08s/it]2023-07-02 10:01:56,288 - INFO - Train | Sample # 75520 | Loss 0.1751
+finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 24883/39016 [10:56:44<4:13:40,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 24899/39016 [10:57:00<4:10:26,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 24915/39016 [10:57:17<4:10:44,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 24931/39016 [10:57:35<4:12:39,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 24947/39016 [10:57:51<4:09:36,  1.06s/it]2023-07-02 10:03:21,978 - INFO - Train | Sample # 75600 | Loss 0.0539
+finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 24963/39016 [10:58:09<4:12:47,  1.08s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 24979/39016 [10:58:28<4:20:45,  1.11s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 24995/39016 [10:58:47<4:24:15,  1.13s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25011/39016 [10:59:07<4:29:47,  1.16s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25027/39016 [10:59:25<4:27:09,  1.15s/it]2023-07-02 10:04:57,024 - INFO - Train | Sample # 75680 | Loss 0.2359
+finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25043/39016 [10:59:44<4:33:32,  1.17s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25059/39016 [11:00:01<4:23:46,  1.13s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25075/39016 [11:00:18<4:17:55,  1.11s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25091/39016 [11:00:34<4:12:37,  1.09s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25107/39016 [11:00:51<4:08:55,  1.07s/it]2023-07-02 10:06:20,692 - INFO - Train | Sample # 75760 | Loss 0.7815
+finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25123/39016 [11:01:08<4:07:24,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25139/39016 [11:01:25<4:05:16,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  64%|██████▍   | 25155/39016 [11:01:41<4:03:20,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25171/39016 [11:01:58<4:01:38,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25187/39016 [11:02:14<4:00:23,  1.04s/it]2023-07-02 10:07:43,657 - INFO - Train | Sample # 75840 | Loss 0.5698
+finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25203/39016 [11:02:31<3:59:49,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25219/39016 [11:02:49<4:04:54,  1.07s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25235/39016 [11:03:05<4:02:27,  1.06s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25251/39016 [11:03:22<4:01:26,  1.05s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25267/39016 [11:03:39<4:00:06,  1.05s/it]2023-07-02 10:09:07,885 - INFO - Train | Sample # 75920 | Loss 0.1039
+finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25283/39016 [11:03:55<3:58:29,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25299/39016 [11:04:12<3:58:19,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25315/39016 [11:04:29<3:57:51,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25331/39016 [11:04:45<3:56:57,  1.04s/it]finetune - Seed 2 Task 4 (rainy) training:  65%|██████▍   | 25347/39016 [11:05:01<3:55:46,  1.03s/it]2023-07-02 10:10:30,724 - INFO - Train | Sample # 76000 | Loss 0.1160
+2023-07-02 10:10:30,867 - INFO - Seed 2 Task 4 evaluating task 3
+2023-07-02 10:10:45,618 - INFO - Test | Sample # 76000 | AP 0.2860
+2023-07-02 10:10:45,638 - INFO - Seed 2 Task 4 evaluating task 1
+2023-07-02 10:11:15,785 - INFO - Test | Sample # 76000 | AP 0.2770
+2023-07-02 10:11:15,821 - INFO - Seed 2 Task 4 evaluating task 4

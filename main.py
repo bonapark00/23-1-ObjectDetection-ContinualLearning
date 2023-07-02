@@ -103,11 +103,11 @@ def main():
     # Train and eval
     for i, task in enumerate(selected_seed):
         # Train one task
+        method.model.train()
         logging.info(f"Mode: {args.mode}, Selected seed: {selected_seed}, Current task: {task + 1}")
         for data in tqdm(train_task[task], desc=f"{args.mode} - Seed {args.seed_num} Task {task + 1} training"):
             # For each sample, train the model and evaluate when eval period is reached
             samples_cnt += 1
-            method.model.train()
             method.online_step(data, samples_cnt, args.n_worker)
             if samples_cnt % args.eval_period == 0:
                 # Evaluate on all tasks before current task
@@ -128,6 +128,7 @@ def main():
                 # Write the average mAP of current task on all tasks before current task to tensorboard
                 average_mAP = sum(task_mAP_list) / float(len(task_mAP_list))
                 writer.add_scalar("Average mAP", average_mAP, samples_cnt)
+                method.model.train()
 
         # After training one task, evaluate on all tasks including before and after current task
         for task_eval in selected_seed:

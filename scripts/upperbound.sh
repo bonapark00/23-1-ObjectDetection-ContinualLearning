@@ -1,7 +1,7 @@
 #/bin/bash
 
 BATCHSIZE=16
-EPOCHS=1
+EPOCHS=16
 DATASET="shift"
 
 python upperbound_shift.py --batchsize $BATCHSIZE \

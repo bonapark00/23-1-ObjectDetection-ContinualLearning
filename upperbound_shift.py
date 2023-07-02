@@ -65,13 +65,13 @@ if not args.debug:
     logging.info("Loading test dataset...")
     for i in range(len(domain_list)):
         dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
-                                            split="val", transforms=transforms.ToTensor())
+                                            split="minival", transforms=transforms.ToTensor())
         test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batchsize, collate_fn=collate_fn))
 else:
     logging.info("Loading test debug dataset...")
     for i in range(len(domain_list)):
         test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
-                                            split="val", transforms=transforms.ToTensor())
+                                            split="minival", transforms=transforms.ToTensor())
         debug_dataset, _ = random_split(test_dataset, [10, len(test_dataset) - 10])
         test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
 

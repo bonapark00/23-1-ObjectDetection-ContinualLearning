@@ -112,6 +112,8 @@ eval_count = 1
 
 # Open file to write results (create if not exist, overwrite if exist)
 filename_prefix = f"results/{args.dataset}_joint_{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}"
+filename_prefix += "_debug" if args.debug else ""
+
 os.makedirs(os.path.dirname(filename_prefix), exist_ok=True)
 
 # Create csv file to write results
@@ -126,7 +128,6 @@ logging.info(f"upperbound: {args.upperbound}, seed_num: {args.seed_num}, num_epo
 for ep in range(args.num_epochs):
     logging.info(f"Epoch {ep + 1} / {args.num_epochs}")
     for i, data in enumerate(tqdm(joint_dataloader)):
-        model.train()
         samples_cnt += args.batchsize
 
         # Load the data and send to device
@@ -166,13 +167,18 @@ for ep in range(args.num_epochs):
             # Write the average mAP of all tasks to tensorboard
             average_mAP = sum(task_mAP_list) / float(len(task_mAP_list))
             writer.add_scalar("Average mAP", average_mAP, samples_cnt)
+        
+            # Set model to training mode
+            model.train()
 
     # After training one epoch is done, save the model
     if args.upperbound:
         save_path = os.path.join("model_checkpoints", args.dataset, "joint", "upperbound")
     else:
         save_path = os.path.join("model_checkpoints", args.dataset, "joint", f"seed_{args.seed_num}")
-        
+    
+    save_path += "_debug" if args.debug else ""
+
     logging.info(f"Saving model at epoch {ep + 1}...")
 
     # If not exist, create the save path
@@ -191,9 +197,11 @@ for ep in range(args.num_epochs):
 logging.info("Training is done! Saving the evaluation results...")
 # Create the save path if not exist
 if args.upperbound:
-    save_path = os.path.join("outputs", args.dataset, "joint", "upperbound")
+    save_path = os.path.join("outputs", "joint", "upperbound", args.dataset)
 else:
-    save_path = os.path.join("outputs", args.dataset, "joint", f"seed_{args.seed_num}")
+    save_path = os.path.join("outputs", "joint", args.dataset, f"seed_{args.seed_num}")
+
+save_path += "_debug" if args.debug else ""
 
 if not os.path.exists(save_path):
     os.makedirs(save_path)

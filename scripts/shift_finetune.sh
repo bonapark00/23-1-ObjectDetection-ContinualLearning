@@ -4,7 +4,7 @@
 NOTE="shift_finetune" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="finetune"
 DATASET="shift" # cifar10, cifar100, tinyimagenet, imagenet, clad, shift
-SEEDS="2"
+SEEDS="3"
 EVAL_PERIOD=1000
 
 

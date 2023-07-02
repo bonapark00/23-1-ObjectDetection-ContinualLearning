@@ -14,10 +14,13 @@ debug_imgs/
 # Model weights
 *.pth
 
-# Ignore .npy files in outputs directory
-outputs/*.npy
+# Ignore .npy, .csv files
+*.npy
+*.csv
 
 # Ignore data folder except .sh and .py files
 dataset/*
 !dataset/*.sh
 !dataset/*.py
+
+

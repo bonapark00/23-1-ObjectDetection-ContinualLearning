@@ -58,22 +58,22 @@ def online_evaluate(model, test_dataloader, sample_num, device):
     stats = coco_evaluator.coco_eval['bbox'].stats
     return stats[1]
 
-# Always test on all tasks regardless of upperbound or not
-domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
-test_loader_list = []
-if not args.debug:
-    logging.info("Loading test dataset...")
-    for i in range(len(domain_list)):
-        dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
-                                            split="minival", transforms=transforms.ToTensor())
-        test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batchsize, collate_fn=collate_fn))
-else:
-    logging.info("Loading test debug dataset...")
-    for i in range(len(domain_list)):
-        test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
-                                            split="minival", transforms=transforms.ToTensor())
-        debug_dataset, _ = random_split(test_dataset, [10, len(test_dataset) - 10])
-        test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
+# # Always test on all tasks regardless of upperbound or not
+# domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
+# test_loader_list = []
+# if not args.debug:
+#     logging.info("Loading test dataset...")
+#     for i in range(len(domain_list)):
+#         dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
+#                                             split="minival", transforms=transforms.ToTensor())
+#         test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batchsize, collate_fn=collate_fn))
+# else:
+#     logging.info("Loading test debug dataset...")
+#     for i in range(len(domain_list)):
+#         test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
+#                                             split="minival", transforms=transforms.ToTensor())
+#         debug_dataset, _ = random_split(test_dataset, [10, len(test_dataset) - 10])
+#         test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
 
 # Training dataset depends on whether it is upperbound or not
 # If upperbound, we need to load all tasks, otherwise, we only load the task specified by seed
@@ -97,7 +97,7 @@ else:
     debug_joint_dataset = SHIFTDataset(task_num=1, domain_dict=None, split="train")
     joint_dataset, _ = random_split(debug_joint_dataset, [50, len(debug_joint_dataset) - 50])
     joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batchsize, 
-                                                collate_fn=collate_fn, shuffle=True)
+                                                collate_fn=collate_fn, shuffle=True, num_workers=4, pin_memory=True)
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
@@ -116,10 +116,10 @@ filename_prefix += "_debug" if args.debug else ""
 
 os.makedirs(os.path.dirname(filename_prefix), exist_ok=True)
 
-# Create csv file to write results
-eval_results_file = open(f"{filename_prefix}_eval_results.csv", "w")
-eval_results_writer = csv.writer(eval_results_file)
-eval_results_writer.writerow(["epoch", "test_mAP", "task_evaluating", "data_cnt"])
+# # Create csv file to write results
+# eval_results_file = open(f"{filename_prefix}_eval_results.csv", "w")
+# eval_results_writer = csv.writer(eval_results_file)
+# eval_results_writer.writerow(["epoch", "test_mAP", "task_evaluating", "data_cnt"])
 
 # Train the model for num_epochs
 logging.info("Start training...")
@@ -142,34 +142,34 @@ for ep in range(args.num_epochs):
         optimizer.step()
 
         # When the number of samples reaches the evaluation period, evaluate the model
-        if samples_cnt > args.eval_period * eval_count:
-            eval_count += 1
-            logging.info(f"Jointly training, upperbound: {args.upperbound}, seed_num: {args.seed_num}, num_epochs: {args.num_epochs}")
-            logging.info(f"Current Epoch: {ep + 1} / {args.num_epochs}, Step {samples_cnt}, Current Loss: {losses}")
+        # if samples_cnt > args.eval_period * eval_count:
+        #     eval_count += 1
+        #     logging.info(f"Jointly training, upperbound: {args.upperbound}, seed_num: {args.seed_num}, num_epochs: {args.num_epochs}")
+        #     logging.info(f"Current Epoch: {ep + 1} / {args.num_epochs}, Step {samples_cnt}, Current Loss: {losses}")
 
-            task_mAP_list = []
-            for task_eval in range(len(domain_list)):
-                logging.info(f"Epoch {ep + 1} / {args.num_epochs}, Task {task_eval + 1} Evaluation")
-                mAP = online_evaluate(model, test_loader_list[task_eval], samples_cnt, device)
-                task_mAP_list.append(mAP)
-                eval_results["epoch"].append(ep + 1)
-                eval_results["test_mAP"].append(mAP)
-                eval_results["task_evaluating"].append(task_eval + 1)
-                eval_results["data_cnt"].append(samples_cnt)
+        #     task_mAP_list = []
+        #     for task_eval in range(len(domain_list)):
+        #         logging.info(f"Epoch {ep + 1} / {args.num_epochs}, Task {task_eval + 1} Evaluation")
+        #         mAP = online_evaluate(model, test_loader_list[task_eval], samples_cnt, device)
+        #         task_mAP_list.append(mAP)
+        #         eval_results["epoch"].append(ep + 1)
+        #         eval_results["test_mAP"].append(mAP)
+        #         eval_results["task_evaluating"].append(task_eval + 1)
+        #         eval_results["data_cnt"].append(samples_cnt)
 
-                # Write the evaluation results to csv file
-                eval_results_writer.writerow([ep + 1, mAP, task_eval + 1, samples_cnt])
-                eval_results_file.flush()
-                os.fsync(eval_results_file.fileno())
+        #         # Write the evaluation results to csv file
+        #         eval_results_writer.writerow([ep + 1, mAP, task_eval + 1, samples_cnt])
+        #         eval_results_file.flush()
+        #         os.fsync(eval_results_file.fileno())
 
-                writer.add_scalar(f'mAP/task{task_eval + 1}', mAP, samples_cnt)
+        #         writer.add_scalar(f'mAP/task{task_eval + 1}', mAP, samples_cnt)
             
-            # Write the average mAP of all tasks to tensorboard
-            average_mAP = sum(task_mAP_list) / float(len(task_mAP_list))
-            writer.add_scalar("Average mAP", average_mAP, samples_cnt)
+        #     # Write the average mAP of all tasks to tensorboard
+        #     average_mAP = sum(task_mAP_list) / float(len(task_mAP_list))
+        #     writer.add_scalar("Average mAP", average_mAP, samples_cnt)
         
-            # Set model to training mode
-            model.train()
+        #     # Set model to training mode
+        #     model.train()
 
     # After training one epoch is done, save the model
     if args.upperbound:
@@ -207,7 +207,7 @@ if not os.path.exists(save_path):
     os.makedirs(save_path)
 
 # Save the evaluation results
-np.save(os.path.join(save_path, "_epoch.npy"), eval_results['epoch'])
-np.save(os.path.join(save_path, "_eval.npy"), eval_results['test_mAP'])
-np.save(os.path.join(save_path, "_eval_task.npy"), eval_results['task_evaluating'])
-np.save(os.path.join(save_path, "_eval_time.npy"), eval_results['data_cnt'])
+# np.save(os.path.join(save_path, "_epoch.npy"), eval_results['epoch'])
+# np.save(os.path.join(save_path, "_eval.npy"), eval_results['test_mAP'])
+# np.save(os.path.join(save_path, "_eval_task.npy"), eval_results['task_evaluating'])
+# np.save(os.path.join(save_path, "_eval_time.npy"), eval_results['data_cnt'])

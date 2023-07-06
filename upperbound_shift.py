@@ -15,7 +15,6 @@ from torch.utils.tensorboard import SummaryWriter
 args = config.joint_parser()
 
 # Setup logging
-# Setup logging
 log_path = f"logs/{args.dataset}_joint_{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}"
 log_path += "_debug.log" if args.debug else ".log"
 

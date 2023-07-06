@@ -38,7 +38,6 @@ class BASELINE(ER):
         self.report_training(sample_num, train_loss, self.writer)
         self.num_updates -= int(self.num_updates)
 
-    
     def online_train(self, batch_size, n_worker, iterations=1):
         """
             Traines the model using data from the memory. The data is selected randomly from the memory.

@@ -283,7 +283,7 @@ class SHIFTDistillationMemory(MemoryDataset):
     
             image=PIL.Image.open(img_path).convert('RGB')
             image = transforms.ToTensor()(image)
-            target=  get_sample_objects(sample['objects'])
+            target = get_sample_objects(sample['objects'])
             
             if idx is None:
                 self.datalist.append(sample)

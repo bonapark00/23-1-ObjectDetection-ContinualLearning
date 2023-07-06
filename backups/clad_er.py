@@ -110,7 +110,6 @@ class CLAD_ER:
             memory_batch_size = min(len(self.memory), batch_size)
         
         for i in range(iterations):
-            self.model.train()
             
             if len(self.memory) > 0 and batch_size > 0:
                 

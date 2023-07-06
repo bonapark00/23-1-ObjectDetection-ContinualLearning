@@ -85,8 +85,6 @@ class FILOD(ER):
         
         memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
         self.count_log += (stream_batch_size + memory_batch_size)
-
-        self.model.train()
         
         for i in range(iterations):
             memory_data = self.memory.get_batch(memory_batch_size) if memory_batch_size > 0 else None
@@ -290,7 +288,7 @@ class FILOD(ER):
         final_rpn_bbs_distillation_loss = sum(final_rpn_bbs_distillation_loss)/num_te_rpn_bbox
 
         final_rpn_loss = final_rpn_cls_distillation_loss + final_rpn_bbs_distillation_loss
-        print(f'rpn cls:{final_rpn_cls_distillation_loss} bbx:{final_rpn_bbs_distillation_loss}')
+        # print(f'rpn cls:{final_rpn_cls_distillation_loss} bbx:{final_rpn_bbs_distillation_loss}')
         final_rpn_loss.to('cuda')
 
         return final_rpn_loss

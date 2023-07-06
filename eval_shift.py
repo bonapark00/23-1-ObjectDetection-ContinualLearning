@@ -128,6 +128,8 @@ def main():
     #     breakpoint()
         
     # Save results
+
+    logging.info("Training finished! Saving results...")
     save_path = (
         f"{args.mode}_{args.model_name}_{args.dataset}"
         f"_b_size{args.batchsize}_tb_size{args.temp_batchsize}"

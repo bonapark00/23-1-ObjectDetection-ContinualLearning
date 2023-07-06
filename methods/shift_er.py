@@ -108,7 +108,6 @@ class SHIFT_ER:
             memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
 
         for i in range(iterations):
-            self.model.train()
             images_stream = []; images_memory = []
             targets_stream = []; targets_memory = []
 

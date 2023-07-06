@@ -102,7 +102,6 @@ class CLAD_FINETUNE:
         sample_dataset = CladStreamDataset(sample, dataset="SSLAD-2D", transform=None, cls_list=None)
 
         for i in range(iterations):
-            self.model.train()
             images_stream = []; targets_stream = []
 
             # Get stream data from CladStreamDataset

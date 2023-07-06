@@ -49,7 +49,6 @@ class CLAD_BASELINE(CLAD_ER):
         """
             Traines the model using data from the memory. The data is selected randomly from the memory.
         """
-        self.model.train()
         total_loss, num_data = 0.0, 0.0
 
         if len(self.memory) == 0:
@@ -59,7 +58,6 @@ class CLAD_BASELINE(CLAD_ER):
 
         # Train the model using data from the memory
         for i in range(iterations):
-            self.model.train()
             memory_data = self.memory.get_batch(memory_batch_size)
             images_memory = [img.to(self.device) for img in memory_data['images']]
             targets_memory = []

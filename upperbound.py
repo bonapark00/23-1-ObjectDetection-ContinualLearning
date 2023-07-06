@@ -6,17 +6,22 @@ from utils.data_loader_clad import SODADataset
 from utils.train_utils import select_model
 from collections import defaultdict
 from eval_utils.engine import evaluate
-from utils.visualize import visualize_bbox
 import logging, os, torch
 from tqdm import tqdm
 from torchvision import transforms
+import csv
 from torch.utils.tensorboard import SummaryWriter
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    handlers=[logging.FileHandler('training.log', mode='w'), 
-                            logging.StreamHandler()])
 
 args = config.joint_parser()
+
+# Setup logging
+log_path = f"logs/{args.dataset}_joint_{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}"
+log_path += "_debug.log" if args.debug else ".log"
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers=[logging.FileHandler(log_path, mode='w'), 
+                            logging.StreamHandler()])
 task_seed_list = [[0,1], [2,0],[1,2]]
 
 if args.upperbound:
@@ -29,9 +34,9 @@ else:
 
 # Set up logging
 if args.upperbound:
-    tensorboard_pth = os.path.join(args.tensorboard_pth, "joint", f"upperbound")
+    tensorboard_pth = os.path.join(args.tensorboard_pth, args.dataset, "joint", f"upperbound")
 else:
-    tensorboard_pth = os.path.join(args.tensorboard_pth, "joint", f"seed_{args.seed_num}")
+    tensorboard_pth = os.path.join(args.tensorboard_pth, args.dataset, "joint", f"seed_{args.seed_num}")
 
 writer = SummaryWriter(log_dir=tensorboard_pth)
 

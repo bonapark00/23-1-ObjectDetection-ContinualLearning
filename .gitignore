@@ -23,4 +23,7 @@ dataset/*
 !dataset/*.sh
 !dataset/*.py
 
+# Ignore txt files in logs directory
+logs/*.txt
+
 

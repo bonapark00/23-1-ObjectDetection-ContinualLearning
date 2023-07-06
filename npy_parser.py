@@ -3,10 +3,12 @@ import torch
 import os
 
 mode = "filod"
+mode = "baseline"
 model_name = "faster_rcnn"
 dataset = "shift"
 batchsize = 16
 temp_batchsize = 8
+sd = 2
 sd = 2
 
 # # Parse each method's outputs/npy files

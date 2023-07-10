@@ -709,7 +709,7 @@ class SODADataset(Dataset):
 		boxes = torch.tensor(self.objects[idx]['bbox'], dtype=torch.float32)
 		labels = torch.tensor(self.objects[idx]['category_id'])
 
-		target["img_path"] = img_path
+		# target["img_path"] = img_path
 		target["boxes"] = boxes
 		target["labels"] = labels
 		target["image_id"] = torch.tensor(self.objects[idx]['image_id'])
@@ -720,6 +720,6 @@ class SODADataset(Dataset):
 			ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', self.img_paths[idx][:-4] + '.npy'), allow_pickle=True)
 			assert ssl_proposals is not None, "Precomputed proposals not found"
 			ssl_proposals = torch.from_numpy(ssl_proposals)
-			target["ssl_proposals"] = ssl_proposals
+			
 
-		return img, target
+		return img, target, {'boxes':ssl_proposals}

@@ -4,7 +4,8 @@
 NOTE="clad_rodeo" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="rodeo"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
-SEEDS="1"
+SEEDS="3"
+EVAL_PERIOD=100
 
 
 if [ "$DATASET" == "clad" ]; then
@@ -27,5 +28,5 @@ do
     --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
     --seed_num $RND_SEED --pretrain_task_num $PRETRAIN_TASK_NUM \
-    --codebook_size $CODEBOOK_SIZE
+    --codebook_size $CODEBOOK_SIZE --eval_period $EVAL_PERIOD
 done

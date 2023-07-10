@@ -13,6 +13,7 @@ from configuration.clad_meta import CLADD_TRAIN_VAL_DOMAINS, SODA_ROOT
 from utils.preprocess_clad import *
 from typing import List, Callable, Dict, Any
 import torch
+import random
 
 @lru_cache(4)
 def load_obj_img_dic(annot_file: str):
@@ -347,3 +348,66 @@ def get_cladd_test(root: str=SODA_ROOT, transform: Callable = None) -> Sequence[
 
     return test_sets
 '''
+
+def visualize_bbox_ssls(image, boxes, labels, ssls, save_path=None):
+    """
+    Visualize bounding boxes on the image.
+
+    Args:
+        image (torch.Tensor): The image tensor in shape [C, H, W].
+        boxes (torch.Tensor): The bounding boxes tensor in shape [N, 4].
+        labels (torch.Tensor): The labels tensor in shape [N].
+        label_map (dict, optional): A mapping from label indices to label names. 
+            Default is None, in which case labels are converted to string as is.
+        save_path (str, optional): The path to save the visualized image. 
+            If None, the image will be displayed without saving. Default is None.
+        ssls: torch.Tensor: The ssls tensor in shape [2000, 4].
+    """
+    # Convert the image tensor to numpy array
+    # Also, convert it from [C, H, W] to [H, W, C] and normalize if necessary
+    image = image.permute(1, 2, 0).numpy()
+    image = (image - image.min()) / (image.max() - image.min())  # Normalize to [0, 1]
+
+    # Create a new figure and a subplot (this is needed to add patches - bounding boxes)
+    fig, ax = plt.subplots(1)
+    ax.imshow(image)
+
+    # Get image shape
+    H, W, C = image.shape
+
+    # Iterate over all boxes
+    for i in range(boxes.shape[0]):
+        # Create a rectangle patch
+        x1, y1, x2, y2 = boxes[i]
+        box = patches.Rectangle((x1, y1), x2 - x1, y2 - y1, linewidth=0.5, edgecolor='r', facecolor='none')
+        
+        # Add the rectangle patch (bounding box) to the subplot
+        ax.add_patch(box)
+
+        # Get label
+        label = str(labels[i].item())
+
+        # Put text (label)
+        plt.text(x1, y1, label, color='white')
+    
+    # Convert torch tensor to numpy array
+    ssls = ssls.numpy()
+    color = [random.randint(0, 255) for j in range(0, 3)]
+    for (x, y, x2, y2) in ssls:
+        # draw the region proposal bounding box on the image
+        box = patches.Rectangle((x, y), x2 - x, y2 - y, linewidth=0.5, edgecolor='b', facecolor='none')
+        ax.add_patch(box)
+
+        # Check if the box is out of image boundary
+        if x < 0 or y < 0 or x2 > W or y2 > H:
+            print("Warning: SSL box out of image boundary!")
+            print("H, W, C: ", H, W, C)
+            print("Image shape: ", image.shape)
+            print("SSL box: ", (x, y, x2, y2))
+
+
+    # Save the image or display it
+    if save_path:
+        plt.savefig(save_path)
+    else:
+        plt.show()

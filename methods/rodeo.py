@@ -95,8 +95,8 @@ class RODEO(ER):
                 if idx % 300 == 0:
                     print(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
 
-                #remove
-                # if idx == 1:
+                # remove
+                # if idx == 10:
                 #     break
                 
         print("Offline training is done! successfully!")
@@ -147,7 +147,7 @@ class RODEO(ER):
                     print(f"iter {idx} feature extraction is done!")
 
                 #remove
-                # if idx == 1:
+                # if idx == 10:
                 #     break
 
         return images_list, targets_list, front_model_features_list
@@ -177,7 +177,7 @@ class RODEO(ER):
         return pq
 
     def reconstruct_pq(self, backbone_features, pq_model, data_dim=2048):
-        print(f"reconstructing PQ model...")
+        # print(f"reconstructing PQ model...")
         assert len(backbone_features) > 0, "backbone_features should be list of features"
         pq = pq_model
 

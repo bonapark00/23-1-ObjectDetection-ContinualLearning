@@ -7,6 +7,7 @@ from collections import defaultdict
 from tqdm import tqdm
 import csv
 import os
+
 import logging
 from utils.preprocess_shift import get_shift_datalist, collate_fn
 from utils.data_loader_shift import SHIFTDataset
@@ -40,7 +41,7 @@ def main():
         transforms.ToTensor()
     ])
     
-    tensorboard_path = f"{args.mode}_{args.model_name}_{args.dataset}_bs-{args.batchsize}_tbs-{args.temp_batchsize}_sd-{args.seed_num}"
+    tensorboard_path = f"{args.mode}_{args.dataset}_sd-{args.seed_num}"
     if args.debug:
         tensorboard_path += "_debug"
     # # Remove existing tensorboard logs
@@ -189,8 +190,7 @@ def main():
     logging.info("Training finished, writing results to file")
     # Save results to file
     save_path = (
-        f"{args.model_name}_{args.dataset}"
-        f"_bs-{args.batchsize}_tbs-{args.temp_batchsize}"
+        f"{args.dataset}"
         f"_sd-{args.seed_num}"
     )
 

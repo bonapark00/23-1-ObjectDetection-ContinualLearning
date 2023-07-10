@@ -5,7 +5,7 @@ NOTE="clad_ilod" # Short description of the experiment. (WARNING: logs/results w
 MODE="ilod"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
 SEEDS="1"
-EVAL_PERIOD=30
+EVAL_PERIOD=40
 
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=150 ONLINE_ITER=1

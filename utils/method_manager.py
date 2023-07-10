@@ -6,6 +6,7 @@ from methods.baseline import BASELINE
 from methods.filod import FILOD
 from methods.ilod import ILOD
 from methods.finetune import FINETUNE
+from methods.rodeo import RODEO
 from methods.clad_er import CLAD_ER
 from methods.clad_mir import CLAD_MIR
 from methods.clad_der import CLAD_DER
@@ -81,6 +82,18 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             writer=writer,
             **kwargs,
         )
+
+    elif args.mode == "rodeo":
+            method = RODEO(
+                criterion=None,
+                device=device,
+                train_transform=train_transform,
+                test_transform=test_transform,
+                n_classes=n_classes,
+                writer=writer,
+                **kwargs,
+            )
+
 
     # elif args.mode == "clad_der":
     #     method = CLAD_DER(

@@ -1,5 +1,6 @@
 from torch import nn
 import torch.nn.functional as F
+import torchvision
 from torchvision.ops import MultiScaleRoIAlign
 from ._utils import overwrite_eps
 from .generalized_rcnn import GeneralizedRCNN
@@ -283,4 +284,17 @@ def fastrcnn_resnet50_fpn(pretrained=False, progress=True,
                                               progress=progress)
         model.load_state_dict(state_dict, strict=False)
         overwrite_eps(model, 0.0)
+    return model
+
+
+
+def fastrcnn_resnet50(pretrained=False, progress=True,
+                            num_classes=91, pretrained_backbone=True, trainable_backbone_layers=None, **kwargs):
+
+    res50_model = torchvision.models.resnet50(pretrained=True)
+    backbone = nn.Sequential(*list(res50_model.children())[:-2])
+    backbone.out_channels = 2048
+
+    roi_pooler = MultiScaleRoIAlign(featmap_names=['0'], output_size=7, sampling_ratio=2)
+    model = FastRCNN(backbone, num_classes, box_roi_pool=roi_pooler, **kwargs)
     return model

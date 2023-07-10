@@ -41,6 +41,10 @@ def base_parser():
     parser.add_argument('--alpha', type=float, default=0.05, help='DER alpha')
     parser.add_argument('--beta', type=float, default=0.5, help='DER beta')
     parser.add_argument('--theta', type=float, default=1.0, help='DER theta')
+
+    # RODEO
+    parser.add_argument('--pretrain_task_num', type=int, default=2, help='numbers of tasks used in pretraining RODEO')
+    parser.add_argument('--codebook_size', type=int, default=32, help='numbers of cookbook used in pq training RODEO')
     
     # parser.add_argument("--n_tasks", type=int, default=4, help="The number of tasks")
     # parser.add_argument("--n", type=int, default=50, help="The percentage of disjoint split. Disjoint=100, Blurry=0")

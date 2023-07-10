@@ -3,8 +3,8 @@ from easydict import EasyDict as edict
 from torch import optim
 import torchvision
 from models import mnist, cifar, imagenet
-from fast_rcnn.fast_rcnn import fastrcnn_resnet50_fpn
-from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset, CladDistillationMemory
+from fast_rcnn.fast_rcnn import fastrcnn_resnet50_fpn, fastrcnn_resnet50
+from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset, CladDistillationMemory, CladPQDataset
 from utils.data_loader_shift import SHIFTMemoryDataset, SHIFTStreamDataset, SHIFTDistillationMemory
 
 default_config = {
@@ -66,6 +66,14 @@ def select_distillation(dataset="clad"):
         return SHIFTDistillationMemory
     else:
         raise NotImplementedError("Please select the dataset [clad, shift]")
+    
+def select_pq_dataset(dataset="clad"):
+    if dataset == "clad":
+        return CladPQDataset(None)
+
+    elif dataset == "shift":
+        raise NotImplementedError("shift is not prepared yet") 
+
 
 #method to select learning rate schedulaer.
 def select_scheduler(sched_name, opt, hparam=None):
@@ -95,6 +103,10 @@ def select_model(mode="clad_er", num_classes=7):
 
     elif mode == 'ilod':
         model = fastrcnn_resnet50_fpn(num_classes=num_classes)
+        return model
+    
+    elif mode == 'rodeo':
+        model = fastrcnn_resnet50(num_classes=num_classes)
         return model
 
 

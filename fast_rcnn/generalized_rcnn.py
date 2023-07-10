@@ -38,7 +38,7 @@ class GeneralizedRCNN(nn.Module):
 
         return detections
 
-    def forward(self, images, targets=None, ssl_proposals=None, teacher_proposals=None):
+    def forward(self, images, targets=None, ssl_proposals=None, teacher_proposals=None, pq_features=None):
         # type: (List[Tensor], Optional[List[Dict[str, Tensor]]]) -> Tuple[Dict[str, Tensor], List[Dict[str, Tensor]]]
         """
         Args:
@@ -106,12 +106,13 @@ class GeneralizedRCNN(nn.Module):
                     raise ValueError("All bounding boxes should have positive height and width."
                                      " Found invalid box {} for target at index {}."
                                      .format(degen_bb, target_idx))
-
-        features = self.backbone(images.tensors)
+        if pq_features is not None:
+            features = self.backbone(pq_features)
+        else:
+            features = self.backbone(images.tensors)
         if isinstance(features, torch.Tensor):
             features = OrderedDict([('0', features)])
 
-       
         detections, detector_losses, proposals_logits = self.roi_heads(features, proposals, images.image_sizes, targets, bool(teacher_proposals), teacher_proposals)
         detections = self.transform.postprocess(detections, images.image_sizes, original_image_sizes)
         self.proposals_logits = proposals_logits

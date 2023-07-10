@@ -193,17 +193,17 @@ for ep in range(args.num_epochs):
     # epoch_mAP = sum(task_eval_results) / float(len(task_eval_results))
     # epoch_results["epoch_mAP"].append(epoch_mAP)
 
-logging.info("Training is done! Saving the evaluation results...")
-# Create the save path if not exist
-if args.upperbound:
-    save_path = os.path.join("outputs", "joint", "upperbound", args.dataset)
-else:
-    save_path = os.path.join("outputs", "joint", args.dataset, f"seed_{args.seed_num}")
+# logging.info("Training is done! Saving the evaluation results...")
+# # Create the save path if not exist
+# if args.upperbound:
+#     save_path = os.path.join("outputs", "joint", "upperbound", args.dataset)
+# else:
+#     save_path = os.path.join("outputs", "joint", args.dataset, f"seed_{args.seed_num}")
 
-save_path += "_debug" if args.debug else ""
+# save_path += "_debug" if args.debug else ""
 
-if not os.path.exists(save_path):
-    os.makedirs(save_path)
+# if not os.path.exists(save_path):
+#     os.makedirs(save_path)
 
 # Save the evaluation results
 # np.save(os.path.join(save_path, "_epoch.npy"), eval_results['epoch'])

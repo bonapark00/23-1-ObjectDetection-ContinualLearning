@@ -12,7 +12,7 @@ from utils.data_loader_shift import SHIFTDataset
 from eval_utils.engine import evaluate
 import os
 import copy
-
+from operator import itemgetter
 from fast_rcnn.transform import GeneralizedRCNNTransform
 import faiss
 import time
@@ -36,6 +36,7 @@ class RODEO(ER):
         self.pretrain_task_list = None
         self.g_model = None
         self.pq = None
+        self.random_indices = None
 
         clad_task_list = [[0,1,2,3],[2,0,3,1],[1,2,3,0]]
         shift_task_list = [[0,1,2,3,4],[2,0,3,1,4],[4,1,3,0,2]]
@@ -96,8 +97,8 @@ class RODEO(ER):
                     print(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
 
                 #remove
-                # if idx == 1:
-                #     break
+                if idx == 5:
+                    break
                 
         print("Offline training is done! successfully!")
         return model, ssl_proposals_list
@@ -147,8 +148,8 @@ class RODEO(ER):
                     print(f"iter {idx} feature extraction is done!")
 
                 #remove
-                # if idx == 1:
-                #     break
+                if idx == 5:
+                    break
 
         return images_list, targets_list, front_model_features_list
 
@@ -223,11 +224,17 @@ class RODEO(ER):
             self.chop_backbone_model(self.model)
 
             #add images, targets, ssl_proposals, reconstructed_features to memory
-            self.memory.images.extend(images_list)
-            self.memory.objects.extend(targets_list)
-            self.memory.ssl_proposals.extend(ssl_proposals_list)
-            self.memory.pq_features.extend(reconstructed_features)
-    
+            random_indices = np.random.choice(len(images_list), self.memory_size, replace=False)
+            random_indices.sort()
+            self.random_indices = random_indices
+
+            assert len(images_list) == len(targets_list) == len(ssl_proposals_list) == len(reconstructed_features), "length of data should be same"
+
+            self.memory.images.extend(list(itemgetter(*self.random_indices)(images_list)))
+            self.memory.objects.extend(list(itemgetter(*self.random_indices)(targets_list)))
+            self.memory.ssl_proposals.extend(list(itemgetter(*self.random_indices)(ssl_proposals_list)))
+            self.memory.pq_features.extend(list(itemgetter(*self.random_indices)(reconstructed_features)))
+
             end = time.time()
             print(f"Offline training is done! It took {end-start} seconds")
             print('*'*100)
@@ -238,11 +245,11 @@ class RODEO(ER):
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
 
-
-        if sample['task_num'] in self.pretrain_task_list:
+        if int(sample['task_num'])-1 in self.pretrain_task_list:
             # Only update the memory datalist when the 'task_num' is in the pretrain_task_list
-            self.memory.datalist.append(sample)
-
+            if sample_num-1 in self.random_indices:
+                  self.memory.datalist.append(sample)
+          
         else:
             assert self.dataset == 'clad', "Shift dataset is not supported yet"
             img_name = sample['file_name'][:-4]

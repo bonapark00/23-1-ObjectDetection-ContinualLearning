@@ -4,11 +4,11 @@
 NOTE="clad_rodeo" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="rodeo"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
-SEEDS="1"
+SEEDS="1 2 3"
 EVAL_PERIOD=30
 
 if [ "$DATASET" == "clad" ]; then
-    MEM_SIZE=150 ONLINE_ITER=1
+    MEM_SIZE=4 ONLINE_ITER=1
     MODEL_NAME="fast_rcnn"
     BATCHSIZE=2
     TEMP_BATCHSIZE=0

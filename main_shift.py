@@ -13,6 +13,7 @@ from utils.preprocess_shift import get_shift_datalist, collate_fn
 from utils.data_loader_shift import SHIFTDataset
 from utils.method_manager import select_method
 from torch.utils import tensorboard
+from calculate_auc import get_mAP_AUC
 
 def main():
     args = config.base_parser()
@@ -204,6 +205,29 @@ def main():
     # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_task_trained.npy"), task_records['task_trained'])
     # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_task_evaluating.npy"), task_records['task_evaluating'])
     # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_eval_time.npy"), task_records['data_cnt'])
+
+    # Get 5 x 5 matrix using after task mAP
+    after_mAP = np.array(task_records['test_mAP']).reshape(5, 5).T
+
+    # Save as csv
+    # Make row and column names
+    csv_save_path = os.path.join('outputs', 'summary', f"{args.dataset}_{args.mode}_sd-{args.seed_num}{note_suffix}.csv")
+    os.makedirs(os.path.dirname(csv_save_path), exist_ok=True)
+
+    col_names = ["Task 1", "Task 2", "Task 3", "Task 4", "Task 5"]
+
+    # Get AUC information
+    # First, convert lists in task_records to numpy arrays
+    for key in task_records:
+        task_records[key] = np.array(task_records[key])
+
+    auc_dict = get_mAP_AUC(task_records, 5)
+    mAP_AUC = auc_dict["mAP_AUC"]
+    logging.info(f"mAP AUC: {mAP_AUC}")
+    last_auc_row = np.array([[mAP_AUC, mAP_AUC, mAP_AUC, mAP_AUC, mAP_AUC]])
+    after_mAP = np.append(after_mAP, last_auc_row, axis=0)
+
+    np.savetxt(csv_save_path, after_mAP, delimiter=",", header=",".join(col_names), comments="", fmt="%s")
 
 if __name__ == "__main__":
     main()

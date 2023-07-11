@@ -13,6 +13,7 @@ from utils.preprocess_clad import get_clad_datalist, collate_fn
 from utils.data_loader_clad import SODADataset
 from utils.method_manager import select_method
 from torch.utils import tensorboard
+from calculate_auc import get_mAP_AUC
 
 def main():
     args = config.base_parser()
@@ -106,18 +107,18 @@ def main():
             - In each method, online_step and online_evaluate should have writer as input
     """
 
-    # Open file to write results (create if not exist, overwrite if exist)
-    filename_prefix = f"results/{args.dataset}/{args.mode}/seed-{args.seed_num}{note_suffix}"
-    os.makedirs(os.path.dirname(filename_prefix), exist_ok=True)
+    # # Open file to write results (create if not exist, overwrite if exist)
+    # filename_prefix = f"results/{args.dataset}/{args.mode}/seed-{args.seed_num}{note_suffix}"
+    # os.makedirs(os.path.dirname(filename_prefix), exist_ok=True)
 
-    # Create csv files to write results
-    eval_results_file = open(f"{filename_prefix}_eval_results.csv", "w")
-    eval_results_writer = csv.writer(eval_results_file)
-    eval_results_writer.writerow(["test_mAP", "task_training", "task_evaluating", "data_cnt"])
+    # # Create csv files to write results
+    # eval_results_file = open(f"{filename_prefix}_eval_results.csv", "w")
+    # eval_results_writer = csv.writer(eval_results_file)
+    # eval_results_writer.writerow(["test_mAP", "task_training", "task_evaluating", "data_cnt"])
 
-    task_records_file = open(f"{filename_prefix}_task_records.csv", "w")
-    task_records_writer = csv.writer(task_records_file)
-    task_records_writer.writerow(["test_mAP", "task_trained", "task_evaluating", "data_cnt"])
+    # task_records_file = open(f"{filename_prefix}_task_records.csv", "w")
+    # task_records_writer = csv.writer(task_records_file)
+    # task_records_writer.writerow(["test_mAP", "task_trained", "task_evaluating", "data_cnt"])
 
     # Train and eval
     for i, task in enumerate(selected_seed):
@@ -141,10 +142,10 @@ def main():
                     eval_results["task_evaluating"].append(task_eval + 1)
                     eval_results["data_cnt"].append(samples_cnt)
 
-                    # Write current evaluation result to csv file
-                    eval_results_writer.writerow([mAP, task + 1, task_eval + 1, samples_cnt])
-                    eval_results_file.flush()
-                    os.fsync(eval_results_file.fileno())
+                    # # Write current evaluation result to csv file
+                    # eval_results_writer.writerow([mAP, task + 1, task_eval + 1, samples_cnt])
+                    # eval_results_file.flush()
+                    # os.fsync(eval_results_file.fileno())
                     
                     # Write each task evaluation result to tensorboard
                     writer.add_scalar(f"task_{task_eval + 1}/mAP", mAP, samples_cnt)
@@ -162,10 +163,10 @@ def main():
             task_records["task_evaluating"].append(task_eval + 1)
             task_records["data_cnt"].append(samples_cnt)
 
-            # Write current evaluation result to csv file
-            task_records_writer.writerow([mAP, task + 1, task_eval + 1, samples_cnt])
-            task_records_file.flush()
-            os.fsync(task_records_file.fileno())
+            # # Write current evaluation result to csv file
+            # task_records_writer.writerow([mAP, task + 1, task_eval + 1, samples_cnt])
+            # task_records_file.flush()
+            # os.fsync(task_records_file.fileno())
             
             logging.info(f"After training task {task + 1}, evaluating task {task_eval + 1}, mAP: {mAP}")
 
@@ -200,6 +201,29 @@ def main():
     # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_task_trained.npy"), task_records['task_trained'])
     # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_task_evaluating.npy"), task_records['task_evaluating'])
     # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_eval_time.npy"), task_records['data_cnt'])
+
+    # Get 4 x 4 matrix using after task mAP
+    after_mAP = np.array(task_records['test_mAP']).reshape(4, 4).T
+
+    # Save as csv
+    # Make row and column names
+    csv_save_path = os.path.join('outputs', 'summary', f"{args.dataset}_{args.mode}_sd-{args.seed_num}{note_suffix}.csv")
+    os.makedirs(os.path.dirname(csv_save_path), exist_ok=True)
+
+    col_names = ["Task 1", "Task 2", "Task 3", "Task 4"]
+
+    # Get AUC information
+    # First, convert lists in task_records to numpy arrays
+    for key in task_records:
+        task_records[key] = np.array(task_records[key])
+
+    auc_dict = get_mAP_AUC(task_records, 4)
+    mAP_AUC = auc_dict["mAP_AUC"]
+    logging.info(f"mAP AUC: {mAP_AUC}")
+    last_auc_row = np.array([[mAP_AUC, mAP_AUC, mAP_AUC, mAP_AUC]])
+    after_mAP = np.append(after_mAP, last_auc_row, axis=0)
+
+    np.savetxt(csv_save_path, after_mAP, delimiter=",", header=",".join(col_names), comments="", fmt="%s")
 
 if __name__ == "__main__":
     main()

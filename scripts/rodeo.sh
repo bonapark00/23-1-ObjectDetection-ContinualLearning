@@ -7,7 +7,7 @@ DATASET="clad" # clad, shift
 SEED="1"
 
 if [ "$DATASET" == "clad" ]; then
-    MEM_SIZE=150 ONLINE_ITER=1
+    MEM_SIZE=310 ONLINE_ITER=1
     BATCHSIZE=16
     TEMP_BATCHSIZE=0
     EVAL_PERIOD=100

@@ -176,8 +176,8 @@ class RODEO(ER):
         #train the PQ model
         pq = faiss.ProductQuantizer(data_dim, codebook_size, nbits)
 
-        #remove
-        #pq.train(base_train_data)
+        # remove
+        pq.train(base_train_data)
         print(f"PQ model training is done!")
 
         return pq

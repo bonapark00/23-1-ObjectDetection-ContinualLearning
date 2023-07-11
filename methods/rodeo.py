@@ -106,8 +106,8 @@ class RODEO(ER):
                     print(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
 
                 #remove
-                if idx == 5:
-                    break
+                # if idx == 1:
+                #     break
                 
         print("Offline training is done! successfully!")
         return model, images_list, targets_list, ssl_proposals_list  
@@ -153,8 +153,8 @@ class RODEO(ER):
                     print(f"iter {idx} feature extraction is done!")
 
                 #remove
-                if idx == 5:
-                    break
+                # if idx == 10:
+                #     break
 
         return front_model_features_list
 
@@ -176,14 +176,14 @@ class RODEO(ER):
         #train the PQ model
         pq = faiss.ProductQuantizer(data_dim, codebook_size, nbits)
 
-        #remove
-        #pq.train(base_train_data)
+        # remove
+        pq.train(base_train_data)
         print(f"PQ model training is done!")
 
         return pq
 
     def reconstruct_pq(self, backbone_features, pq_model, data_dim=2048):
-        print(f"reconstructing PQ model...")
+        # print(f"reconstructing PQ model...")
         assert len(backbone_features) > 0, "backbone_features should be list of features"
         pq = pq_model
 

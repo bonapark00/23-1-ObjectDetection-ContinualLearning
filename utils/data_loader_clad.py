@@ -607,8 +607,6 @@ class CladPQDataset(CladDistillationMemory):
 		# 		self.previous_idx = np.append(self.previous_idx, indices) 
 		
 		return {'images': images, 'boxes': boxes, 'labels': labels, 'ssl_proposals': ssl_proposals, 'pq_features': pq_features}
-	  
-
 
 class SODADataset(Dataset):
 	"""
@@ -701,5 +699,6 @@ class SODADataset(Dataset):
 			assert ssl_proposals is not None, "Precomputed proposals not found"
 			ssl_proposals = torch.from_numpy(ssl_proposals)
 			target["ssl_proposals"] = ssl_proposals
+			
 
 		return img, target

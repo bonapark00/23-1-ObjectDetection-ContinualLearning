@@ -9,7 +9,7 @@ EVAL_PERIOD=100
 
 
 if [ "$DATASET" == "clad" ]; then
-    MEM_SIZE=150 ONLINE_ITER=1
+    MEM_SIZE=310 ONLINE_ITER=1
     MODEL_NAME="fast_rcnn"
     BATCHSIZE=16
     TEMP_BATCHSIZE=0

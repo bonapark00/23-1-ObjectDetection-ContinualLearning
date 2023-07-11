@@ -18,12 +18,9 @@ def main():
     args = config.base_parser()
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-    # Set up logging
-    if not args.debug:
-        log_path = f"logs/{args.dataset}/{args.mode}/sd-{args.seed_num}.log"
-    else:
-        log_path = f"logs/{args.dataset}/{args.mode}/sd-{args.seed_num}_debug.log"
-    
+    note_suffix = f"_{args.note}" if args.note else ""
+    log_path = f"logs/{args.dataset}/{args.mode}/sd-{args.seed_num}{note_suffix}.log"
+
     # Create log directory if not exist
     os.makedirs(os.path.dirname(log_path), exist_ok=True)
 
@@ -44,12 +41,10 @@ def main():
         transforms.ToTensor()
     ])
     
-    tensorboard_path = f"{args.mode}_{args.dataset}_sd-{args.seed_num}"
-    if args.debug:
-        tensorboard_path += "_debug"
-    # # Remove existing tensorboard logs
-    # if os.path.exists(f"tensorboard/{tensorboard_path}"):
-    #     os.system(f"rm -rf tensorboard/{tensorboard_path}")
+    tensorboard_path = f"{args.dataset}_{args.mode}_sd-{args.seed_num}{note_suffix}"
+    # Remove existing tensorboard logs
+    if os.path.exists(f"tensorboard/{tensorboard_path}"):
+        os.system(f"rm -rf tensorboard/{tensorboard_path}")
     writer = tensorboard.SummaryWriter(log_dir=f"tensorboard/{tensorboard_path}")
     method = select_method(args, None, device, train_transform, test_transform, 7, writer)
     # Get train dataset
@@ -71,7 +66,7 @@ def main():
 
     # Get test dataset
     if not args.debug:
-        print("Loading test dataset...")
+        logging.info("Loading test dataset...")
         test_loader_list = []
         for i in range(4):
             dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1],
@@ -80,7 +75,7 @@ def main():
             test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batchsize, collate_fn=collate_fn))
 
     else:
-        print("Loading test debug dataset...")
+        logging.info("Loading test debug dataset...")
         test_loader_list = []
         for i in range(4): 
             dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1],
@@ -112,7 +107,7 @@ def main():
     """
 
     # Open file to write results (create if not exist, overwrite if exist)
-    filename_prefix = f"results/{args.dataset}/{args.mode}/seed-{args.seed_num}"
+    filename_prefix = f"results/{args.dataset}/{args.mode}/seed-{args.seed_num}{note_suffix}"
     os.makedirs(os.path.dirname(filename_prefix), exist_ok=True)
 
     # Create csv files to write results
@@ -180,7 +175,8 @@ def main():
 
     logging.info("Training finished, writing results to file")
     # Save results to file
-    save_path = os.path.join('outputs', args.mode, args.dataset, f"sd-{args.seed_num}")
+    save_path = os.path.join('outputs', args.dataset, args.mode, f"sd-{args.seed_num}{note_suffix}")
+
     # Create path for each seed
     os.makedirs(save_path, exist_ok=True)
     os.makedirs(os.path.join(save_path, "after_task"), exist_ok=True)

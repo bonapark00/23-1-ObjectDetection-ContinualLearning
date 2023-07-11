@@ -18,11 +18,11 @@ def main():
     args = config.base_parser()
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-    # Set up logging
-    if not args.debug:
-        log_path = f"logs/{args.dataset}_{args.mode}_sd-{args.seed_num}.log"
-    else:
-        log_path = f"logs/{args.dataset}_{args.mode}_sd-{args.seed_num}_debug.log"
+    note_suffix = f"_{args.note}" if args.note else ""
+    log_path = f"logs/{args.dataset}/{args.mode}/sd-{args.seed_num}{note_suffix}.log"
+
+    # Create log directory if not exist
+    os.makedirs(os.path.dirname(log_path), exist_ok=True)
 
     logging.basicConfig(level=logging.INFO, 
                         format='%(asctime)s - %(levelname)s - %(message)s',
@@ -41,12 +41,10 @@ def main():
         transforms.ToTensor()
     ])
     
-    tensorboard_path = f"{args.mode}_{args.dataset}_sd-{args.seed_num}"
-    if args.debug:
-        tensorboard_path += "_debug"
-    # # Remove existing tensorboard logs
-    # if os.path.exists(f"tensorboard/{tensorboard_path}"):
-    #     os.system(f"rm -rf tensorboard/{tensorboard_path}")
+    tensorboard_path = f"{args.dataset}_{args.mode}_sd-{args.seed_num}{note_suffix}"
+    # Remove existing tensorboard logs
+    if os.path.exists(f"tensorboard/{tensorboard_path}"):
+        os.system(f"rm -rf tensorboard/{tensorboard_path}")
     writer = tensorboard.SummaryWriter(log_dir=f"tensorboard/{tensorboard_path}")
     method = select_method(args, None, device, train_transform, test_transform, 7, writer)
 
@@ -113,7 +111,7 @@ def main():
     """
 
     # Open file to write results (create if not exist, overwrite if exist)
-    filename_prefix = f"results/{args.dataset}/{args.mode}_{args.batchsize}_{args.temp_batchsize}/seed-{args.seed_num}"
+    filename_prefix = f"results/{args.dataset}/{args.mode}/seed-{args.seed_num}{note_suffix}"
     os.makedirs(os.path.dirname(filename_prefix), exist_ok=True)
 
     # Create csv files to write results
@@ -179,32 +177,33 @@ def main():
         task_mAP = sum(task_records["test_mAP"]) / float(len(task_records["test_mAP"]))
         logging.info(f"After training task {task + 1}, average mAP of all tasks: {task_mAP}")
 
-    # Create path for each method
-    if not os.path.exists(os.path.join('outputs', args.mode)):
-        os.makedirs(os.path.join('outputs', args.mode))
-    
-    # Create path for after_task
-    if not os.path.exists(os.path.join('outputs', args.mode, 'after_task')):
-        os.makedirs(os.path.join('outputs', args.mode, 'after_task'))
-
     logging.info("Training finished, writing results to file")
     # Save results to file
-    save_path = (
-        f"{args.dataset}"
-        f"_sd-{args.seed_num}"
-    )
+    save_path = os.path.join('outputs', args.dataset, args.mode, f"sd-{args.seed_num}{note_suffix}")
+
+    # Create path for each seed
+    os.makedirs(save_path, exist_ok=True)
+    os.makedirs(os.path.join(save_path, "after_task"), exist_ok=True)
 
     # Results during training each task
-    np.save(os.path.join('outputs', args.mode, save_path + "_mAP.npy"), eval_results['test_mAP'])
-    np.save(os.path.join('outputs', args.mode, save_path + "_task_training.npy"), eval_results['task_training'])
-    np.save(os.path.join('outputs', args.mode, save_path + "_task_evaluating.npy"), eval_results['task_evaluating'])
-    np.save(os.path.join('outputs', args.mode, save_path + "_eval_time.npy"), eval_results['data_cnt'])
+    np.save(os.path.join(save_path, "mAP.npy"), eval_results['test_mAP'])
+    np.save(os.path.join(save_path, "task_training.npy"), eval_results['task_training'])
+    np.save(os.path.join(save_path, "task_evaluating.npy"), eval_results['task_evaluating'])
+    np.save(os.path.join(save_path, "eval_time.npy"), eval_results['data_cnt'])
+    # np.save(os.path.join('outputs', args.mode, save_path + "_mAP.npy"), eval_results['test_mAP'])
+    # np.save(os.path.join('outputs', args.mode, save_path + "_task_training.npy"), eval_results['task_training'])
+    # np.save(os.path.join('outputs', args.mode, save_path + "_task_evaluating.npy"), eval_results['task_evaluating'])
+    # np.save(os.path.join('outputs', args.mode, save_path + "_eval_time.npy"), eval_results['data_cnt'])
 
     # Results after training each task
-    np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_mAP.npy"), task_records['test_mAP'])
-    np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_task_trained.npy"), task_records['task_trained'])
-    np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_task_evaluating.npy"), task_records['task_evaluating'])
-    np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_eval_time.npy"), task_records['data_cnt'])
+    np.save(os.path.join(save_path, "after_task", "mAP.npy"), task_records['test_mAP'])
+    np.save(os.path.join(save_path, "after_task", "task_trained.npy"), task_records['task_trained'])
+    np.save(os.path.join(save_path, "after_task", "task_evaluating.npy"), task_records['task_evaluating'])
+    np.save(os.path.join(save_path, "after_task", "eval_time.npy"), task_records['data_cnt'])
+    # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_mAP.npy"), task_records['test_mAP'])
+    # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_task_trained.npy"), task_records['task_trained'])
+    # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_task_evaluating.npy"), task_records['task_evaluating'])
+    # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_eval_time.npy"), task_records['data_cnt'])
 
 if __name__ == "__main__":
     main()

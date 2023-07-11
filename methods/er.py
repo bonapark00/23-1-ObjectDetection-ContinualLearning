@@ -20,7 +20,7 @@ class ER:
         self.dataset = kwargs["dataset"]
         self.device = device
 
-        self.model_name = kwargs["model_name"]
+        # self.model_name = kwargs["model_name"]
         self.memory_size = kwargs["memory_size"]
 
         self.online_iter = kwargs["online_iter"]

@@ -2,10 +2,10 @@
 
 # CIL CONFIG
 NOTE="clad_filod" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
-MODE="clad_filod"
+MODE="filod"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
 SEEDS="1"
-
+EVAL_PERIOD=100
 
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=150 ONLINE_ITER=1
@@ -24,5 +24,5 @@ do
     --model_name $MODEL_NAME --dataset $DATASET \
     --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
     --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-    --seed_num $RND_SEED
+    --seed_num $RND_SEED --eval_period $EVAL_PERIOD
 done

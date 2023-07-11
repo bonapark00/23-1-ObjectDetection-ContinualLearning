@@ -85,7 +85,6 @@ if not args.debug:
     joint_dataset = SHIFTDataset(task_num=1, domain_dict=None, split="train")
     joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batchsize, 
                                                 collate_fn=collate_fn, shuffle=True)
-    
 else:
     # Debug mode
     logging.info("Loading joint debug dataset...")

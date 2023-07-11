@@ -163,7 +163,6 @@ class CladMemoryDataset(MemoryDataset):
 				img_name = sample['filepath']
 		
 		if self.data_dir is None:
-				breakpoint()
 				img_path = os.path.join("dataset", self.dataset,'labeled',sample['split'],img_name)
 		else:
 				img_path = os.path.join(self.data_dir, sample['split'],img_name)
@@ -483,31 +482,12 @@ class CladDistillationMemory(MemoryDataset):
 class CladPQDataset(CladDistillationMemory):
 	def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
 			data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
-
+		super().__init__(dataset, transform, cls_list, device, test_transform, data_dir, transform_on_gpu, save_test, keep_history)
 		self.datalist = [] 
 		self.images = []
 		self.objects = [] 
 		self.ssl_proposals = [] 
 		self.pq_features = []   
-		self.dataset = 'SSLAD-2D'
-		
-		self.img_weather_count = {'Clear': 0, 'Overcast': 0, 'Rainy': 0}
-		self.img_location_count = {'Citystreet': 0, 'Countryroad': 0, 'Highway': 0}
-		self.img_period_count = {'Daytime': 0, 'Night': 0}
-		self.img_city_count = {'Shenzhen': 0, 'Shanghai': 0, 'Guangzhou': 0}
-		
-		self.obj_cls_list = [1] # [1,4] exposed class list(숫자 리스트) cat1,4 classes were exposed
-		self.obj_cls_count = np.zeros(np.max(self.obj_cls_list), dtype=int) #[2,0,0,4]  2 objects in cat1, 4 objects of cat 4, in total
-		self.obj_cls_train_cnt = np.zeros(np.max(self.obj_cls_list),dtype=int) #[1,0,0,2] 1 time for cat1 obj, 2 times for cat4 are trained
-		self.others_loss_decrease = np.array([]) 
-		self.previous_idx = np.array([], dtype=int)
-		self.device = device
-
-			
-		#self.test_transform = test_transform
-		self.data_dir = data_dir
-		self.keep_history = keep_history
-	  
 
 	
 	def __len__(self):
@@ -523,6 +503,7 @@ class CladPQDataset(CladDistillationMemory):
 		when appeard new class, check whether to extend obj_cls_count
 		if it is, extend new spaces for new classes('category_id') 
 		'''
+
 		self.obj_cls_list = obj_cls_list 
 		
 		if np.max(obj_cls_list) > len(self.obj_cls_count):
@@ -612,21 +593,20 @@ class CladPQDataset(CladDistillationMemory):
 		ssl_proposals = [self.ssl_proposals[idx] for idx in indices]
 		pq_features = [torch.from_numpy(self.pq_features[idx]) for idx in indices]
 		
-		for obj in np.array(self.objects)[indices]:
-			obj_cls_id = np.bincount(np.array(obj['labels'].tolist()))[1:]
-			#breakpoint()
-			if len(self.obj_cls_train_cnt) > len(obj_cls_id):
-				obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_train_cnt)-len(obj_cls_id)), constant_values=(0)).flatten()
+		# for obj in np.array(self.objects)[indices]:
+		# 	obj_cls_id = np.bincount(np.array(obj['labels'].tolist()))[1:]
+
+		# 	if len(self.obj_cls_train_cnt) > len(obj_cls_id):
+		# 		obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_train_cnt)-len(obj_cls_id)), constant_values=(0)).flatten()
 			
-			self.obj_cls_train_cnt += obj_cls_id
+			
+		# 	self.obj_cls_train_cnt += obj_cls_id
 				
-		if self.keep_history:
-				#total history of indices selected for batch
-				self.previous_idx = np.append(self.previous_idx, indices) 
+		# if self.keep_history:
+		# 		#total history of indices selected for batch
+		# 		self.previous_idx = np.append(self.previous_idx, indices) 
 		
 		return {'images': images, 'boxes': boxes, 'labels': labels, 'ssl_proposals': ssl_proposals, 'pq_features': pq_features}
-	  
-
 
 
 
@@ -709,7 +689,7 @@ class SODADataset(Dataset):
 		boxes = torch.tensor(self.objects[idx]['bbox'], dtype=torch.float32)
 		labels = torch.tensor(self.objects[idx]['category_id'])
 
-		# target["img_path"] = img_path
+		target["img_path"] = img_path
 		target["boxes"] = boxes
 		target["labels"] = labels
 		target["image_id"] = torch.tensor(self.objects[idx]['image_id'])
@@ -720,6 +700,7 @@ class SODADataset(Dataset):
 			ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', self.img_paths[idx][:-4] + '.npy'), allow_pickle=True)
 			assert ssl_proposals is not None, "Precomputed proposals not found"
 			ssl_proposals = torch.from_numpy(ssl_proposals)
+			target["ssl_proposals"] = ssl_proposals
 			
 
-		return img, target, {'boxes':ssl_proposals}
+		return img, target

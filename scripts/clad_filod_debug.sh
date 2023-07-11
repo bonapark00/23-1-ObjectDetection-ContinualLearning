@@ -1,17 +1,17 @@
 #/bin/bash
 
 # CIL CONFIG
-NOTE="clad_rodeo" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
-MODE="rodeo"
+NOTE="clad_filod" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+MODE="filod"
 DATASET="clad" # cifar10, cifar100, tinyimagenet, imagenet
-SEEDS="1 2 3"
-EVAL_PERIOD=30
+SEEDS="1"
+EVAL_PERIOD=40
 
 if [ "$DATASET" == "clad" ]; then
-    MEM_SIZE=4 ONLINE_ITER=1
-    MODEL_NAME="fast_rcnn"
-    BATCHSIZE=2
-    TEMP_BATCHSIZE=0
+    MEM_SIZE=150 ONLINE_ITER=1
+    MODEL_NAME="faster_rcnn"
+    BATCHSIZE=4
+    TEMP_BATCHSIZE=2
 
 else
     echo "Undefined setting"

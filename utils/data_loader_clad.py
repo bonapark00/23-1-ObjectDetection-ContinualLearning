@@ -483,7 +483,7 @@ class CladDistillationMemory(MemoryDataset):
 class CladPQDataset(CladDistillationMemory):
 	def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
 			data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
-
+		super().__init__(dataset, transform, cls_list, device, test_transform, data_dir, transform_on_gpu, save_test, keep_history)
 		self.datalist = [] 
 		self.images = []
 		self.objects = [] 
@@ -503,11 +503,6 @@ class CladPQDataset(CladDistillationMemory):
 		self.previous_idx = np.array([], dtype=int)
 		self.device = device
 
-			
-		#self.test_transform = test_transform
-		self.data_dir = data_dir
-		self.keep_history = keep_history
-	  
 
 	
 	def __len__(self):

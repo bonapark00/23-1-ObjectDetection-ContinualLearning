@@ -11,6 +11,12 @@ def count_files(path):
     number_files = len(list_hel)
     return number_files
 
+# count the number of images under directory hello
+def count_files(path):
+    list_hel = os.listdir(path) # dir is your directory path
+    number_files = len(list_hel)
+    return number_files
+
 path = './precomputed_proposals/ssl_shift'
 hello = count_files(path)
 breakpoint()

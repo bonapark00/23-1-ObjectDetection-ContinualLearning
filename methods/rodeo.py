@@ -78,15 +78,24 @@ class RODEO(ER):
         #train the model
         model.train()
 
+        images_list = []
+        targets_list = []
         ssl_proposals_list = []
         for epoch in range(epochs):
             for idx, (images, targets) in enumerate(tqdm(dataloader, desc=f"Epoch {epoch} offline training...")):
-                images = list(image.to(self.device) for image in images)
-                targets_ = targets
-                targets = [{'boxes': target['boxes'].to(self.device), 'labels': target['labels'].to(self.device)} for target in targets_]
-                ssl_proposals = [{'boxes': target['ssl_proposals'].to(self.device)} for target in targets_]
-                ssl_proposals_list.extend([prop['boxes'].cpu() for prop in ssl_proposals])
-                
+            
+                images_list.extend(list(images))
+                images = [image.to(self.device) for image in images]
+
+                targets_modified = [{'boxes': target['boxes'], 'labels': target['labels']} for target in targets]
+                targets_list.extend(targets_modified)
+
+                ssl_proposals = [target['ssl_proposals'] for target in targets]
+                ssl_proposals_list.extend(ssl_proposals)
+
+                targets = [{k: v.to(self.device) for k, v in t.items()} for t in targets_modified]
+                ssl_proposals = [{'boxes': prop.to(self.device)} for prop in ssl_proposals]
+    
                 loss_dict = model(images, targets, ssl_proposals)
                 losses = sum(loss for loss in loss_dict.values())
                 optimizer.zero_grad()
@@ -101,13 +110,14 @@ class RODEO(ER):
                 #     break
                 
         print("Offline training is done! successfully!")
-        return model, ssl_proposals_list
+        return model, images_list, targets_list, ssl_proposals_list  
 
     def front_backbone_model(self, model):
-        backbone = model.backbone
-        g_model = nn.Sequential(
-             *list(backbone.children())[:-1],
-             list(backbone.children())[-1][0])
+        with torch.no_grad():
+            backbone = model.backbone
+            g_model = nn.Sequential(
+                *list(backbone.children())[:-1],
+                list(backbone.children())[-1][0])
    
         return g_model
     
@@ -129,20 +139,15 @@ class RODEO(ER):
         #initialize transform
         transform = GeneralizedRCNNTransform(min_size=800, max_size=1333, image_mean=[0.485, 0.456, 0.406], image_std=[0.229, 0.224, 0.225])
         front_model.eval()
-        images_list = []
         targets_list = []
         front_model_features_list = []
 
         with torch.no_grad():
-            for idx, (images, targets) in enumerate(tqdm(dataloader, desc="Extracting backbone features...")):
-                images_list.extend(images)
-                images = list(image.to(self.device) for image in images)
-                targets_list.extend(targets)
-                targets = [{'boxes': target['boxes'].to(self.device), 'labels': target['labels'].to(self.device)} for target in targets]
-
-                images, _ = transform(images, targets)
+            for idx, (images, _) in enumerate(tqdm(dataloader, desc="Extracting backbone features...")):
+                images = [image.to(self.device) for image in images]
+                images, _ = transform(images, None)
                 features = front_model(images.tensors)
-                front_model_features_list.append(features.detach())
+                front_model_features_list.append(features)
 
                 if idx % 100 == 0:
                     print(f"iter {idx} feature extraction is done!")
@@ -151,7 +156,7 @@ class RODEO(ER):
                 # if idx == 10:
                 #     break
 
-        return images_list, targets_list, front_model_features_list
+        return front_model_features_list
 
 
     def train_pq(self, backbone_features, codebook_size=32, data_dim=2048, nbits=8):
@@ -172,7 +177,7 @@ class RODEO(ER):
         pq = faiss.ProductQuantizer(data_dim, codebook_size, nbits)
 
         #remove
-        pq.train(base_train_data)
+        #pq.train(base_train_data)
         print(f"PQ model training is done!")
 
         return pq
@@ -210,10 +215,9 @@ class RODEO(ER):
             #dataloader for offline training
             assert self.pretrain_task_list is not None, "pretrain_task_list should be initialized. checkout the dataset."
             offline_dataloader = self.create_offline_Dataloader(self.dataset, self.pretrain_task_list, self.batch_size)
-            pretrained_model, ssl_proposals_list = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=1)
-    
+            pretrained_model, images_list, targets_list, ssl_proposals_list = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=1)
             g_model = self.front_backbone_model(self.model)
-            images_list, targets_list, front_model_features_list = self.extract_backbone_features(g_model, offline_dataloader)
+            front_model_features_list = self.extract_backbone_features(g_model, offline_dataloader)
             pq_model = self.train_pq(front_model_features_list, codebook_size=32, data_dim=2048, nbits=8)   
             reconstructed_features = self.reconstruct_pq(front_model_features_list, pq_model, data_dim=2048)
             g_model = self.freeze_front_model(g_model)      
@@ -276,7 +280,6 @@ class RODEO(ER):
         
         #Note that sample_dataset has only 1 item.
         current_data = sample_dataset.get_data()
-
         current_image = [current_data['images'][0].to(self.device).type(torch.float)]
         current_target = [{'boxes': current_data['boxes'][0].to(self.device), 'labels': current_data['labels'][0].to(self.device)}]
 
@@ -339,7 +342,7 @@ class RODEO(ER):
         
     def update_memory(self, sample, ssl_proposal, pq_feature):
         # Updates the memory of the model based on the importance of the samples.
-        ssl_proposal = ssl_proposal.cpu()
+        ssl_proposal = ssl_proposal.detach()
         if len(self.memory.images) >= self.memory_size:
             target_idx = np.random.randint(len(self.memory.images))
             self.memory.replace_sample(sample, ssl_proposal, pq_feature, target_idx)

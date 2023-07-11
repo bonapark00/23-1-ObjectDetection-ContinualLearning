@@ -21,7 +21,6 @@ class ILOD(ER):
         
         # ILOD Model
         self.model_teacher = None
-        # Num of task changed
         self.task_changed = 0
         
         distillation_classname = select_distillation(self.dataset)
@@ -57,6 +56,7 @@ class ILOD(ER):
 
             # Switch teacher as task changed
             if self.task_changed > 1:
+                print('teacher changed!')
                 self.model_teacher = select_model(mode=self.mode, num_classes=self.n_classes).to(self.device)
                 self.model_teacher.load_state_dict(self.model.state_dict()) # Copy weights from student to teacher
                 self.model_teacher.eval()

@@ -608,8 +608,6 @@ class CladPQDataset(CladDistillationMemory):
 		
 		return {'images': images, 'boxes': boxes, 'labels': labels, 'ssl_proposals': ssl_proposals, 'pq_features': pq_features}
 
-
-
 class SODADataset(Dataset):
 	"""
 		Dataset for SODA

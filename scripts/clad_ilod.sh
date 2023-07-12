@@ -8,7 +8,7 @@ SEEDS="1"
 
 
 if [ "$DATASET" == "clad" ]; then
-    MEM_SIZE=150 ONLINE_ITER=1
+    MEM_SIZE=310 ONLINE_ITER=1
     MODEL_NAME="faster_rcnn"
     BATCHSIZE=16
     TEMP_BATCHSIZE=8

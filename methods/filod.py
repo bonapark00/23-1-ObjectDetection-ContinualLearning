@@ -126,16 +126,16 @@ class FILOD(ER):
                     backbone_st, rpn_st= self.model.backbone_output, self.model.rpn_output
                     
                     # Fast rcnn loss
-                    faster_rcnn_losses = sum(loss for loss in losses_st.values()) * 120.0
+                    faster_rcnn_losses = sum(loss for loss in losses_st.values())
 
                     # Backbone loss
-                    feature_distillation_losses = self.calculate_feature_distillation_loss(backbone_te, backbone_st) * 5.0
+                    feature_distillation_losses = self.calculate_feature_distillation_loss(backbone_te, backbone_st)
 
                     # RPN loss
-                    rpn_distillation_losses = self.calculate_rpn_distillation_loss(rpn_te, rpn_st, bbox_threshold=0.1) * 2.0
+                    rpn_distillation_losses = self.calculate_rpn_distillation_loss(rpn_te, rpn_st, bbox_threshold=0.1)
 
                     # ROI head loss
-                    roi_distillation_losses = self.calculate_roi_distillation_loss(proposals_logits_te, student_logits, targets) * 100.0
+                    roi_distillation_losses = self.calculate_roi_distillation_loss(proposals_logits_te, student_logits, targets)
 
                     # Distillation loss
                     distillation_losses = roi_distillation_losses + rpn_distillation_losses + feature_distillation_losses

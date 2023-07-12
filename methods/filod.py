@@ -126,25 +126,26 @@ class FILOD(ER):
                     backbone_st, rpn_st= self.model.backbone_output, self.model.rpn_output
                     
                     # Fast rcnn loss
-                    faster_rcnn_losses = sum(loss for loss in losses_st.values())
+                    faster_rcnn_losses = sum(loss for loss in losses_st.values()) * 120.0
 
                     # Backbone loss
-                    feature_distillation_losses = self.calculate_feature_distillation_loss(backbone_te, backbone_st)
+                    feature_distillation_losses = self.calculate_feature_distillation_loss(backbone_te, backbone_st) * 5.0
 
                     # RPN loss
-                    rpn_distillation_losses = self.calculate_rpn_distillation_loss(rpn_te, rpn_st, bbox_threshold=0.1)
+                    rpn_distillation_losses = self.calculate_rpn_distillation_loss(rpn_te, rpn_st, bbox_threshold=0.1) * 2.0
 
                     # ROI head loss
-                    roi_distillation_losses = self.calculate_roi_distillation_loss(proposals_logits_te, student_logits, targets)
+                    roi_distillation_losses = self.calculate_roi_distillation_loss(proposals_logits_te, student_logits, targets) * 100.0
 
                     # Distillation loss
                     distillation_losses = roi_distillation_losses + rpn_distillation_losses + feature_distillation_losses
                     distillation_losses = distillation_losses.clone().detach()
-                    if i == 1:
-                        logging.info(f"{faster_rcnn_losses}, roi:{roi_distillation_losses}, rpn:{rpn_distillation_losses}, \
-                            backbone:{feature_distillation_losses}")
+                    # if i == 1:
+                    #     logging.info(f"{faster_rcnn_losses}, roi:{roi_distillation_losses}, rpn:{rpn_distillation_losses}, \
+                    #         backbone:{feature_distillation_losses}")
 
                     loss = faster_rcnn_losses + distillation_losses
+                    # loss = faster_rcnn_losses
 
                 # While first task (do not have any teacher model)
                 else:

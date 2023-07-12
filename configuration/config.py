@@ -11,11 +11,9 @@ def base_parser():
         default="clad_er",
         help="Select DIL method",
     )
+    parser.add_argument("--note", default="", type=str, help="Short description of the exp")
     parser.add_argument(
         "--memory_size", type=int, default=150, help="Episodic memory size"
-    )
-    parser.add_argument(
-        "--model_name", type=str, default="resnet18", help="Model name"
     )
 
     parser.add_argument("--batchsize", type=int, default=4, help="batch size")

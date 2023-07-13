@@ -5,6 +5,7 @@ apt-get update -y
 
 # Install necessary packages
 apt-get install -y git gcc
+apt-get install unzip
 
 # Install Python packages
 pip install pycocotools matplotlib opencv-contrib-python 

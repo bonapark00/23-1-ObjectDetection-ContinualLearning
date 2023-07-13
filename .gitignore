@@ -26,4 +26,7 @@ dataset/*
 # Ignore txt files in logs directory
 logs/*.txt
 
+# Ignore everyting in logs_backup directory
+logs_backup/*
+
 

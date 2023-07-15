@@ -648,7 +648,7 @@ class SODADataset(Dataset):
 		for task_id in task_ids:
 			start_idx = split_num[task_id-1]; end_idx = split_num[task_id]
 			target_data += total_data[start_idx:end_idx]
-		
+
 		# Get img_paths and objects
 		for item in target_data:
 			self.img_paths.append(item['file_name'])
@@ -656,6 +656,7 @@ class SODADataset(Dataset):
 				box = item['objects']['bbox'][i]
 				item['objects']['bbox'][i] = [box[0], box[1], box[0] + box[2], box[1] + box[3]]
 			self.objects.append(item['objects'])
+
 
 	def __len__(self):
 		return len(self.img_paths)

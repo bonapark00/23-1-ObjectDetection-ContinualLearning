@@ -44,11 +44,14 @@ class RODEO(ER):
         if self.dataset == 'clad':
             assert self.pretrain_task_num <= 4, "pretrain_task_num should be less than 4 in clad"
             selected_tasks = clad_task_list[int(self.seed_num)-1]
+            selected_tasks = [task+1 for task in selected_tasks] #Since task_num starts from 1
             self.pretrain_task_list = selected_tasks[:self.pretrain_task_num]
-        
+
+
         elif self.dataset == 'shift':
             assert self.pretrain_task_num <= 5, "pretrain_task_num should be less than 5 in shift"
             selected_tasks = shift_task_list[int(self.seed_num)-1]
+            selected_tasks = [task+1 for task in selected_tasks] #Since task_num starts from 1
             self.pretrain_task_list = selected_tasks[:self.pretrain_task_num]
 
         else:
@@ -58,6 +61,7 @@ class RODEO(ER):
         if dataset == 'clad':
             train_data = SODADataset(path="./dataset/SSLAD-2D", task_ids=pretrain_task_list,
                                         split="train", transforms=transforms.ToTensor(), ssl_required=True)
+            
         else:
             raise ValueError("Shift dataset is not supported yet")
             # TODO: Create Shift offline dataloader.
@@ -74,7 +78,7 @@ class RODEO(ER):
 
         return dataloader
     
-    def offline_pretrain(self, model, dataloader, optimizer, epochs=1):
+    def offline_pretrain(self, model, dataloader, optimizer, epochs=16):
         #train the model
         model.train()
 
@@ -104,10 +108,10 @@ class RODEO(ER):
 
                 if idx % 300 == 0:
                     print(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
-
-                #remove
-                # if idx == 1:
+                
+                # if idx == 20:
                 #     break
+
                 
         print("Offline training is done! successfully!")
         return model, images_list, targets_list, ssl_proposals_list  
@@ -147,13 +151,12 @@ class RODEO(ER):
                 images = [image.to(self.device) for image in images]
                 images, _ = transform(images, None)
                 features = front_model(images.tensors)
-                front_model_features_list.append(features)
-
+                front_model_features_list.append(features.cpu())
+      
                 if idx % 100 == 0:
                     print(f"iter {idx} feature extraction is done!")
 
-                #remove
-                # if idx == 10:
+                # if idx == 20:
                 #     break
 
         return front_model_features_list
@@ -176,14 +179,14 @@ class RODEO(ER):
         #train the PQ model
         pq = faiss.ProductQuantizer(data_dim, codebook_size, nbits)
 
-        # remove
+        #remove
         pq.train(base_train_data)
         print(f"PQ model training is done!")
 
         return pq
 
     def reconstruct_pq(self, backbone_features, pq_model, data_dim=2048):
-        # print(f"reconstructing PQ model...")
+        #print(f"reconstructing PQ model...")
         assert len(backbone_features) > 0, "backbone_features should be list of features"
         pq = pq_model
 
@@ -215,7 +218,7 @@ class RODEO(ER):
             #dataloader for offline training
             assert self.pretrain_task_list is not None, "pretrain_task_list should be initialized. checkout the dataset."
             offline_dataloader = self.create_offline_Dataloader(self.dataset, self.pretrain_task_list, self.batch_size)
-            pretrained_model, images_list, targets_list, ssl_proposals_list = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=1)
+            pretrained_model, images_list, targets_list, ssl_proposals_list = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=16)
             g_model = self.front_backbone_model(self.model)
             front_model_features_list = self.extract_backbone_features(g_model, offline_dataloader)
             pq_model = self.train_pq(front_model_features_list, codebook_size=32, data_dim=2048, nbits=8)   
@@ -249,10 +252,10 @@ class RODEO(ER):
             self.num_learned_class = len(self.exposed_classes)
             self.memory.add_new_class(self.exposed_classes)
 
-        if int(sample['task_num'])-1 in self.pretrain_task_list:
+        if int(sample['task_num']) in self.pretrain_task_list:
             # Only update the memory datalist when the 'task_num' is in the pretrain_task_list
             if sample_num-1 in self.random_indices:
-                  self.memory.datalist.append(sample)
+                self.memory.datalist.append(sample)
           
         else:
             assert self.dataset == 'clad', "Shift dataset is not supported yet"

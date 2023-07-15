@@ -24,7 +24,7 @@ dataset/*
 !dataset/*.py
 
 # Ignore txt files in logs directory
-logs/*.txt
+logs/
 
 # Ignore everyting in logs_backup directory
 logs_backup/*

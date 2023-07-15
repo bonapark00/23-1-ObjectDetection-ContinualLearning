@@ -4,7 +4,7 @@
 NOTE="default" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="mir"
 DATASET="shift" # clad, shift
-SEED="2"
+SEED="3"
 
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=150 ONLINE_ITER=1

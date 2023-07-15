@@ -30,6 +30,17 @@ def main():
                         handlers=[logging.FileHandler(log_path, mode='w'), 
                                 logging.StreamHandler()])
 
+    # Show arguments
+    logging.info("Visualizing arguments...")
+    logging.info(f"mode: {args.mode}")
+    logging.info(f"dataset: {args.dataset}")
+    logging.info(f"eval period: {args.eval_period}")
+    logging.info(f"memory size: {args.memory_size}")
+    logging.info(f"batch size: {args.batch_size}")
+    logging.info(f"temp_batch size: {args.temp_batch_size}")
+    logging.info(f"seed num: {args.seed_num}")
+    logging.info(f"note: {args.note}")
+
     save_path = "model_checkpoints"
     os.makedirs(save_path, exist_ok=True)
 

@@ -11,7 +11,7 @@ class BASELINE(ER):
             model is trained using data only from the memory. The data from the memory is selected randomly.
         """
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-        
+        logger.info("baseline method is used")
 
     def online_step(self, sample, sample_num, n_worker):
         """Updates the model based on new data samples. Unlike other methods, this method trains the model

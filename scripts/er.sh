@@ -1,10 +1,10 @@
 #/bin/bash
 
 # CIL CONFIG
-NOTE="default_500" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+NOTE="default" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="er"
 DATASET="shift" # clad, shift
-SEED="1"
+SEED="3"
 
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=150 ONLINE_ITER=1

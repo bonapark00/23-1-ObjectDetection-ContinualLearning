@@ -9,6 +9,7 @@ logger = logging.getLogger()
 class ER:
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         # Member variables from original er_baseline - ER class
+        logger.info("ER initializer called")
         self.mode = kwargs['mode']
         self.num_learned_class = 0
         self.num_learning_class = 1

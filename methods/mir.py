@@ -10,6 +10,7 @@ logger = logging.getLogger()
 
 class MIR(ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
+        logger.info("MIR method is used")
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
         self.cand_size = kwargs['mir_cands']
     

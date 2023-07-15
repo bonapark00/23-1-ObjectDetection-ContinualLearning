@@ -28,5 +28,3 @@ logs/
 
 # Ignore everyting in logs_backup directory
 logs_backup/*
-
-

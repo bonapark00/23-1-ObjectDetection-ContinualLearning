@@ -10,6 +10,7 @@ logger = logging.getLogger()
 class DER(ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, writer, **kwargs)
+        logger.info("DER method is used")
         self.alpha = kwargs['alpha']
         self.beta = kwargs['beta']
         self.theta = kwargs['theta']

@@ -17,7 +17,7 @@ logger = logging.getLogger()
 class ILOD(ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, writer, **kwargs)
-        logging.info("ILOD Initialized")
+        logging.info("ILOD method is used")
         
         # ILOD Model
         self.model_teacher = None

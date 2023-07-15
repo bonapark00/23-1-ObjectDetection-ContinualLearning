@@ -29,7 +29,7 @@ class RODEO(ER):
             Then in online training, only the back part is used with randomly reconstructed pq features.
         """
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-
+        logger.info("RODEO method is used")
         self.pretrain_task_num = kwargs['pretrain_task_num']
         self.codebook_size = kwargs['codebook_size']
         self.memory = select_pq_dataset(self.dataset)

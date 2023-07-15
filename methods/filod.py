@@ -11,7 +11,7 @@ logger = logging.getLogger()
 class FILOD(ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, writer, **kwargs)
-        logging.info("FILOD Initialized")
+        logging.info("FILOD method is used")
         
         # FILOD Model
         self.model_teacher = None

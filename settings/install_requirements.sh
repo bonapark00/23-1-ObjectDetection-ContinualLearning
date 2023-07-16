@@ -11,6 +11,7 @@ apt-get install unzip
 pip install pycocotools matplotlib opencv-contrib-python 
 pip install faiss
 pip install faiss-cpu --no-cache
+pip install h5py
 
 # Give execute permissions to the update_torchvision.sh script
 chmod +x scripts/update_torchvision.sh

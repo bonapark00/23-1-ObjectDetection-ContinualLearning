@@ -74,7 +74,7 @@ def select_pq_dataset(memory_size, pretrain_task_list, dataset="clad"):
         return CladPQDataset(dataset='SSLAD-2D', memory_size=memory_size, pretrain_task_list=pretrain_task_list)
 
     elif dataset == "shift":
-        raise NotImplementedError("shift is not prepared yet") 
+        raise NotImplementedError("shift is not prepared yet")
 
 
 #method to select learning rate schedulaer.

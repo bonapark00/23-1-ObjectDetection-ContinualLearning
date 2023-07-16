@@ -89,6 +89,7 @@ def evaluate(model, data_loader, device, args=None):
     iou_types = _get_iou_types(model)
     coco_evaluator = CocoEvaluator(coco, iou_types)
 
+    batch_cnt=0
     for images, targets in metric_logger.log_every(data_loader, 100, header):
         images = list(img.to(device) for img in images)
 
@@ -114,6 +115,7 @@ def evaluate(model, data_loader, device, args=None):
         else:
             outputs = model(images)
 
+        batch_cnt +=1
         outputs = [{k: v.to(cpu_device) for k, v in t.items()} for t in outputs]
         model_time = time.time() - model_time
 

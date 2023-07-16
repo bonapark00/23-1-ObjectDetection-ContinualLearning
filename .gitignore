@@ -24,7 +24,14 @@ dataset/*
 !dataset/*.py
 
 # Ignore txt files in logs directory
+<<<<<<< HEAD
 logs/
+=======
+logs/*.txt
+
+# Ignore rodeo feature files
+*.h5
+>>>>>>> 0292893dadc3203639a5dd48c9f890b24caaf091
 
 # Ignore everyting in logs_backup directory
 logs_backup/*

@@ -3,7 +3,7 @@
 # CIL CONFIG
 NOTE="default_500" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="baseline"
-DATASET="shift" # clad, shift
+DATASET="clad" # clad, shift
 SEED="1"
 
 if [ "$DATASET" == "clad" ]; then

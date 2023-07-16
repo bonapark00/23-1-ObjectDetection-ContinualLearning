@@ -10,12 +10,13 @@ logger = logging.getLogger()
 class DER(ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, writer, **kwargs)
+        logger.info("DER method is used")
         self.alpha = kwargs['alpha']
         self.beta = kwargs['beta']
         self.theta = kwargs['theta']
 
         distillation_classname = select_distillation(self.dataset)
-        self.memory = distillation_classname(dataset=self.dataset)
+        self.memory = distillation_classname(root=self.root)
     
         # Customized torchvision model. for normal model use for_distillation = False (default)
         # TODO: select_model must be called only in the CLAD_ER class
@@ -72,7 +73,7 @@ class DER(ER):
         """
         total_loss, num_data = 0.0, 0.0
         stream_classname = select_stream(dataset=self.dataset)
-        sample_dataset = stream_classname(sample, dataset=self.dataset, transform=None, cls_list=None)
+        sample_dataset = stream_classname(sample, root=self.root, transform=None, cls_list=None)
         
         memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
         self.count_log += (stream_batch_size + memory_batch_size)

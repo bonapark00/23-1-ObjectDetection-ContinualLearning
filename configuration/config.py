@@ -1,6 +1,5 @@
 import argparse
 
-
 def base_parser():
     parser = argparse.ArgumentParser(description="Domain Incremental Learning Research")
 
@@ -15,7 +14,7 @@ def base_parser():
     parser.add_argument(
         "--memory_size", type=int, default=150, help="Episodic memory size"
     )
-
+    parser.add_argument('--dataset_root', type=str, default='./dataset', help='dataset root path')
     parser.add_argument("--batchsize", type=int, default=4, help="batch size")
     parser.add_argument("--n_worker", type=int, default=0, help="The number of workers")
     parser.add_argument("--temp_batchsize", type=int, default=2, help="temporary batch size, for true online")
@@ -147,6 +146,7 @@ def base_parser():
 def joint_parser():
     parser = argparse.ArgumentParser(description="Jointly Training")
     parser.add_argument("--dataset", type=str, default="clad", help="dataset name")
+    parser.add_argument("--dataset_root", type=str, default="./dataset", help="dataset path")
     parser.add_argument("--upperbound", action="store_true", help="Train upperbound (all tasks)")
     parser.add_argument("--seed_num", type=str, default=1, help="seed number for joint training of two tasks")
     parser.add_argument("--batchsize", default=16, type=int, help="Training batch size")
@@ -162,6 +162,7 @@ def joint_parser():
 
 def finetune_parser():
     parser = argparse.ArgumentParser(description="Lower bound training (LB)")
+    parser.add_argument('--dataset_root', type=str, default='./dataset', help='path to dataset')
     parser.add_argument("--batch_size", default=16, type=int, help="Training batch size")
     parser.add_argument("--num_iters", default=16, type=int, help="Number of iterations, basically same as batch size")
     parser.add_argument("--tensorboard_pth", default=f"tensorboard")

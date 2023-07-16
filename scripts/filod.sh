@@ -1,9 +1,9 @@
 #/bin/bash
 
 # CIL CONFIG
-NOTE="loss_normalized" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+NOTE="default_500" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="filod"
-DATASET="clad" # clad, shift
+DATASET="shift" # clad, shift
 SEED="3"
 
 if [ "$DATASET" == "clad" ]; then

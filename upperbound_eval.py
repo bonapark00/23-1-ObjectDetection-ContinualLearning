@@ -35,7 +35,7 @@ domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
 test_loader_list = []
 print("Loading test dataset...")
 for i in range(len(domain_list)):
-    dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
+    dataset = SHIFTDataset(root=args.dataset_root, task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
                                         split="minival", transforms=transforms.ToTensor())
     test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=16, collate_fn=collate_fn))
 

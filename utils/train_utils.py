@@ -47,9 +47,11 @@ def select_optimizer(opt_name, lr, model):
 
 def select_memory(dataset="clad"):
     if dataset == "clad":
-        return CladMemoryDataset(None)
+        return CladMemoryDataset
     elif dataset == "shift":
-        return SHIFTMemoryDataset(None)
+        return SHIFTMemoryDataset
+    else:
+        raise NotImplementedError("Please select the dataset [clad, shift]")
 
 def select_stream(dataset="clad"):
     if dataset == "clad":

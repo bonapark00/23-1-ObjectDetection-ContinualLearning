@@ -1,10 +1,11 @@
 #/bin/bash
+# NOTE - memory size / seed
 
 # CIL CONFIG
-NOTE="default" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+NOTE="default_500" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="mir"
-DATASET="clad" # clad, shift
-SEED="1"
+DATASET="shift" # clad, shift
+SEED="3"
 
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=150 ONLINE_ITER=1

@@ -82,7 +82,7 @@ if not args.debug:
     logging.info(f"Corresponding task list: {selected_seed}")
 
     # Load the dataset according to the seed
-    joint_dataset = SHIFTDataset(task_num=1, domain_dict=None, split="train")
+    joint_dataset = SHIFTDataset(root=args.dataset_root, task_num=1, domain_dict=None, split="train")
     joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batchsize, 
                                                 collate_fn=collate_fn, shuffle=True)
 else:
@@ -92,7 +92,7 @@ else:
     logging.info(f"Corresponding task list: {selected_seed}")
 
     # Load the dataset according to the seed
-    debug_joint_dataset = SHIFTDataset(task_num=1, domain_dict=None, split="train")
+    debug_joint_dataset = SHIFTDataset(root=args.dataset_root, task_num=1, domain_dict=None, split="train")
     joint_dataset, _ = random_split(debug_joint_dataset, [50, len(debug_joint_dataset) - 50])
     joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batchsize, 
                                                 collate_fn=collate_fn, shuffle=True, num_workers=4, pin_memory=True)

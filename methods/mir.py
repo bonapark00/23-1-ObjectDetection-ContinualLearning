@@ -10,6 +10,7 @@ logger = logging.getLogger()
 
 class MIR(ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, **kwargs):
+        logger.info("MIR method is used")
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
         self.cand_size = kwargs['mir_cands']
     
@@ -21,7 +22,7 @@ class MIR(ER):
 
         assert stream_batch_size > 0
         stream_classname = select_stream(dataset=self.dataset)
-        sample_dataset = stream_classname(sample, dataset=self.dataset, transform=None, cls_list=None)
+        sample_dataset = stream_classname(sample, root=self.root, transform=None, cls_list=None)
         
         for i in range(iterations):
             stream_data = sample_dataset.get_data()

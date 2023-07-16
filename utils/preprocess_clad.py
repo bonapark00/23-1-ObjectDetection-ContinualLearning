@@ -9,7 +9,7 @@ import torchvision.transforms as T
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 from configuration.clad_meta import SODA_DOMAINS
-from configuration.clad_meta import CLADD_TRAIN_VAL_DOMAINS, SODA_ROOT
+from configuration.clad_meta import CLADD_TRAIN_VAL_DOMAINS
 from utils.preprocess_clad import *
 from typing import List, Callable, Dict, Any
 import torch
@@ -196,7 +196,7 @@ def get_matching_detection_info(annot_file: str, match_fn: Callable):
     Return: 
         info set of a single task
     """
-
+    # print(f'Creating info set for {annot_file}')
     obj_dict, img_dic = load_obj_img_dic(annot_file)
     img_ids = [image for image in img_dic if match_fn(image, img_dic)]
     img_ids = remove_empty_images(img_ids, obj_dict)
@@ -204,7 +204,7 @@ def get_matching_detection_info(annot_file: str, match_fn: Callable):
     return {'img_ids': img_ids, 'annot_file': annot_file}
 
 
-def get_clad_trainval(root: str=SODA_ROOT, val_proportion= 0.1):
+def get_clad_trainval(root='./dataset', val_proportion= 0.1):
     """
     Selects images which satisfies CLAD domains, and creates info sets of CLAD
     For instance train info set is formed as below
@@ -224,11 +224,14 @@ def get_clad_trainval(root: str=SODA_ROOT, val_proportion= 0.1):
     # Split from SODA10M, not CLAD-D
     splits = ['train', 'val', 'val', 'val']
     match_fns = [create_match_dict_fn_img(train_domain) for train_domain in CLADD_TRAIN_VAL_DOMAINS]
-    
-    trainval_info = [get_matching_detection_info( annot_file=os.path.join(root, 'SSLAD-2D', 'labeled', 'annotations',
-                                                          f'instance_{split}.json'),
+    annot_file = os.path.join(root, 'SSLAD-2D', 'labeled', 'annotations')
+    trainval_info = [get_matching_detection_info(annot_file=os.path.join(annot_file, f'instance_{split}.json'),
                                                   match_fn = match_fn) for
-                    match_fn, split in zip(match_fns, splits)]
+                                                  match_fn, split in zip(match_fns, splits)]
+    # trainval_info = [get_matching_detection_info(annot_file=os.path.join(root, 'SSLAD-2D', 'labeled', 'annotations',
+    #                                                       f'instance_{split}.json'),
+    #                                               match_fn = match_fn) for
+    #                 match_fn, split in zip(match_fns, splits)]
     
     
     # Split trainval_info to train_info + val_info
@@ -269,7 +272,7 @@ def get_sample_objects(objects: dict):
             return target
 
         
-def get_clad_datalist(data_type: str='train', val_proportion = 0.1):
+def get_clad_datalist(data_type='train', val_proportion = 0.1, dataset_root='./dataset'):
     
     """
     Creates datalist, so that single data info (sample) can be enumerated as stream.
@@ -290,8 +293,8 @@ def get_clad_datalist(data_type: str='train', val_proportion = 0.1):
                    data of all tasks are combined in order. Thus shouldn't be shuffled
     """
     
-    datalist = []    
-    train_info, val_info = get_clad_trainval(val_proportion=val_proportion)
+    datalist = []
+    train_info, val_info = get_clad_trainval(dataset_root, val_proportion=val_proportion)
     selected_info = train_info if data_type == 'train' else val_info
     
     obj_properties = ['image_id','category_id','bbox', 'area', 'id', 'truncated', 'occluded', 'iscrowd']
@@ -324,30 +327,7 @@ def get_clad_datalist(data_type: str='train', val_proportion = 0.1):
         datalist.extend(obj_container.values())
         
     return datalist
-'''
-not have test data info yet, also not revised yet
 
-def get_cladd_test(root: str=SODA_ROOT, transform: Callable = None) -> Sequence[CladDetection]:
-    """
-     Creates the CLAD-D benchmarks train and validation sets, as in the ICCV '21 challenge. This isn't attached to any
-     framework and only depends on PyTorch itself. The dataset objects are in COCO format.
-
-    :param root: root path to the dataset
-    :param transform: transformation for the test set. If none is given, the default one is used. See
-                           `get_tranform`.
-    """
-
-    if transform is None:
-        transform = get_transform(train=True)
-
-    match_fns = [create_match_dict_fn_img(td) for td in CLADD_TEST_DOMAINS]
-    test_sets = [get_matching_detection_set(root,
-                                            os.path.join(root, 'SSLAD-2D', 'labeled', 'annotations',
-                                                         f'instance_test.json'),
-                                            match_fn, transform) for match_fn in match_fns]
-
-    return test_sets
-'''
 
 def visualize_bbox_ssls(image, boxes, labels, ssls, save_path=None):
     """

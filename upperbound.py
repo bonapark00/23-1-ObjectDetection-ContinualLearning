@@ -17,6 +17,7 @@ args = config.joint_parser()
 # Setup logging
 log_path = f"logs/{args.dataset}_joint_{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}"
 log_path += "_debug.log" if args.debug else ".log"
+# dataset_path = os.path.join(args.dataset_root, "SSLAD-2D")
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -62,13 +63,13 @@ test_loader_list = []
 if not args.debug:
     logging.info("Loading test dataset...")
     for i in range(4):
-        dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1],
+        dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
                                     split="val", transforms=transforms.ToTensor())
         test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, collate_fn=collate_fn))
 else:
     logging.info("Loading test debug dataset...")
     for i in range(4):
-        dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1],
+        dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
                                     split="val", transforms=transforms.ToTensor())
         debug_dataset, _ = random_split(dataset, [10, len(dataset) - 10])
         test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=4, collate_fn=collate_fn))
@@ -81,7 +82,7 @@ if not args.debug:
     logging.info(f"Corresponding task list: {selected_seed}")
 
     # Load the dataset according to the seed
-    joint_dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=selected_seed, split="train")
+    joint_dataset = SODADataset(root=args.dataset_root, task_ids=selected_seed, split="train")
     joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batch_size, 
                                                 collate_fn=collate_fn, shuffle=True)
 else:
@@ -91,7 +92,7 @@ else:
     logging.info(f"Corresponding task list: {selected_seed}")
 
     # Load the dataset according to the seed
-    debug_joint_dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=selected_seed, split="train")
+    debug_joint_dataset = SODADataset(root=args.dataset_root, task_ids=selected_seed, split="train")
     joint_dataset, _ = random_split(debug_joint_dataset, [50, len(debug_joint_dataset) - 50])
     joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batch_size, 
                                                 collate_fn=collate_fn, shuffle=True)

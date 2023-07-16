@@ -2,9 +2,9 @@
 
 # CIL CONFIG
 NOTE="default" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
-MODE="er"
-DATASET="clad" # clad, shift
-SEED="1"
+MODE="der"
+DATASET="shift" # clad, shift
+SEED="3"
 ALPHA=0.05
 BETA=0.5
 THETA=1.0
@@ -35,9 +35,10 @@ fi
 # Check if debug mode is on
 if [ "$1" == "debug" ]; then
     DEBUG="--debug"
+    MEM_SIZE=50
     BATCHSIZE=4
     TEMP_BATCHSIZE=2
-    EVAL_PERIOD=40
+    EVAL_PERIOD=60
     NOTE="debug"
 else
     DEBUG=""

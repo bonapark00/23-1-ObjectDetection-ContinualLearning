@@ -11,7 +11,7 @@ logger = logging.getLogger()
 class FILOD(ER):
     def __init__(self, criterion, device, train_transform, test_transform, n_classes, writer, **kwargs):
         super().__init__(criterion, device, train_transform, test_transform, n_classes, writer, **kwargs)
-        logging.info("FILOD Initialized")
+        logging.info("FILOD method is used")
         
         # FILOD Model
         self.model_teacher = None
@@ -81,7 +81,7 @@ class FILOD(ER):
         """
         total_loss, num_data = 0.0, 0.0
         stream_classname = select_stream(dataset=self.dataset)
-        sample_dataset = stream_classname(sample, dataset=self.dataset, transform=None, cls_list=None)
+        sample_dataset = stream_classname(sample, root=self.root, transform=None, cls_list=None)
         
         memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
         self.count_log += (stream_batch_size + memory_batch_size)
@@ -126,16 +126,16 @@ class FILOD(ER):
                     backbone_st, rpn_st= self.model.backbone_output, self.model.rpn_output
                     
                     # Fast rcnn loss
-                    faster_rcnn_losses = sum(loss for loss in losses_st.values()) * 120.0
+                    faster_rcnn_losses = sum(loss for loss in losses_st.values())
 
                     # Backbone loss
-                    feature_distillation_losses = self.calculate_feature_distillation_loss(backbone_te, backbone_st) * 5.0
+                    feature_distillation_losses = self.calculate_feature_distillation_loss(backbone_te, backbone_st)
 
                     # RPN loss
-                    rpn_distillation_losses = self.calculate_rpn_distillation_loss(rpn_te, rpn_st, bbox_threshold=0.1) * 2.0
+                    rpn_distillation_losses = self.calculate_rpn_distillation_loss(rpn_te, rpn_st, bbox_threshold=0.1)
 
                     # ROI head loss
-                    roi_distillation_losses = self.calculate_roi_distillation_loss(proposals_logits_te, student_logits, targets) * 100.0
+                    roi_distillation_losses = self.calculate_roi_distillation_loss(proposals_logits_te, student_logits, targets)
 
                     # Distillation loss
                     distillation_losses = roi_distillation_losses + rpn_distillation_losses + feature_distillation_losses

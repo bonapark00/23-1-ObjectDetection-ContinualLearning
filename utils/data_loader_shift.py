@@ -19,14 +19,15 @@ from torch.utils.data import Dataset
 
 class SHIFTStreamDataset(Dataset):
     """SHIFT dataset for streaming data."""
-    def __init__(self,datalist, dataset, transform, cls_list, data_dir="./dataset/SHIFT_dataset/discrete/images/train/front", device=None, transform_on_gpu=False):
+    def __init__(self, datalist, root, transform, cls_list, device=None, transform_on_gpu=False):
         self.images = []
         self.labels = []
         self.objects=[]
-        self.dataset=dataset
+        # self.dataset=dataset
+        self.root = root
         self.transform = transform
         self.cls_list = cls_list
-        self.data_dir = data_dir
+        self.data_dir = os.path.join(self.root, '/SHIFT_dataset/discrete/images/train/front')
         self.device = device
         self.transform_on_gpu = transform_on_gpu
  
@@ -45,7 +46,7 @@ class SHIFTStreamDataset(Dataset):
             # breakpoint()
             image=PIL.Image.open(img_path).convert('RGB')
             image = transforms.ToTensor()(image)
-            target=  get_sample_objects(data['objects'])
+            target = get_sample_objects(data['objects'])
             self.images.append(image)
             self.objects.append(target)
 
@@ -66,10 +67,9 @@ class SHIFTStreamDataset(Dataset):
     
 class SHIFTMemoryDataset(MemoryDataset):
 
-    def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
-				 data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
+    def __init__(self, root, transform=None, cls_list=None, device=None, test_transform=None,
+				 transform_on_gpu=False, save_test=None, keep_history=False):
         
-        self.dataset = dataset
         self.datalist = []
         self.images=[]
         self.objects=[]
@@ -80,8 +80,6 @@ class SHIFTMemoryDataset(MemoryDataset):
         self.others_loss_decrease = np.array([]) 
         self.previous_idx = np.array([], dtype=int)
         self.device = device
-
-        self.data_dir =  data_dir
         self.keep_history = keep_history
 
     def __len__(self):
@@ -119,7 +117,6 @@ class SHIFTMemoryDataset(MemoryDataset):
 		when appeard new class, check whether to extend obj_cls_count
 		if it is, extend new spaces for new classes('category_id') 
 		'''
-		
         self.obj_cls_list = obj_cls_list 
 	
         if np.max(obj_cls_list) > len(self.obj_cls_count):
@@ -146,9 +143,9 @@ class SHIFTMemoryDataset(MemoryDataset):
         # if self.data_dir is not None:
         #     img_path = os.path.join("dataset", self.dataset, "discrete", "images", sample['split'], "front", img_name)
 
-        image=PIL.Image.open(img_path).convert('RGB')
+        image = PIL.Image.open(img_path).convert('RGB')
         image = transforms.ToTensor()(image)
-        target=  get_sample_objects(sample['objects'])
+        target = get_sample_objects(sample['objects'])
         
         if idx is None:
             self.datalist.append(sample)
@@ -185,7 +182,7 @@ class SHIFTMemoryDataset(MemoryDataset):
 			
 		
         for obj in np.array(self.objects)[indices]:   
-            obj_cls_id=np.bincount(np.array(obj['labels'].tolist()))[1:]
+            obj_cls_id = np.bincount(np.array(obj['labels'].tolist()))[1:]
             if len(self.obj_cls_train_cnt)> len(obj_cls_id):
                 obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_train_cnt)-len(obj_cls_id)), constant_values=(0)).flatten()
             self.obj_cls_train_cnt += obj_cls_id
@@ -202,18 +199,18 @@ class SHIFTMemoryDataset(MemoryDataset):
         images = [self.images[idx] for idx in indices]
         boxes = [self.objects[idx]['boxes'] for idx in indices]
         labels = [self.objects[idx]['labels'] for idx in indices]
-        data_1={'images': images, 'boxes': boxes, 'labels': labels}
+        data_1 = {'images': images, 'boxes': boxes, 'labels': labels}
 
         images = [self.images[idx] for idx in indices]
         boxes = [self.objects[idx]['boxes'] for idx in indices]
         labels = [self.objects[idx]['labels'] for idx in indices]
-        data_2={'images': images, 'boxes': boxes, 'labels': labels}
+        data_2 = {'images': images, 'boxes': boxes, 'labels': labels}
 
         return data_1, data_2
 
 class SHIFTDistillationMemory(MemoryDataset):
 
-    def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
+    def __init__(self, root, transform=None, cls_list=None, device=None, test_transform=None,
              data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
         
         # breakpoint()
@@ -224,7 +221,7 @@ class SHIFTDistillationMemory(MemoryDataset):
         self.class_logits=[]
         self.box_regression=[]
 
-        self.dataset = dataset
+        self.root = root
 
         self.obj_cls_list=[1]
         self.obj_cls_count = np.zeros(np.max(self.obj_cls_list), dtype=int)
@@ -357,14 +354,16 @@ class SHIFTDistillationMemory(MemoryDataset):
 
 class SHIFTDataset(Dataset):
 
-    def __init__(self, path="./dataset/SHIFT_dataset/discrete/images", 
+    def __init__(self, root='./dataset',
                  task_num=1, domain_dict={'weather_coarse':'clear'}, split="train", transforms=None):
-        self.root=path
+        self.root=root
         self.split=split
         self.transforms=transforms
 
         self.img_paths=[]
-        self.data_infos_total = load_label_img_dic(f"{self.root}/{self.split}/front/det_2d.json")
+        json_path = os.path.join(self.root, 'SHIFT_dataset', 'discrete', 'images', self.split, 'front', 'det_2d.json')
+        self.data_infos_total = load_label_img_dic(json_path)
+        # self.data_infos_total = load_label_img_dic(f"{self.root}/{self.split}/front/det_2d.json")
         # Filter out data that does not belong to the domain_dict
         if domain_dict is not None:
             self.data_infos = []
@@ -379,7 +378,9 @@ class SHIFTDataset(Dataset):
     
     def __getitem__(self, idx):
         boxes, labels=[],[]
-        img_path = f"{self.root}/{self.split}/front/{self.data_infos[idx]['videoName']}/{self.data_infos[idx]['name']}"
+        img_path = os.path.join(self.root, 'SHIFT_dataset', 'discrete', 'images', self.split, 'front',
+                                self.data_infos[idx]['videoName'], self.data_infos[idx]['name'])
+        # img_path = f"{self.root}/{self.split}/front/{self.data_infos[idx]['videoName']}/{self.data_infos[idx]['name']}"
         img = Image.open(img_path).convert('RGB')
 
         if self.transforms is not None:
@@ -393,11 +394,6 @@ class SHIFTDataset(Dataset):
         target['iscrowd'] = torch.zeros((len(target['boxes']),), dtype=torch.int64)
 
         return img, target
-
-
-
-
-
 
 
 

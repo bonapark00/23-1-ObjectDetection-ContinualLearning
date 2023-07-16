@@ -30,7 +30,7 @@ class RODEO(ER):
             Then in online training, only the back part is used with randomly reconstructed pq features.
         """
         super().__init__(criterion, device, train_transform, test_transform, n_classes, **kwargs)
-
+        logger.info("RODEO method is used")
         self.pretrain_task_num = kwargs['pretrain_task_num']
         self.codebook_size = kwargs['codebook_size']
         self.pretrain_task_list = None
@@ -61,7 +61,7 @@ class RODEO(ER):
 
     def create_offline_Dataloader(self, dataset, pretrain_task_list, batch_size, split='train'):
         if dataset == 'clad':
-            train_data = SODADataset(path="./dataset/SSLAD-2D", task_ids=pretrain_task_list,
+            train_data = SODADataset(root=self.dataset_root, task_ids=pretrain_task_list,
                                         split="train", transforms=transforms.ToTensor(), ssl_required=True)
             
         else:
@@ -309,7 +309,8 @@ class RODEO(ER):
        
         total_loss, num_data = 0.0, 0.0
         stream_classname = select_stream(dataset=self.dataset)
-        sample_dataset = stream_classname([sample], dataset=self.dataset, transform=None, cls_list=None)
+        # sample_dataset = stream_classname([sample], dataset=self.dataset, transform=None, cls_list=None)
+        sample_dataset = stream_classname([sample], root=self.root, transform=None, cls_list=None)
         
         #Note that sample_dataset has only 1 item.
         current_data = sample_dataset.get_data()

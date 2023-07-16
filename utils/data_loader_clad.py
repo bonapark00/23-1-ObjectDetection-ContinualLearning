@@ -484,9 +484,9 @@ class CladDistillationMemory(MemoryDataset):
 	  
 
 class CladPQDataset(CladDistillationMemory):
-	def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
+	def __init__(self, root, transform=None, cls_list=None, device=None, test_transform=None,
 			data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False, pretrain_task_list = None, memory_size = None):
-		super().__init__(dataset, transform, cls_list, device, test_transform, data_dir, transform_on_gpu, save_test, keep_history)
+		super().__init__(root, transform, cls_list, device, test_transform, data_dir, transform_on_gpu, save_test, keep_history)
 		self.datalist = [] 
 		self.images = []
 		self.objects = [] 
@@ -494,7 +494,7 @@ class CladPQDataset(CladDistillationMemory):
 		self.pq_features = []   
 		self.memory_size = memory_size
 		self.random_indices = None
-
+		# dataset
 		assert bool(pretrain_task_list) * bool(memory_size) != 0, "Pretrain task list and memory size should be given together"
 		self.pretrain_task_list = pretrain_task_list
 		self.prepare_pretrained_data(pretrain_task_list, memory_size=self.memory_size)

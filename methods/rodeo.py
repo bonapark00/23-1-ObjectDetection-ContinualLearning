@@ -57,11 +57,11 @@ class RODEO(ER):
         else:
             raise ValueError("check if the dataset is proper")
         
-        self.memory = select_pq_dataset(self.memory_size, self.pretrain_task_list, self.dataset)
+        self.memory = select_pq_dataset(self.memory_size, self.pretrain_task_list, self.dataset, self.root)
 
     def create_offline_Dataloader(self, dataset, pretrain_task_list, batch_size, split='train'):
         if dataset == 'clad':
-            train_data = SODADataset(root=self.dataset_root, task_ids=pretrain_task_list,
+            train_data = SODADataset(root=self.root, task_ids=pretrain_task_list,
                                         split="train", transforms=transforms.ToTensor(), ssl_required=True)
             
         else:

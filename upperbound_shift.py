@@ -29,7 +29,7 @@ if args.upperbound:
     logging.info(f"Starts with no seed (shuffling all tasks)")
 else:
     selected_seed = task_seed_list[int(args.seed_num) - 1]
-    logging.info(f"Joint training with mixed two tasks")
+    logging.info(f"Joint training with mixed three tasks")
     logging.info(f"Selected seed: {selected_seed}")
 
 # Set up logging
@@ -57,22 +57,22 @@ def online_evaluate(model, test_dataloader, sample_num, device):
     stats = coco_evaluator.coco_eval['bbox'].stats
     return stats[1]
 
-# # Always test on all tasks regardless of upperbound or not
-# domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
-# test_loader_list = []
-# if not args.debug:
-#     logging.info("Loading test dataset...")
-#     for i in range(len(domain_list)):
-#         dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
-#                                             split="minival", transforms=transforms.ToTensor())
-#         test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batchsize, collate_fn=collate_fn))
-# else:
-#     logging.info("Loading test debug dataset...")
-#     for i in range(len(domain_list)):
-#         test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
-#                                             split="minival", transforms=transforms.ToTensor())
-#         debug_dataset, _ = random_split(test_dataset, [10, len(test_dataset) - 10])
-#         test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
+# Always test on all tasks regardless of upperbound or not
+domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
+test_loader_list = []
+if not args.debug:
+    logging.info("Loading test dataset...")
+    for i in range(len(domain_list)):
+        dataset = SHIFTDataset(root=args.dataset_root, task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
+                                            split="minival", transforms=transforms.ToTensor())
+        test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batchsize, collate_fn=collate_fn))
+else:
+    logging.info("Loading test debug dataset...")
+    for i in range(len(domain_list)):
+        test_dataset = SHIFTDataset(root=args.dataset_root, task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
+                                            split="minival", transforms=transforms.ToTensor())
+        debug_dataset, _ = random_split(test_dataset, [10, len(test_dataset) - 10])
+        test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
 
 # Training dataset depends on whether it is upperbound or not
 # If upperbound, we need to load all tasks, otherwise, we only load the task specified by seed

@@ -15,14 +15,17 @@ from torch.utils.tensorboard import SummaryWriter
 args = config.joint_parser()
 
 # Setup logging
-log_path = f"logs/{args.dataset}_joint_{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}"
-log_path += "_debug.log" if args.debug else ".log"
-# dataset_path = os.path.join(args.dataset_root, "SSLAD-2D")
+note_suffix = f"_{args.note}" if args.note else ""
+log_path = f"logs/{args.dataset}/joint/{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}{note_suffix}.log"
+
+# Create log directory if not exist
+os.makedirs(os.path.dirname(log_path), exist_ok=True)
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     handlers=[logging.FileHandler(log_path, mode='w'), 
                             logging.StreamHandler()])
+
 task_seed_list = [[0,1], [2,0],[1,2]]
 
 if args.upperbound:
@@ -33,14 +36,12 @@ else:
     logging.info(f"Joint training with mixed two tasks")
     logging.info(f"Selected seed: {selected_seed}")
 
-# Set up logging
-if args.upperbound:
-    tensorboard_pth = os.path.join(args.tensorboard_pth, args.dataset, "joint", f"upperbound")
-else:
-    tensorboard_pth = os.path.join(args.tensorboard_pth, args.dataset, "joint", f"seed_{args.seed_num}")
-
-writer = SummaryWriter(log_dir=tensorboard_pth)
-
+# Set up tensorboard logging
+tensorboard_path = f"tensorboard/{args.dataset}/joint/{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}{note_suffix}"
+# Remove existing tensorboard logs
+if os.path.exists(f"tensorboard/{tensorboard_path}"):
+    os.system(f"rm -rf tensorboard/{tensorboard_path}")
+writer = SummaryWriter(log_dir=tensorboard_path)
 
 # Transform definition
 transform = transforms.ToTensor()
@@ -59,16 +60,17 @@ def online_evaluate(model, test_dataloader, sample_num, device):
     return stats[1]
 
 # Always test on all tasks regardless of upperbound or not
+domain_list = ['T1', 'T2', 'T3', 'T4']
 test_loader_list = []
 if not args.debug:
     logging.info("Loading test dataset...")
-    for i in range(4):
+    for i in range(len(domain_list)):
         dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
                                     split="val", transforms=transforms.ToTensor())
         test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, collate_fn=collate_fn))
 else:
     logging.info("Loading test debug dataset...")
-    for i in range(4):
+    for i in range(len(domain_list)):
         dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
                                     split="val", transforms=transforms.ToTensor())
         debug_dataset, _ = random_split(dataset, [10, len(dataset) - 10])
@@ -83,7 +85,7 @@ if not args.debug:
 
     # Load the dataset according to the seed
     joint_dataset = SODADataset(root=args.dataset_root, task_ids=selected_seed, split="train")
-    joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batch_size, 
+    joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batchsize, 
                                                 collate_fn=collate_fn, shuffle=True)
 else:
     # Debug mode
@@ -94,12 +96,12 @@ else:
     # Load the dataset according to the seed
     debug_joint_dataset = SODADataset(root=args.dataset_root, task_ids=selected_seed, split="train")
     joint_dataset, _ = random_split(debug_joint_dataset, [50, len(debug_joint_dataset) - 50])
-    joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batch_size, 
+    joint_dataloader = torch.utils.data.DataLoader(joint_dataset, batch_size=args.batchsize, 
                                                 collate_fn=collate_fn, shuffle=True)
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-model = select_model("frcnn", None, 7, False)
+model = select_model("joint", num_classes=7)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.0001, weight_decay=0.0003)
 model.to(device)
 
@@ -115,12 +117,15 @@ logging.info(f"upperbound: {args.upperbound}, seed_num: {args.seed_num}, num_epo
 for ep in range(args.num_epochs):
     logging.info(f"Epoch {ep + 1} / {args.num_epochs}")
     for i, data in enumerate(tqdm(joint_dataloader)):
-        model.train()
-        samples_cnt += args.batch_size
+        samples_cnt += args.batchsize
 
         # Load the data and send to device
+        # Send images to device
         images = list(transform(img).to(device) for img in data[0])
-        targets = [{k: v.to(device) for k, v in t.items()} for t in data[1]]
+
+        # Send targets to device except for the img paths
+        targets = [{k: v.to(device) for k, v in t.items() if k != 'img_path'} for t in data[1]]
+        # targets = [{k: v.to(device) for k, v in t.items()} for t in data[1]]
 
         loss_dict = model(images, targets)
         losses = sum(loss for loss in loss_dict.values())
@@ -130,32 +135,28 @@ for ep in range(args.num_epochs):
         optimizer.step()
 
         # When the number of samples reaches the evaluation period, evaluate the model
-        if samples_cnt > args.eval_period * eval_count:
-            eval_count += 1
-            logging.info(f"Jointly training, upperbound: {args.upperbound}, seed_num: {args.seed_num}, num_epochs: {args.num_epochs}")
-            logging.info(f"Current Epoch: {ep + 1} / {args.num_epochs}, Step {samples_cnt}, Current Loss: {losses}")
+        # if samples_cnt > args.eval_period * eval_count:
+        #     eval_count += 1
+        #     logging.info(f"Jointly training, upperbound: {args.upperbound}, seed_num: {args.seed_num}, num_epochs: {args.num_epochs}")
+        #     logging.info(f"Current Epoch: {ep + 1} / {args.num_epochs}, Step {samples_cnt}, Current Loss: {losses}")
 
-            task_mAP_list = []
-            for task_eval in [0, 1, 2, 3]:
-                logging.info(f"Epoch {ep + 1} / {args.num_epochs}, Task {task_eval + 1} Evaluation")
-                mAP = online_evaluate(model, test_loader_list[task_eval], samples_cnt, device)
-                task_mAP_list.append(mAP)
-                eval_results["epoch"].append(ep + 1)
-                eval_results["test_mAP"].append(mAP)
-                eval_results["task_evaluating"].append(task_eval + 1)
-                eval_results["data_cnt"].append(samples_cnt)
-                writer.add_scalar(f'mAP/task{task_eval + 1}', mAP, samples_cnt)
+        #     task_mAP_list = []
+        #     for task_eval in [0, 1, 2, 3]:
+        #         logging.info(f"Epoch {ep + 1} / {args.num_epochs}, Task {task_eval + 1} Evaluation")
+        #         mAP = online_evaluate(model, test_loader_list[task_eval], samples_cnt, device)
+        #         task_mAP_list.append(mAP)
+        #         eval_results["epoch"].append(ep + 1)
+        #         eval_results["test_mAP"].append(mAP)
+        #         eval_results["task_evaluating"].append(task_eval + 1)
+        #         eval_results["data_cnt"].append(samples_cnt)
+        #         writer.add_scalar(f'mAP/task{task_eval + 1}', mAP, samples_cnt)
             
-            # Write the average mAP of all tasks to tensorboard
-            average_mAP = sum(task_mAP_list) / float(len(task_mAP_list))
-            writer.add_scalar("Average mAP", average_mAP, samples_cnt)
+        #     # Write the average mAP of all tasks to tensorboard
+        #     average_mAP = sum(task_mAP_list) / float(len(task_mAP_list))
+        #     writer.add_scalar("Average mAP", average_mAP, samples_cnt)
 
     # After training one epoch is done, save the model
-    if args.upperbound:
-        save_path = os.path.join("model_checkpoints", "joint", "upperbound")
-    else:
-        save_path = os.path.join("model_checkpoints", "joint", f"seed_{args.seed_num}")
-        
+    save_path = f"model_checkpoints/{args.dataset}/joint/{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}{note_suffix}"
     logging.info(f"Saving model at epoch {ep + 1}...")
 
     # If not exist, create the save path
@@ -163,25 +164,36 @@ for ep in range(args.num_epochs):
         os.makedirs(save_path)
     torch.save(model.state_dict(), os.path.join(save_path, f"epoch_{ep + 1}.pth"))
 
-    # # After training one epoch is done, starts evaluating each task
-    # task_eval_results = []
-    # for task_eval in [0, 1, 2, 3]:
-    #     mAP = online_evaluate(model, test_loader_list[task_eval], samples_cnt, device)
-    #     task_eval_results.append(mAP)
-    # epoch_mAP = sum(task_eval_results) / float(len(task_eval_results))
-    # epoch_results["epoch_mAP"].append(epoch_mAP)
+    # After training one epoch is done, starts evaluating each task
+    task_eval_results = []
+    for task_eval in [0, 1, 2, 3]:
+        mAP = online_evaluate(model, test_loader_list[task_eval], samples_cnt, device)
+        task_eval_results.append(mAP)
+        epoch_results["epoch"].append(ep + 1)
+        epoch_results["test_mAP"].append(mAP)
+        epoch_results["task_evaluating"].append(task_eval + 1)
+
+    epoch_mAP = sum(task_eval_results) / float(len(task_eval_results))
+    epoch_results["epoch_mAP"].append(epoch_mAP)
+
+    # Set model to train mode
+    model.train()
 
 # Create the save path if not exist
-if args.upperbound:
-    save_path = os.path.join("outputs", "joint", "upperbound")
-else:
-    save_path = os.path.join("outputs", "joint", f"seed_{args.seed_num}")
+save_path = f"outputs/{args.dataset}/joint/{'upperbound' if args.upperbound else f'seed_{args.seed_num}'}{note_suffix}"
 
 if not os.path.exists(save_path):
     os.makedirs(save_path)
 
-# Save the evaluation results
-np.save(os.path.join(save_path, "_epoch.npy"), eval_results['epoch'])
-np.save(os.path.join(save_path, "_eval.npy"), eval_results['test_mAP'])
-np.save(os.path.join(save_path, "_eval_task.npy"), eval_results['task_evaluating'])
-np.save(os.path.join(save_path, "_eval_time.npy"), eval_results['data_cnt'])
+# # Save the evaluation results
+# np.save(os.path.join(save_path, "epoch.npy"), eval_results['epoch'])
+# np.save(os.path.join(save_path, "eval.npy"), eval_results['test_mAP'])
+# np.save(os.path.join(save_path, "eval_task.npy"), eval_results['task_evaluating'])
+# np.save(os.path.join(save_path, "eval_time.npy"), eval_results['data_cnt'])
+
+# Save epoch results
+np.save(os.path.join(save_path, "epoch.npy"), epoch_results['epoch'])
+np.save(os.path.join(save_path, "mAP.npy"), epoch_results['test_mAP'])
+np.save(os.path.join(save_path, "eval_task.npy"), epoch_results['task_evaluating'])
+np.save(os.path.join(save_path, "epoch_mAP.npy"), epoch_results['epoch_mAP'])
+

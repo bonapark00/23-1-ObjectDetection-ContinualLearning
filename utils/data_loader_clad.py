@@ -8,6 +8,7 @@ from utils.data_loader import MemoryDataset
 from torch.utils.data import Dataset
 from PIL import Image
 from utils.preprocess_clad import get_clad_datalist, get_sample_objects
+import h5py
 
 logger = logging.getLogger()
 
@@ -481,15 +482,63 @@ class CladDistillationMemory(MemoryDataset):
 
 class CladPQDataset(CladDistillationMemory):
 	def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
-			data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
+			data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False, pretrain_task_list = None, memory_size = None):
 		super().__init__(dataset, transform, cls_list, device, test_transform, data_dir, transform_on_gpu, save_test, keep_history)
 		self.datalist = [] 
 		self.images = []
 		self.objects = [] 
 		self.ssl_proposals = [] 
 		self.pq_features = []   
+		self.memory_size = memory_size
+		self.random_indices = None
 
+		assert bool(pretrain_task_list) * bool(memory_size) != 0, "Pretrain task list and memory size should be given together"
+		self.pretrain_task_list = pretrain_task_list
+		self.prepare_pretrained_data(pretrain_task_list, memory_size=self.memory_size)
+
+
+	def prepare_pretrained_data(self, task_ids, memory_size=None, split='train'):
+		train_num = [0, 4470, 5799, 7278, 7802]
+		val_num = [0, 497, 645, 810, 869]
+		split_num = train_num if split =='train' else val_num
+		
+		# Get total_data using split
+		total_data = get_clad_datalist(data_type=split)
 	
+		# Get target_data using task_ids, first sort task_ids
+		# This is because we want to get data from task 1, 2, 3, 4 in order
+		print("Target task ids: ", task_ids)
+		task_ids.sort()
+		target_data = []
+		for task_id in task_ids:
+			start_idx = split_num[task_id-1]; end_idx = split_num[task_id]
+			target_data += total_data[start_idx:end_idx]
+   
+		random_indices = np.random.choice(len(target_data), memory_size, replace=False)
+		random_indices.sort()
+		self.random_indices = random_indices
+		selected_target_data = [target_data[idx] for idx in random_indices]
+
+		# Get img_paths and objects
+		for sample in selected_target_data:
+			self.datalist.append(sample)
+			image, target, proposal = self.get_sample_info(sample)
+			self.images.append(image)
+			self.objects.append(target)
+			self.ssl_proposals.append(proposal)
+   
+	def	get_sample_info(self, sample):
+		img_path = f"./dataset/SSLAD-2D/labeled/{sample['split']}/{sample['file_name']}"
+		img = Image.open(img_path).convert("RGB")
+		img = transforms.ToTensor()(img)
+		target = get_sample_objects(sample['objects'])
+		ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', sample['file_name'][:-4] + '.npy'), allow_pickle=True)
+		assert ssl_proposals is not None, "Precomputed proposals not found"
+		ssl_proposals = torch.from_numpy(ssl_proposals)
+
+		return img, target, ssl_proposals
+ 
+ 
 	def __len__(self):
 		return len(self.images)
   
@@ -497,6 +546,14 @@ class CladPQDataset(CladDistillationMemory):
 	def __getitem__(self, idx):
 		pass
 	  
+	def add_pretrained_pq_features(self, pq_feature_path):
+		assert self.memory_size < 1000, "memory size is too big for storing whole features"
+		assert os.path.exists(pq_feature_path), "pq feature file not found"
+
+		data_h5 = h5py.File(pq_feature_path, 'r')
+		for idx in self.random_indices:
+			self.pq_features.append(data_h5[str(idx)][()])
+		
 		
 	def add_new_class(self, obj_cls_list):
 		'''

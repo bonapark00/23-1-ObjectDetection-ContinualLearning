@@ -26,4 +26,6 @@ dataset/*
 # Ignore txt files in logs directory
 logs/*.txt
 
+# Ignore rodeo feature files
+*.h5
 

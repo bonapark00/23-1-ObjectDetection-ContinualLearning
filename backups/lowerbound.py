@@ -49,7 +49,7 @@ if not args.debug:
 
     # Load the whole training dataset separately
     for i in range(4):
-        dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1], split="train")
+        dataset = SODADataset(root=args.dataset_root, task_ids=[i+1], split="train")
         train_loader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, 
                                                 collate_fn=collate_fn, shuffle=True)
         train_loader_list.append(train_loader)
@@ -59,7 +59,7 @@ else:
 
     # Load the whole training dataset separately
     for i in range(4):
-        dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1], split="train")
+        dataset = SODADataset(root=args.dataset_root, task_ids=[i+1], split="train")
         train_dataset, _ = random_split(dataset, [50, len(dataset) - 50])
         train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, 
                                                 collate_fn=collate_fn, shuffle=True)
@@ -70,14 +70,14 @@ test_loader_list = []
 if not args.debug:
     logging.info("Loading test dataset...")
     for i in range(4):
-        dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1],
+        dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
                                     split="val", transforms=transforms.ToTensor())
 
         test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, collate_fn=collate_fn))
 else:
     logging.info("Loading test debug dataset...")
     for i in range(4):
-        dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1],
+        dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
                                     split="val", transforms=transforms.ToTensor())
         debug_dataset, _ = random_split(dataset, [10, len(dataset) - 10])
         test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=4, collate_fn=collate_fn))

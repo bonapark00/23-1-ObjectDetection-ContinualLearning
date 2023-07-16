@@ -7,12 +7,6 @@ from methods.filod import FILOD
 from methods.ilod import ILOD
 from methods.finetune import FINETUNE
 from methods.rodeo import RODEO
-from methods.clad_er import CLAD_ER
-from methods.clad_mir import CLAD_MIR
-from methods.clad_der import CLAD_DER
-from methods.clad_filod import CLAD_FILOD
-from methods.clad_baseline import CLAD_BASELINE
-from methods.shift_der import SHIFT_DER
 
 logger = logging.getLogger()
 

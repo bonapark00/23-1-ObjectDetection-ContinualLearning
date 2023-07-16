@@ -14,14 +14,14 @@ logger = logging.getLogger()
 # Incomming input eg: {'img_id': 3, 'annot_file': ~, 'task_num': 2}
 
 class CladStreamDataset(Dataset):
-	def __init__(self, datalist, dataset, transform, cls_list, data_dir=None, device=None, transform_on_gpu=False):
+	def __init__(self, datalist, root, transform, cls_list, device=None, transform_on_gpu=False):
 		self.images = []
 		self.labels = []
 		self.objects = []
-		self.dataset = 'SSLAD-2D'
+		# self.dataset = 'SSLAD-2D'
+		self.root = root
 		self.transform = transform
 		self.cls_list = cls_list
-		self.data_dir = data_dir
 		self.device = device
 		self.transform_on_gpu = transform_on_gpu
 		self.transform_gpu = transform
@@ -35,12 +35,13 @@ class CladStreamDataset(Dataset):
 			except KeyError:
 				img_name = data['filepath']
 			
-			if self.data_dir is None:
-				img_path = os.path.join("dataset", self.dataset, 'labeled', data['split'], img_name)
-			else:
-				img_path = os.path.join(self.data_dir, data['split'], img_name)
+			# if self.data_dir is None:
+			# 	img_path = os.path.join("dataset", self.dataset, 'labeled', data['split'], img_name)
+			# else:
+			# 	breakpoint()
+			# 	img_path = os.path.join(self.data_dir, data['split'], img_name)
+			img_path = os.path.join(self.root, "SSLAD-2D", 'labeled', data['split'], img_name)
 
-			# print("Image path:", img_path)
 			image = PIL.Image.open(img_path).convert('RGB')
 			image = transforms.ToTensor()(image)
 			target = get_sample_objects(data['objects'])
@@ -67,13 +68,14 @@ class CladStreamDataset(Dataset):
 
 
 class CladMemoryDataset(MemoryDataset):
-	def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
-				 data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
+	def __init__(self, root, transform=None, cls_list=None, device=None, test_transform=None,
+				 transform_on_gpu=False, save_test=None, keep_history=False):
 
 		self.datalist = []
 		self.images = []
 		self.objects = [] 
-		self.dataset = 'SSLAD-2D'
+		# self.dataset = 'SSLAD-2D'
+		self.root = root
 		
 		self.img_weather_count = {'Clear': 0, 'Overcast': 0, 'Rainy': 0}
 		self.img_location_count = {'Citystreet': 0, 'Countryroad': 0, 'Highway': 0}
@@ -86,9 +88,6 @@ class CladMemoryDataset(MemoryDataset):
 		self.others_loss_decrease = np.array([]) 
 		self.previous_idx = np.array([], dtype=int)
 		self.device = device
-		
-		#self.test_transform = test_transform
-		self.data_dir = data_dir
 		self.keep_history = keep_history
 		
 	def __len__(self):
@@ -162,10 +161,11 @@ class CladMemoryDataset(MemoryDataset):
 		except KeyError:
 				img_name = sample['filepath']
 		
-		if self.data_dir is None:
-				img_path = os.path.join("dataset", self.dataset,'labeled',sample['split'],img_name)
-		else:
-				img_path = os.path.join(self.data_dir, sample['split'],img_name)
+		# if self.data_dir is None:
+		# 		img_path = os.path.join("dataset", self.dataset,'labeled',sample['split'],img_name)
+		# else:
+		# 		img_path = os.path.join(self.data_dir, sample['split'],img_name)
+		img_path = os.path.join(self.root, "SSLAD-2D", 'labeled', sample['split'], img_name)
 		image = PIL.Image.open(img_path).convert('RGB')
 		image = transforms.ToTensor()(image)
 
@@ -282,7 +282,7 @@ class CladMemoryDataset(MemoryDataset):
 #Incomming input eg: {'img_id': 3, 'annot_file': ~, 'task_num': 2}
 
 class CladDistillationMemory(MemoryDataset):
-	def __init__(self, dataset, transform=None, cls_list=None, device=None, test_transform=None,
+	def __init__(self, root, transform=None, cls_list=None, device=None, test_transform=None,
 				data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
 	
 		'''
@@ -296,7 +296,8 @@ class CladDistillationMemory(MemoryDataset):
 		self.box_regression = []  #box_logits: (512, 28)
 		# breakpoint()
 		
-		self.dataset = 'SSLAD-2D'
+		# self.dataset = 'SSLAD-2D'
+		self.root = root
 		
 		self.img_weather_count = {'Clear': 0, 'Overcast': 0, 'Rainy': 0}
 		self.img_location_count = {'Citystreet': 0, 'Countryroad': 0, 'Highway': 0}
@@ -377,10 +378,12 @@ class CladDistillationMemory(MemoryDataset):
 		except KeyError:
 				img_name = sample['filepath']
 		
-		if self.data_dir is None:
-				img_path = os.path.join("dataset", self.dataset,'labeled',sample['split'],img_name)
-		else:
-				img_path = os.path.join(self.data_dir,sample['split'],img_name)
+		# if self.data_dir is None:
+		# 		img_path = os.path.join("dataset", self.dataset,'labeled',sample['split'],img_name)
+		# else:
+		# 		img_path = os.path.join(self.data_dir,sample['split'],img_name)
+
+		img_path = os.path.join(self.root, "SSLAD-2D", 'labeled', sample['split'], img_name)
 		image = PIL.Image.open(img_path).convert('RGB')
 		image = transforms.ToTensor()(image)
 
@@ -621,10 +624,10 @@ class SODADataset(Dataset):
 			transforms (callable, optional): Optional transform to be applied on a sample
 	"""
 
-	def __init__(self, path="./dataset/SSLAD-2D", task_ids=[1], split="train", transforms=None, ssl_required=False):
+	def __init__(self, root="./dataset", task_ids=[1], split="train", transforms=None, ssl_required=False):
 		self.split = split
 		self.task_ids = task_ids
-		self.root = path
+		self.root = root
 		self.transforms = transforms
 		self.img_paths = []
 		self.objects = []
@@ -638,7 +641,7 @@ class SODADataset(Dataset):
 		split_num = train_num if split =='train' else val_num
 		
 		# Get total_data using split
-		total_data = get_clad_datalist(data_type=split)
+		total_data = get_clad_datalist(data_type=split, dataset_root=self.root)
 		
 		# Get target_data using task_ids, first sort task_ids
 		# This is because we want to get data from task 1, 2, 3, 4 in order
@@ -678,8 +681,8 @@ class SODADataset(Dataset):
 				task_path = 'train'
 			else:
 				task_path = 'val'
-	
-		img_path = f"{self.root}/labeled/{task_path}/{self.img_paths[idx]}"
+
+		img_path = os.path.join(self.root, "SSLAD-2D", "labeled", task_path, self.img_paths[idx])
 		img = Image.open(img_path).convert("RGB")
 		if self.transforms is not None:
 			img = self.transforms(img)

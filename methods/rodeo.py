@@ -59,7 +59,7 @@ class RODEO(ER):
 
     def create_offline_Dataloader(self, dataset, pretrain_task_list, batch_size):
         if dataset == 'clad':
-            train_data = SODADataset(path="./dataset/SSLAD-2D", task_ids=pretrain_task_list,
+            train_data = SODADataset(root=self.dataset_root, task_ids=pretrain_task_list,
                                         split="train", transforms=transforms.ToTensor(), ssl_required=True)
             
         else:
@@ -279,7 +279,8 @@ class RODEO(ER):
        
         total_loss, num_data = 0.0, 0.0
         stream_classname = select_stream(dataset=self.dataset)
-        sample_dataset = stream_classname([sample], dataset=self.dataset, transform=None, cls_list=None)
+        # sample_dataset = stream_classname([sample], dataset=self.dataset, transform=None, cls_list=None)
+        sample_dataset = stream_classname([sample], root=self.root, transform=None, cls_list=None)
         
         #Note that sample_dataset has only 1 item.
         current_data = sample_dataset.get_data()

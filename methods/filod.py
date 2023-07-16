@@ -81,7 +81,7 @@ class FILOD(ER):
         """
         total_loss, num_data = 0.0, 0.0
         stream_classname = select_stream(dataset=self.dataset)
-        sample_dataset = stream_classname(sample, dataset=self.dataset, transform=None, cls_list=None)
+        sample_dataset = stream_classname(sample, root=self.root, transform=None, cls_list=None)
         
         memory_batch_size = min(len(self.memory), batch_size - stream_batch_size)
         self.count_log += (stream_batch_size + memory_batch_size)

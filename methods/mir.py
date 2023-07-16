@@ -22,7 +22,7 @@ class MIR(ER):
 
         assert stream_batch_size > 0
         stream_classname = select_stream(dataset=self.dataset)
-        sample_dataset = stream_classname(sample, dataset=self.dataset, transform=None, cls_list=None)
+        sample_dataset = stream_classname(sample, root=self.root, transform=None, cls_list=None)
         
         for i in range(iterations):
             stream_data = sample_dataset.get_data()

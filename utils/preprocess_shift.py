@@ -69,7 +69,7 @@ def get_sample_objects(objects):
     
     return target
 
-def get_shift_datalist(domain_dict, task_num, data_type: str='train'):
+def get_shift_datalist(domain_dict, task_num, data_type: str='train', root='./dataset'):
       
     """
     Creates datalist, so that single data info (sample) can be enumerated as stream.
@@ -115,7 +115,8 @@ def get_shift_datalist(domain_dict, task_num, data_type: str='train'):
 
     datalist = []
     obj_properties = ['category_id','bbox']
-    path = "./dataset/SHIFT_dataset/discrete/images"
+    path = os.path.join(root, "SHIFT_dataset/discrete/images")
+    # path = "./dataset/SHIFT_dataset/discrete/images"
     data_infos = load_label_img_dic(f"{path}/{data_type}/front/det_2d.json")
     class_list = []
 

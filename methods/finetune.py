@@ -17,6 +17,7 @@ class FINETUNE:
         self.exposed_classes = []
         self.seen = 0
         self.writer = writer
+        self.root = kwargs['dataset_root']
 
         self.dataset = kwargs["dataset"]
         self.device = device
@@ -36,8 +37,10 @@ class FINETUNE:
         self.dropped_idx = []
         self.memory_dropped_idx = []
         self.imp_update_counter = 0
-        self.memory = select_memory(dataset=self.dataset)
-        # self.imp_update_period = kwargs['imp_update_period']
+        
+        # Select memory
+        memory_classname = select_memory(dataset=self.dataset)
+        self.memory = memory_classname(root=self.root)
         
         self.current_trained_images = []
         self.exposed_tasks = []
@@ -99,7 +102,7 @@ class FINETUNE:
         # Note that finetune method does not use memory data.
         total_loss, num_data = 0.0, 0.0
         stream_classname = select_stream(dataset=self.dataset)
-        sample_dataset = stream_classname(sample, dataset=self.dataset, transform=None, cls_list=None)
+        sample_dataset = stream_classname(sample, root=self.root, transform=None, cls_list=None)
 
         for i in range(iterations):
             images_stream = []; targets_stream = []

@@ -36,8 +36,8 @@ def main():
     logging.info(f"dataset: {args.dataset}")
     logging.info(f"eval period: {args.eval_period}")
     logging.info(f"memory size: {args.memory_size}")
-    logging.info(f"batch size: {args.batch_size}")
-    logging.info(f"temp_batch size: {args.temp_batch_size}")
+    logging.info(f"batch size: {args.batchsize}")
+    logging.info(f"temp_batch size: {args.temp_batchsize}")
     logging.info(f"seed num: {args.seed_num}")
     logging.info(f"note: {args.note}")
 
@@ -69,7 +69,7 @@ def main():
         for i, domain in enumerate(domain_list):
             logging.info(f"Loading task {i+1}...")
             cur_train_datalist = get_shift_datalist(data_type="train", task_num=i+1, domain_dict=
-                                                    {'weather_coarse': domain})
+                                                    {'weather_coarse': domain}, root=args.dataset_root)
             train_task.append(cur_train_datalist)
     else:
         logging.info("Loading train debug dataset...")
@@ -77,7 +77,7 @@ def main():
         for i, domain in enumerate(domain_list):
             logging.info(f"Loading task {i+1}...")
             cur_train_datalist = get_shift_datalist(data_type="train", task_num=i+1, domain_dict=
-                                                    {'weather_coarse': domain})[:50]
+                                                    {'weather_coarse': domain}, root=args.dataset_root)[:50]
             train_task.append(cur_train_datalist)
 
     # Get test dataset
@@ -86,7 +86,7 @@ def main():
         test_loader_list = []
         for i in range(len(domain_list)):
             logging.info(f"Loading task {i+1}...")
-            test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
+            test_dataset = SHIFTDataset(root=args.dataset_root, task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
                                             split="minival", transforms=transforms.ToTensor())
             test_loader_list.append(torch.utils.data.DataLoader(test_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
     else:
@@ -94,7 +94,7 @@ def main():
         test_loader_list = []
         for i in range(len(domain_list)):
             logging.info(f"Loading task {i+1}...")
-            test_dataset = SHIFTDataset(task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
+            test_dataset = SHIFTDataset(root=args.dataset_root, task_num=i+1, domain_dict={'weather_coarse': domain_list[i]},
                                             split="minival", transforms=transforms.ToTensor())
             test_dataset = random_split(test_dataset, [50, len(test_dataset) - 50])[0]
             test_loader_list.append(torch.utils.data.DataLoader(test_dataset, batch_size=args.batchsize, collate_fn=collate_fn))

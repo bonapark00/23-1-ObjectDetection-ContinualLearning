@@ -4,7 +4,7 @@
 NOTE="default" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="er"
 DATASET="shift" # clad, shift
-SEED="3"
+SEED="1"
 
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=150 ONLINE_ITER=1
@@ -32,6 +32,7 @@ fi
 # Check if debug mode is on
 if [ "$1" == "debug" ]; then
     DEBUG="--debug"
+    MEM_SIZE=50
     BATCHSIZE=4
     TEMP_BATCHSIZE=2
     EVAL_PERIOD=40

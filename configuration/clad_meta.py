@@ -1,5 +1,5 @@
 #SODA_ROOT = '/home/i-blurry/dataset'
-SODA_ROOT = './dataset'
+# SODA_ROOT = './dataset'
 SODA_DOMAINS = {
     "period": ["Daytime", "Night"],
     "weather": ["Clear", "Overcast", "Rainy"],

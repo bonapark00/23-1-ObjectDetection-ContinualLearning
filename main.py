@@ -36,8 +36,8 @@ def main():
     logging.info(f"dataset: {args.dataset}")
     logging.info(f"eval period: {args.eval_period}")
     logging.info(f"memory size: {args.memory_size}")
-    logging.info(f"batch size: {args.batch_size}")
-    logging.info(f"temp_batch size: {args.temp_batch_size}")
+    logging.info(f"batch size: {args.batchsize}")
+    logging.info(f"temp_batch size: {args.temp_batchsize}")
     logging.info(f"seed num: {args.seed_num}")
     logging.info(f"note: {args.note}")
 
@@ -60,7 +60,7 @@ def main():
     writer = tensorboard.SummaryWriter(log_dir=f"tensorboard/{tensorboard_path}")
     method = select_method(args, None, device, train_transform, test_transform, 7, writer)
     # Get train dataset
-    cur_train_datalist = get_clad_datalist('train')
+    cur_train_datalist = get_clad_datalist('train', dataset_root=args.dataset_root)
     
     train_task = [
         cur_train_datalist[0:4470],
@@ -81,7 +81,7 @@ def main():
         logging.info("Loading test dataset...")
         test_loader_list = []
         for i in range(4):
-            dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1],
+            dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
                                         split="val", transforms=transforms.ToTensor())
 
             test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batchsize, collate_fn=collate_fn))
@@ -90,7 +90,7 @@ def main():
         logging.info("Loading test debug dataset...")
         test_loader_list = []
         for i in range(4): 
-            dataset = SODADataset(path="./dataset/SSLAD-2D", task_ids=[i+1],
+            dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
                                         split="val", transforms=transforms.ToTensor())
             debug_dataset, _ = random_split(dataset, [10, len(dataset) - 10])
             test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=args.batchsize, collate_fn=collate_fn))

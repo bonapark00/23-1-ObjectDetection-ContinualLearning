@@ -137,6 +137,7 @@ class RODEO(ER):
         front_model.eval()
 
         feature_path = f'./rodeo_feature/{self.dataset}_{self.pretrain_task_list}_backbone_{split}.h5'
+        os.makedirs('./rodeo_feature', exist_ok=True)
         if os.path.exists(feature_path):
             print("backbone feature file already exists, move onto the next step")
         else: 
@@ -177,7 +178,7 @@ class RODEO(ER):
         pq = faiss.ProductQuantizer(data_dim, codebook_size, nbits)
 
         #remove
-        #pq.train(base_train_data)
+        pq.train(base_train_data)
         print(f"PQ model training is done!")
         return pq
     
@@ -200,7 +201,7 @@ class RODEO(ER):
         
 
     def reconstruct_pq(self, pq_model, split='train', data_dim=2048):
-        #print(f"reconstructing PQ model...")
+        print(f"reconstructing PQ model...")
         pq = pq_model
         
         feature_path = f'./rodeo_feature/{self.dataset}_{self.pretrain_task_list}_backbone_{split}.h5'
@@ -262,7 +263,7 @@ class RODEO(ER):
             #dataloader for offline training
             assert self.pretrain_task_list is not None, "pretrain_task_list should be initialized. checkout the dataset."
             offline_dataloader = self.create_offline_Dataloader(self.dataset, self.pretrain_task_list, self.batch_size)
-            pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=1)
+            pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=self.batch_size)
             g_model = self.front_backbone_model(self.model)
             self.extract_backbone_features(g_model, offline_dataloader)
             pq_model = self.train_pq(codebook_size=32, data_dim=2048, nbits=8)   
@@ -388,21 +389,21 @@ class RODEO(ER):
     
 
     def online_evaluate(self, test_dataloader, sample_num):
-        task_list = test_dataloader.dataset.task_ids
-        adjusted_pretrain_list = self.pretrain_task_list
+        # task_list = test_dataloader.dataset.task_ids
+        # adjusted_pretrain_list = self.pretrain_task_list
 
-        if set(task_list).issubset(set(adjusted_pretrain_list)):
-            return 0.0
+        # if set(task_list).issubset(set(adjusted_pretrain_list)):
+        #     return 0.0
         
-        else:
-            eval_backbone = backbone_eval(self.g_model, self.pq, self.model.backbone)
-            eval_model = copy.deepcopy(self.model)
-            eval_model.backbone = eval_backbone
+        # else:
+        eval_backbone = backbone_eval(self.g_model, self.pq, self.model.backbone)
+        eval_model = copy.deepcopy(self.model)
+        eval_model.backbone = eval_backbone
 
-            coco_evaluator = evaluate(eval_model, test_dataloader, device=self.device)
-            stats = coco_evaluator.coco_eval['bbox'].stats
-            self.report_test(sample_num, stats[1], self.writer)  # stats[1]: AP @IOU=0.50
-            return stats[1]
+        coco_evaluator = evaluate(eval_model, test_dataloader, device=self.device)
+        stats = coco_evaluator.coco_eval['bbox'].stats
+        self.report_test(sample_num, stats[1], self.writer)  # stats[1]: AP @IOU=0.50
+        return stats[1]
 
 
 def collate_fn(batch):

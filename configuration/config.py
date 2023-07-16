@@ -156,6 +156,7 @@ def joint_parser():
     parser.add_argument("--is_eval", action='store_true')
     parser.add_argument("--eval_period", type=int, default=100, help="evaluation period for true online setup")
     parser.add_argument("--debug", action="store_true", help="Turn on Debug mode")
+    parser.add_argument("--note", type=str, help="Short description of the exp")
     args = parser.parse_args()
 
     return args

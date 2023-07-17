@@ -531,7 +531,7 @@ class CladPQDataset(CladDistillationMemory):
 			self.ssl_proposals.append(proposal)
    
 	def	get_sample_info(self, sample):
-		img_path = f"./dataset/SSLAD-2D/labeled/{sample['split']}/{sample['file_name']}"
+		img_path = os.path.join(self.root, "SSLAD-2D", "labeled", sample['split'], sample['file_name'])
 		img = Image.open(img_path).convert("RGB")
 		img = transforms.ToTensor()(img)
 		target = get_sample_objects(sample['objects'])
@@ -596,9 +596,9 @@ class CladPQDataset(CladDistillationMemory):
 				img_name = sample['filepath']
 		
 		if self.data_dir is None:
-				img_path = os.path.join("dataset", self.dataset,'labeled',sample['split'],img_name)
+				img_path = os.path.join(self.root, "SSLAD-2D", "labeled", sample['split'], img_name)
 		else:
-				img_path = os.path.join(self.data_dir,sample['split'],img_name)
+				img_path = os.path.join(self.data_dir, sample['split'],img_name)
 		image = PIL.Image.open(img_path).convert('RGB')
 		image = transforms.ToTensor()(image)
 		target = get_sample_objects(sample['objects'])

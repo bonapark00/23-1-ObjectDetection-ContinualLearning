@@ -13,7 +13,7 @@
 # 4. Run this file
 
 METHOD_NAME="incremental"
-MEMORY_SIZE=500
+MEMORY_SIZE=150
 NOTE="baseline_default" # You can write NOTE here
 
 # If NOTE is not empty, add underscore before it

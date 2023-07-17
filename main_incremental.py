@@ -150,7 +150,7 @@ def main():
                 # Evaluate on all tasks before current task
                 task_mAP_list = []  # mAP of current task on all tasks before current task
                 # TODO: JSON logging would be better
-                for task_eval in selected_seed[2:][:i + 1]:
+                for task_eval in selected_seed[:i + 3]:
                     logging.info(f"Seed {args.seed_num} Task {task + 1} evaluating task {task_eval + 1}")
                     mAP = method.online_evaluate(test_loader_list[task_eval], samples_cnt)
                     task_mAP_list.append(mAP)
@@ -237,7 +237,7 @@ def main():
     for key in task_records:
         task_records[key] = np.array(task_records[key])
 
-    auc_dict = get_mAP_AUC(task_records, 2)
+    auc_dict = get_mAP_AUC(task_records, 4)
     mAP_AUC = auc_dict["mAP_AUC"]
     logging.info(f"mAP AUC: {mAP_AUC}")
     last_auc_row = np.array([[mAP_AUC, mAP_AUC, mAP_AUC]])

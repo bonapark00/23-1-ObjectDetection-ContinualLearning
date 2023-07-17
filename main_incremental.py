@@ -126,6 +126,17 @@ def main():
             - In each method, online_step and online_evaluate should have writer as input
     """
 
+    # Eval for all tasks before starting incremental training
+    logging.info("Evaluating on all tasks before starting incremental training...")
+
+    method.model.eval() # Set model to eval mode
+    for task_eval in selected_seed:
+        mAP = method.online_evaluate(test_loader_list[task_eval], samples_cnt)
+        task_records["test_mAP"].append(mAP)
+        task_records["task_trained"].append(0)
+        task_records["task_evaluating"].append(task_eval + 1)
+        task_records["data_cnt"].append(samples_cnt)
+
     # Train and eval
     for i, task in enumerate(selected_seed[2:]):
         # Train one task
@@ -209,14 +220,14 @@ def main():
     # np.save(os.path.join('outputs', args.mode, "after_task", save_path + "_eval_time.npy"), task_records['data_cnt'])
 
     # Get 4 x 2 matrix using after task mAP
-    after_mAP = np.array(task_records['test_mAP']).reshape(2, 4).T
+    after_mAP = np.array(task_records['test_mAP']).reshape(3, 4).T
 
     # Save as csv
     # Make row and column names
     csv_save_path = os.path.join('outputs', 'summary', "incremental", f"{args.dataset}_{args.mode}_sd-{args.seed_num}{note_suffix}.csv")
     os.makedirs(os.path.dirname(csv_save_path), exist_ok=True)
 
-    col_names = ["Task 3", "Task 4"]
+    col_names = ["After Joint", "Task 3", "Task 4"]
     
     # Save as csv because below codes can raise error
     np.savetxt(csv_save_path, after_mAP, delimiter=",", header=",".join(col_names), comments="", fmt="%s")
@@ -229,7 +240,7 @@ def main():
     auc_dict = get_mAP_AUC(task_records, 2)
     mAP_AUC = auc_dict["mAP_AUC"]
     logging.info(f"mAP AUC: {mAP_AUC}")
-    last_auc_row = np.array([[mAP_AUC, mAP_AUC]])
+    last_auc_row = np.array([[mAP_AUC, mAP_AUC, mAP_AUC]])
     after_mAP = np.append(after_mAP, last_auc_row, axis=0)
 
     np.savetxt(csv_save_path, after_mAP, delimiter=",", header=",".join(col_names), comments="", fmt="%s")

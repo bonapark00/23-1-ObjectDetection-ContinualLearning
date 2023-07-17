@@ -4,7 +4,7 @@
 NOTE="default_500" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="filod"
 DATASET="shift" # clad, shift
-SEED="3"
+SEED=$1 # This will now take seed value as a command line argument
 
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=150 ONLINE_ITER=1
@@ -30,11 +30,11 @@ else
 fi
 
 # Check if debug mode is on
-if [ "$1" == "debug" ]; then
+if [ "$2" == "debug" ]; then
     DEBUG="--debug"
     BATCHSIZE=4
     TEMP_BATCHSIZE=2
-    EVAL_PERIOD=40
+    EVAL_PERIOD=60
     NOTE="debug"
 else
     DEBUG=""
@@ -44,9 +44,3 @@ python $SCRIPT_NAME --mode $MODE --dataset $DATASET \
 --seed_num $SEED --note $NOTE --batchsize $BATCHSIZE \
 --temp_batchsize $TEMP_BATCHSIZE --memory_size $MEM_SIZE \
 --online_iter $ONLINE_ITER --eval_period $EVAL_PERIOD $DEBUG
-
-# python $SCRIPT_NAME --mode $MODE --dataset $DATASET \
-# --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
-# --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-# --seed_num $RND_SEED --eval_period $EVAL_PERIOD --note $NOTE
-

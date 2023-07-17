@@ -1,10 +1,10 @@
-#/bin/bash
+#!/bin/bash
 
 # CIL CONFIG
 NOTE="default" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="der"
 DATASET="shift" # clad, shift
-SEED="3"
+SEED=$1 # This will now take seed value as a command line argument
 ALPHA=0.05
 BETA=0.5
 THETA=1.0
@@ -33,7 +33,7 @@ else
 fi
 
 # Check if debug mode is on
-if [ "$1" == "debug" ]; then
+if [ "$2" == "debug" ]; then
     DEBUG="--debug"
     MEM_SIZE=50
     BATCHSIZE=4
@@ -49,9 +49,3 @@ python $SCRIPT_NAME --mode $MODE --dataset $DATASET \
 --temp_batchsize $TEMP_BATCHSIZE --memory_size $MEM_SIZE \
 --online_iter $ONLINE_ITER --eval_period $EVAL_PERIOD \
 --alpha $ALPHA --beta $BETA --theta $THETA $DEBUG
-
-# python $SCRIPT_NAME --mode $MODE --dataset $DATASET \
-# --batchsize $BATCHSIZE --temp_batchsize $TEMP_BATCHSIZE \
-# --memory_size $MEM_SIZE $GPU_TRANSFORM --online_iter $ONLINE_ITER \
-# --seed_num $RND_SEED --eval_period $EVAL_PERIOD --note $NOTE
-

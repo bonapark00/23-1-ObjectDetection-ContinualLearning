@@ -5,7 +5,7 @@ NOTE="incremental_default" # Short description of the experiment. (WARNING: logs
 DATASET="clad" # clad, shift
 BATCHSIZE=16
 NUM_EPOCHS=10
-SEED_NUM=1
+SEED_NUM=3
 
 
 if [ "$DATASET" == "clad" ]; then

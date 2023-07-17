@@ -67,7 +67,7 @@ if not args.debug:
     for i in range(len(domain_list)):
         dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
                                     split="val", transforms=transforms.ToTensor())
-        test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, collate_fn=collate_fn))
+        test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batchsize, collate_fn=collate_fn))
 else:
     logging.info("Loading test debug dataset...")
     for i in range(len(domain_list)):

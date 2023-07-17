@@ -52,6 +52,7 @@ class ER:
         self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
         # self.optimizer = torch.optim.SGD(self.params, lr=0.001, weight_decay=0.00005, momentum=0.9, nesterov=True)
         self.task_num = 0
+        logger.info("ER initializer finished")
 
     
     def online_step(self, sample, sample_num, n_worker):

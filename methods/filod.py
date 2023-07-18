@@ -121,10 +121,9 @@ class FILOD(ER):
                     
                     losses_st = self.model(images, targets, proposals_logits_te['proposals'])
                     student_logits = self.model.student_logits
-
                     backbone_te, rpn_te= self.model_teacher.backbone_output, self.model_teacher.rpn_output
                     backbone_st, rpn_st= self.model.backbone_output, self.model.rpn_output
-                    
+
                     # Fast rcnn loss
                     faster_rcnn_losses = sum(loss for loss in losses_st.values())
 
@@ -139,7 +138,7 @@ class FILOD(ER):
 
                     # Distillation loss
                     distillation_losses = roi_distillation_losses + rpn_distillation_losses + feature_distillation_losses
-                    distillation_losses = distillation_losses.clone().detach()
+                    #distillation_losses = distillation_losses.clone().detach()
                     # if i == 1:
                     #     logging.info(f"{faster_rcnn_losses}, roi:{roi_distillation_losses}, rpn:{rpn_distillation_losses}, \
                     #         backbone:{feature_distillation_losses}")

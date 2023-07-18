@@ -91,7 +91,7 @@ class DER(ER):
                     d['boxes'] = stream_data['boxes'][i].to(self.device)
                     d['labels'] = stream_data['labels'][i].to(self.device)
                     targets_stream.append(d)
-            # breakpoint()
+
             if memory_batch_size > 0:
                 #concat data from memory
                 images_memory = [img.to(self.device) for img in memory_data['images']]
@@ -121,6 +121,7 @@ class DER(ER):
                 l2_loss = torch.nn.MSELoss()
                 #distillation loss
                 distill_cls = 0
+    
                 for (output, target) in zip(st_logits['class_logits'], class_logits):
                     distill_cls += l2_loss(output, target)
 
@@ -128,7 +129,7 @@ class DER(ER):
                 for (output, target) in zip(st_logits['box_regression'], box_regression):
                     distill_reg += l2_loss(output, target)
 
-                distill_loss = (self.alpha * distill_cls.detach() + self.beta * distill_reg.detach())/memory_batch_size
+                distill_loss = (self.alpha * distill_cls+ self.beta * distill_reg)/memory_batch_size
                 loss = sum(loss for loss in losses.values()) + self.theta * distill_loss
 
             else:
@@ -143,14 +144,17 @@ class DER(ER):
             self.optimizer.step()
             total_loss += loss.item()
       
+ 
         for item in ['proposals', 'class_logits', 'box_regression']:
-                proposals_logits[item] = proposals_logits[item][:stream_batch_size] 
+                proposals_logits[item] = proposals_logits[item][:stream_batch_size]
+                proposals_logits[item] = [logit.detach() for logit in proposals_logits[item]]
+                
         
-
         return (total_loss / iterations), proposals_logits
         
     def update_memory(self, sample, logit):
         # Updates the memory of the model based on the importance of the samples.
+
         if len(self.memory.images) >= self.memory_size:
             target_idx = np.random.randint(len(self.memory.images))
             self.memory.replace_sample(sample, logit, target_idx)

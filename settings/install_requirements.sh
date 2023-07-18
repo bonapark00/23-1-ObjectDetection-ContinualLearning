@@ -7,6 +7,9 @@ apt-get update -y
 apt-get install -y git gcc g++
 apt-get install unzip
 
+apt install libgl1-mesa-glx -y
+apt-get install libglib2.0-0 -y
+
 # Install Python packages
 pip install pycocotools matplotlib opencv-contrib-python 
 pip install faiss

@@ -159,7 +159,8 @@ class ILOD(ER):
                         distill_reg += l2_loss(output, target)
 
                     #hard coded distillation loss
-                    distill_loss = 1/(64*7) * (distill_cls.detach() + distill_reg.detach())
+                    # TODO: Modify this to include class number
+                    distill_loss = 1/(64*7) * (distill_cls + distill_reg)
                     loss = sum(loss for loss in losses.values()) + distill_loss
 
                 # While first task (do not have any teacher model)

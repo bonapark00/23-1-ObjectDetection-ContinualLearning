@@ -18,6 +18,7 @@ import faiss
 import time
 import h5py
 
+from fast_rcnn.fast_rcnn import fastrcnn_resnet50_fpn
 
 logger = logging.getLogger()
 
@@ -100,9 +101,8 @@ class RODEO(ER):
                 losses.backward()
                 optimizer.step()
 
-                if idx % 300 == 0:
-                    print(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
-                
+                if idx % 100 == 0:
+                    logger.info(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
                 
         print("Offline training is done! successfully!")
         return model
@@ -110,7 +110,7 @@ class RODEO(ER):
 
     def front_backbone_model(self, model):
         with torch.no_grad():
-            backbone = model.backbone
+            backbone = copy.deepcopy(model.backbone)
             g_model = nn.Sequential(
                 *list(backbone.children())[:-1],
                 list(backbone.children())[-1][0])
@@ -126,7 +126,7 @@ class RODEO(ER):
 
 
     def chop_backbone_model(self, model):
-        backbone = model.backbone
+        backbone = copy.deepcopy(model.backbone)
         chopped_backbone = nn.Sequential(
             *list(backbone.children())[-1][1:])
         model.backbone = chopped_backbone
@@ -263,8 +263,13 @@ class RODEO(ER):
             #dataloader for offline training
             assert self.pretrain_task_list is not None, "pretrain_task_list should be initialized. checkout the dataset."
             offline_dataloader = self.create_offline_Dataloader(self.dataset, self.pretrain_task_list, self.batch_size)
-            pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=self.batch_size)
+            pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=1)
             g_model = self.front_backbone_model(self.model)
+            
+            # #save the model
+            # os.makedirs('./rodeo_model', exist_ok=True)
+            # torch.save(pretrained_model.state_dict(), f'./rodeo_model/{self.dataset}_{self.pretrain_task_list}_pretrained_model_last.pth')
+            
             self.extract_backbone_features(g_model, offline_dataloader)
             pq_model = self.train_pq(codebook_size=32, data_dim=2048, nbits=8)   
             pq_reconstructed_path = self.reconstruct_pq(pq_model, data_dim=2048)
@@ -274,6 +279,12 @@ class RODEO(ER):
             self.pq = pq_model
             self.g_model = g_model
             self.chop_backbone_model(self.model)
+            
+            self.params = [p for p in self.model.parameters() if p.requires_grad]
+            print(len(self.params))
+            self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
+            
+            
             self.memory.add_pretrained_pq_features(pq_reconstructed_path) #add reconstructed features to the memory. memory size shouldn't be too big
 
             end = time.time()
@@ -451,4 +462,4 @@ class backbone_eval(nn.Module):
 #             images = [image.to(device) for image in images]
 #             features.append(model(images))
             
-#     return torch.cat(features, dim=0
+#     return torch.cat(features, dim=0)

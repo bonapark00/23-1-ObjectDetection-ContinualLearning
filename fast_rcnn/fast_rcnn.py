@@ -1,6 +1,7 @@
 from torch import nn
 import torch.nn.functional as F
 import torchvision
+from torchvision.models import ResNet50_Weights
 from torchvision.ops import MultiScaleRoIAlign
 from ._utils import overwrite_eps
 from .generalized_rcnn import GeneralizedRCNN
@@ -157,14 +158,16 @@ class TwoMLPHead(nn.Module):
 
     def __init__(self, in_channels, representation_size):
         super(TwoMLPHead, self).__init__()
-
-        self.fc6 = nn.Linear(in_channels, representation_size)
+        
+        self.fc6 = nn.Linear(in_channels, 12544)
+        self.fc_new = nn.Linear(12544, representation_size)
         self.fc7 = nn.Linear(representation_size, representation_size)
 
     def forward(self, x):
-        x = x.flatten(start_dim=1)
 
+        x = x.flatten(start_dim=1)
         x = F.relu(self.fc6(x))
+        x = F.relu(self.fc_new(x))
         x = F.relu(self.fc7(x))
 
         return x
@@ -288,13 +291,25 @@ def fastrcnn_resnet50_fpn(pretrained=False, progress=True,
 
 
 
+# def fastrcnn_resnet50(pretrained=False, progress=True,
+#                             num_classes=91, pretrained_backbone=True, trainable_backbone_layers=None, **kwargs):
+
+#     res50_model = torchvision.models.resnet50(pretrained=True)
+#     backbone = nn.Sequential(*list(res50_model.children())[:-2])
+#     backbone.out_channels = 2048
+
+#     roi_pooler = MultiScaleRoIAlign(featmap_names=['0'], output_size=7, sampling_ratio=2)
+#     model = FastRCNN(backbone, num_classes, box_roi_pool=roi_pooler, **kwargs)
+#     return model
+
 def fastrcnn_resnet50(pretrained=False, progress=True,
                             num_classes=91, pretrained_backbone=True, trainable_backbone_layers=None, **kwargs):
-
-    res50_model = torchvision.models.resnet50(pretrained=True)
+    res50_model = torchvision.models.resnet50(weights=ResNet50_Weights.DEFAULT)
     backbone = nn.Sequential(*list(res50_model.children())[:-2])
     backbone.out_channels = 2048
 
     roi_pooler = MultiScaleRoIAlign(featmap_names=['0'], output_size=7, sampling_ratio=2)
     model = FastRCNN(backbone, num_classes, box_roi_pool=roi_pooler, **kwargs)
+    
+    
     return model

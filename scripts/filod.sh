@@ -1,7 +1,7 @@
 #/bin/bash
 
 # CIL CONFIG
-NOTE="default_500" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+NOTE="correct_500" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="filod"
 DATASET="shift" # clad, shift
 SEED=$1 # This will now take seed value as a command line argument

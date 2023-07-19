@@ -2,7 +2,7 @@
 
 # CIL CONFIG
 NOTE="incremental_default" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
-MODE="baseline"
+MODE="finetune"
 DATASET="clad" # clad, shift
 SEED=$1 # This will now take seed value as a command line argument
 CKPT_EPOCH=10

@@ -1,13 +1,13 @@
 #/bin/bash
 
 # CIL CONFIG
-NOTE="default_13556" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+NOTE="default_13928" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="rodeo"
 DATASET="clad" # clad, shift
 SEED=$1 # This will now take seed value as a command line argument
 
 if [ "$DATASET" == "clad" ]; then
-    MEM_SIZE=13556 ONLINE_ITER=1
+    MEM_SIZE=13928 ONLINE_ITER=1
     BATCHSIZE=16
     TEMP_BATCHSIZE=0
     EVAL_PERIOD=100

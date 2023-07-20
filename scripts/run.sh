@@ -21,6 +21,6 @@ NOTE="correct" # You can write NOTE here
 NOTE_SUFFIX=${NOTE:+_$NOTE}
 
 # Run 3 seeds in multiple GPUs
-CUDA_VISIBLE_DEVICES=4 ./scripts/${METHOD_NAME}.sh 1 > logs/shift_${METHOD_NAME}_${MEMORY_SIZE}_1${NOTE_SUFFIX}.txt 2>&1 &
-CUDA_VISIBLE_DEVICES=5 ./scripts/${METHOD_NAME}.sh 2 > logs/shift_${METHOD_NAME}_${MEMORY_SIZE}_2${NOTE_SUFFIX}.txt 2>&1 &
-# CUDA_VISIBLE_DEVICES=3 ./scripts/${METHOD_NAME}.sh 3 > logs/shift_${METHOD_NAME}_${MEMORY_SIZE}_3${NOTE_SUFFIX}.txt 2>&1 &
+CUDA_VISIBLE_DEVICES=0 ./scripts/${METHOD_NAME}.sh 1 > logs/shift_${METHOD_NAME}_${MEMORY_SIZE}_1${NOTE_SUFFIX}.txt 2>&1 &
+CUDA_VISIBLE_DEVICES=4 ./scripts/${METHOD_NAME}.sh 2 > logs/shift_${METHOD_NAME}_${MEMORY_SIZE}_2${NOTE_SUFFIX}.txt 2>&1 &
+CUDA_VISIBLE_DEVICES=5 ./scripts/${METHOD_NAME}.sh 3 > logs/shift_${METHOD_NAME}_${MEMORY_SIZE}_3${NOTE_SUFFIX}.txt 2>&1 &

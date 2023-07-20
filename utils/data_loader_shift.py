@@ -355,10 +355,11 @@ class SHIFTDistillationMemory(MemoryDataset):
 class SHIFTDataset(Dataset):
 
     def __init__(self, root='./dataset',
-                 task_num=1, domain_dict={'weather_coarse':'clear'}, split="train", transforms=None):
+                 task_num=1, domain_dict={'weather_coarse':'clear'}, split="train", transforms=None, ssl_required=False):
         self.root=root
         self.split=split
         self.transforms=transforms
+        self.ssl_required = ssl_required
 
         self.img_paths=[]
         json_path = os.path.join(self.root, 'SHIFT_dataset', 'discrete', 'images', self.split, 'front', 'det_2d.json')
@@ -377,7 +378,7 @@ class SHIFTDataset(Dataset):
         return len(self.data_infos)
     
     def __getitem__(self, idx):
-        boxes, labels=[],[]
+        boxes, labels=[], []
         img_path = os.path.join(self.root, 'SHIFT_dataset', 'discrete', 'images', self.split, 'front',
                                 self.data_infos[idx]['videoName'], self.data_infos[idx]['name'])
         # img_path = f"{self.root}/{self.split}/front/{self.data_infos[idx]['videoName']}/{self.data_infos[idx]['name']}"
@@ -387,11 +388,21 @@ class SHIFTDataset(Dataset):
             img=self.transforms(img)
 
         target={}
+
+        # target['img_path'] = img_path # No need to pass img_path
+        target['proposal_path'] = f"precomputed_proposals/ssl_shift/{self.split}_front_{self.data_infos[idx]['videoName']}_{self.data_infos[idx]['name'][:-4]}.npy"
         target['boxes'] = torch.as_tensor(self.data_infos[idx]["bboxes"], dtype=torch.float32)
         target['labels'] = torch.tensor(self.data_infos[idx]["labels"], dtype=torch.int64)
         target['image_id'] = torch.tensor([idx])
         target['area'] = (target['boxes'][:,3]-target['boxes'][:,1])*(target['boxes'][:,2]-target['boxes'][:,0])
         target['iscrowd'] = torch.zeros((len(target['boxes']),), dtype=torch.int64)
+
+        # TODO: Add support for SSL
+        if self.ssl_required:
+            ssl_proposals = np.load(target['proposal_path'], allow_pickle=True)
+            assert ssl_proposals is not None, "Precomputed proposals not found"
+            ssl_proposals = torch.from_numpy(ssl_proposals)
+            target["ssl_proposals"] = ssl_proposals
 
         return img, target
 

@@ -266,10 +266,6 @@ class RODEO(ER):
             pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=1)
             g_model = self.front_backbone_model(self.model)
             
-            # #save the model
-            # os.makedirs('./rodeo_model', exist_ok=True)
-            # torch.save(pretrained_model.state_dict(), f'./rodeo_model/{self.dataset}_{self.pretrain_task_list}_pretrained_model_last.pth')
-            
             self.extract_backbone_features(g_model, offline_dataloader)
             pq_model = self.train_pq(codebook_size=32, data_dim=2048, nbits=8)   
             pq_reconstructed_path = self.reconstruct_pq(pq_model, data_dim=2048)

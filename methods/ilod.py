@@ -46,10 +46,22 @@ class ILOD(ER):
             
         # load precomputed proposals
         img_name = sample['file_name'][:-4]
-        ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name + '.npy'), allow_pickle=True)
+        
+        if self.dataset == 'clad': 
+            ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name + '.npy'), allow_pickle=True)
+        
+        elif self.dataset == 'shift':
+            parsed_img_name = img_name.split('/')[-4:]
+            joined_img_name = '_'.join(parsed_img_name) + '.npy'
+            ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_shift', joined_img_name), allow_pickle=True)
+    
+        else:
+            raise NotImplementedError
+        
         assert ssl_proposals is not None, "Precomputed proposals not found"
         ssl_proposals = torch.from_numpy(ssl_proposals).to(self.device)
-
+        
+        
         # Need to change as function
         if sample['task_num'] != self.task_num:
             self.task_changed += 1
@@ -61,6 +73,7 @@ class ILOD(ER):
                 self.model_teacher.load_state_dict(self.model.state_dict()) # Copy weights from student to teacher
                 self.model_teacher.eval()
                 self.model_teacher.roi_heads.generate_soft_proposals = True
+
 
         self.task_num = sample['task_num']   
         self.temp_batch.append(sample)

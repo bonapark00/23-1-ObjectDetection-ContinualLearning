@@ -617,6 +617,9 @@ class CladPQDataset(CladDistillationMemory):
 				self.ssl_proposals.append(ssl_proposal)
 				self.pq_features.append(pq_feature)
 		else: 
+				raise NotImplementedError
+				#clad pq memory is big enough 
+				'''
 				#remove info of trash sample
 				discard_sample = self.datalist[idx]
 				dis_sample_img = discard_sample['img_info']
@@ -639,7 +642,7 @@ class CladPQDataset(CladDistillationMemory):
 				self.images[idx] = image
 				self.objects[idx] = target
 				self.ssl_proposals[idx] = ssl_proposal
-				self.pq_features[idx] = pq_feature
+				self.pq_features[idx] = pq_feature'''
 	  
 	def get_weight(self):
 		pass 

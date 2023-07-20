@@ -3,7 +3,7 @@
 # CIL CONFIG
 NOTE="default" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="ilod"
-DATASET="clad" # clad, shift
+DATASET="shift" # clad, shift
 SEED=$1 # This will now take seed value as a command line argument
 
 if [ "$DATASET" == "clad" ]; then

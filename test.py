@@ -5,6 +5,13 @@ from torchvision import transforms
 from tqdm import tqdm
 import os
 from utils.train_utils import select_pq_dataset
+from utils.preprocess_clad import get_clad_datalist
 
 
-memory = select_pq_dataset(310, [1,2], 'clad')
+train_list = get_clad_datalist('train')
+val_list = get_clad_datalist('test')
+
+breakpoint()
+
+
+

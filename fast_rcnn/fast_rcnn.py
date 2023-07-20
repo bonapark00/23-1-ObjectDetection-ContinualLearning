@@ -159,17 +159,27 @@ class TwoMLPHead(nn.Module):
     def __init__(self, in_channels, representation_size):
         super(TwoMLPHead, self).__init__()
         
-        self.fc6 = nn.Linear(in_channels, 12544)
-        self.fc_new = nn.Linear(12544, representation_size)
+        self.mode = 'normal'
+        
+        if in_channels == 256*7*7: #12544
+            self.fc6 = nn.Linear(in_channels, representation_size)
+        else:
+            self.mode = 'rodeo'
+            self.fc6 = nn.Linear(in_channels, 12544)
+            self.fc_new = nn.Linear(12544, representation_size)
+            
         self.fc7 = nn.Linear(representation_size, representation_size)
-
+        
     def forward(self, x):
-
         x = x.flatten(start_dim=1)
-        x = F.relu(self.fc6(x))
-        x = F.relu(self.fc_new(x))
+        
+        if self.mode == 'normal':
+           x = F.relu(self.fc6(x))
+        else:
+           x = F.relu(self.fc6(x))
+           x = F.relu(self.fc_new(x))
+           
         x = F.relu(self.fc7(x))
-
         return x
 
 

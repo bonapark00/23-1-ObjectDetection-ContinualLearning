@@ -228,12 +228,7 @@ def get_clad_trainval(root='./dataset', val_proportion= 0.1):
     trainval_info = [get_matching_detection_info(annot_file=os.path.join(annot_file, f'instance_{split}.json'),
                                                   match_fn = match_fn) for
                                                   match_fn, split in zip(match_fns, splits)]
-    # trainval_info = [get_matching_detection_info(annot_file=os.path.join(root, 'SSLAD-2D', 'labeled', 'annotations',
-    #                                                       f'instance_{split}.json'),
-    #                                               match_fn = match_fn) for
-    #                 match_fn, split in zip(match_fns, splits)]
-    
-    
+
     # Split trainval_info to train_info + val_info
     for index,item in enumerate(trainval_info):
         

@@ -281,8 +281,8 @@ class RODEO(ER):
             self.chop_backbone_model(self.model)
             
             self.params = [p for p in self.model.parameters() if p.requires_grad]
-            print(len(self.params))
             self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
+            logger.info(f"optimizer initialized")
             
             
             self.memory.add_pretrained_pq_features(pq_reconstructed_path) #add reconstructed features to the memory. memory size shouldn't be too big

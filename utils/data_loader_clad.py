@@ -517,10 +517,14 @@ class CladPQDataset(CladDistillationMemory):
 			start_idx = split_num[task_id-1]; end_idx = split_num[task_id]
 			target_data += total_data[start_idx:end_idx]
    
-		random_indices = np.random.choice(len(target_data), memory_size, replace=False)
-		random_indices.sort()
-		self.random_indices = random_indices
-		selected_target_data = [target_data[idx] for idx in random_indices]
+		if memory_size <= len(target_data):
+			random_indices = np.random.choice(len(target_data), memory_size, replace=False)
+			random_indices.sort()
+			self.random_indices = random_indices
+			selected_target_data = [target_data[idx] for idx in random_indices]
+   
+		else:
+			selected_target_data = target_data
 
 		# Get img_paths and objects
 		for sample in selected_target_data:
@@ -529,6 +533,7 @@ class CladPQDataset(CladDistillationMemory):
 			self.images.append(image)
 			self.objects.append(target)
 			self.ssl_proposals.append(proposal)
+   
    
 	def	get_sample_info(self, sample):
 		img_path = os.path.join(self.root, "SSLAD-2D", "labeled", sample['split'], sample['file_name'])

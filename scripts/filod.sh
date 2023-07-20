@@ -1,7 +1,7 @@
 #/bin/bash
 
 # CIL CONFIG
-NOTE="correct_500" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
+NOTE="correct_150" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="filod"
 DATASET="shift" # clad, shift
 SEED=$1 # This will now take seed value as a command line argument
@@ -13,7 +13,7 @@ if [ "$DATASET" == "clad" ]; then
     EVAL_PERIOD=100
 
 elif [ "$DATASET" == "shift" ]; then
-    MEM_SIZE=500 ONLINE_ITER=1
+    MEM_SIZE=150 ONLINE_ITER=1
     BATCHSIZE=16
     TEMP_BATCHSIZE=8
     EVAL_PERIOD=1000

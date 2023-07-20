@@ -100,15 +100,24 @@ def evaluate(model, data_loader, device, args=None):
         if model.__class__.__name__ == "FastRCNN":
             ssl_proposals=[]
             for target in targets:
-                if target['img_path'].split('/')[2] == 'SSLAD-2D':
-                    img_name = target['img_path'].split('/')[-1][:-4]
-                    precomputed_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name + '.npy'), allow_pickle=True)
-                    assert precomputed_proposals is not None, "Precomputed proposals not found"
+                # REMOVE COMMENT: No need to branch for different datasets
+                # (Just pass the proposal_path directly from the dataset)
+                # if target['img_path'].split('/')[2] == 'SSLAD-2D':
+                #     img_name = target['img_path'].split('/')[-1][:-4]
+                #     precomputed_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name + '.npy'), allow_pickle=True)
+                #     assert precomputed_proposals is not None, "Precomputed proposals not found"
 
-                    ssl_proposals.append({'boxes':torch.from_numpy(precomputed_proposals).to(device)})
-                else:
-                    #shift dataset
-                    pass 
+                #     ssl_proposals.append({'boxes':torch.from_numpy(precomputed_proposals).to(device)})
+                
+                # elif target['img_path'].split('/')[2] == 'SHIFT_dataset':
+                #     #shift dataset
+                #     breakpoint()
+                
+                # else:
+                #     raise NotImplementedError("Dataset not found")
+                precomputed_proposals = np.load(target['proposal_path'], allow_pickle=True)
+                assert precomputed_proposals is not None, "Precomputed proposals not found"
+                ssl_proposals.append({'boxes':torch.from_numpy(precomputed_proposals).to(device)})
 
             model.roi_heads.generate_soft_proposals = False
             outputs = model(images, ssl_proposals=ssl_proposals)

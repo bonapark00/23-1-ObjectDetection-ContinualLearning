@@ -756,7 +756,8 @@ class SODADataset(Dataset):
 		boxes = torch.tensor(self.objects[idx]['bbox'], dtype=torch.float32)
 		labels = torch.tensor(self.objects[idx]['category_id'])
 
-		target["img_path"] = img_path
+		# target["img_path"] = img_path
+		target["proposal_path"] = os.path.join('precomputed_proposals/ssl_clad', self.img_paths[idx][:-4] + '.npy')
 		target["boxes"] = boxes
 		target["labels"] = labels
 		target["image_id"] = torch.tensor(self.objects[idx]['image_id'])

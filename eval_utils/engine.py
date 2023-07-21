@@ -98,29 +98,27 @@ def evaluate(model, data_loader, device, args=None):
         model_time = time.time()
 
         if model.__class__.__name__ == "FastRCNN":
-            ssl_proposals=[]
+            ssl_proposals = []
+            pq_features = []
+            
             for target in targets:
-                # REMOVE COMMENT: No need to branch for different datasets
-                # (Just pass the proposal_path directly from the dataset)
-                # if target['img_path'].split('/')[2] == 'SSLAD-2D':
-                #     img_name = target['img_path'].split('/')[-1][:-4]
-                #     precomputed_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name + '.npy'), allow_pickle=True)
-                #     assert precomputed_proposals is not None, "Precomputed proposals not found"
-
-                #     ssl_proposals.append({'boxes':torch.from_numpy(precomputed_proposals).to(device)})
-                
-                # elif target['img_path'].split('/')[2] == 'SHIFT_dataset':
-                #     #shift dataset
-                #     breakpoint()
-                
-                # else:
-                #     raise NotImplementedError("Dataset not found")
-                precomputed_proposals = np.load(target['proposal_path'], allow_pickle=True)
+                #removed: not needed to separate between datasets. 'ssl_required' should be set
+                precomputed_proposals = target["ssl_proposals"]
                 assert precomputed_proposals is not None, "Precomputed proposals not found"
-                ssl_proposals.append({'boxes':torch.from_numpy(precomputed_proposals).to(device)})
-
+                ssl_proposals.append({'boxes':precomputed_proposals.to(device)})
+                
+                if data_loader.dataset.pq_required:
+                    pq_features.append(target["pq_features"])
+                    
             model.roi_heads.generate_soft_proposals = False
-            outputs = model(images, ssl_proposals=ssl_proposals)
+            
+            if len(pq_features) != 0:
+                pq_features = torch.concatenate(pq_features, dim=0).to(device)
+                outputs = model(images, ssl_proposals=ssl_proposals, pq_features=pq_features)
+                    
+            else:
+                outputs = model(images, ssl_proposals=ssl_proposals)
+            
         else:
             outputs = model(images)
 

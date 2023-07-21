@@ -59,6 +59,11 @@ def main():
         os.system(f"rm -rf tensorboard/{tensorboard_path}")
     writer = tensorboard.SummaryWriter(log_dir=f"tensorboard/{tensorboard_path}")
     method = select_method(args, None, device, train_transform, test_transform, 7, writer)
+    
+    ssl_required = True if args.mode in ['ilod', 'rodeo'] else False
+    pq_required = True if args.mode in ['rodeo'] else False
+    
+    
     # Get train dataset
     cur_train_datalist = get_clad_datalist('train', dataset_root=args.dataset_root)
     
@@ -82,7 +87,7 @@ def main():
         test_loader_list = []
         for i in range(4):
             dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
-                                        split="val", transforms=transforms.ToTensor())
+                                        split="val", transforms=transforms.ToTensor(), ssl_required=ssl_required, pq_required=pq_required)
 
             test_loader_list.append(torch.utils.data.DataLoader(dataset, batch_size=args.batchsize, collate_fn=collate_fn))
 
@@ -91,7 +96,7 @@ def main():
         test_loader_list = []
         for i in range(4): 
             dataset = SODADataset(root=args.dataset_root, task_ids=[i+1],
-                                        split="val", transforms=transforms.ToTensor())
+                                        split="val", transforms=transforms.ToTensor(), ssl_required=ssl_required, pq_required=pq_required)
             debug_dataset, _ = random_split(dataset, [10, len(dataset) - 10])
             test_loader_list.append(torch.utils.data.DataLoader(debug_dataset, batch_size=args.batchsize, collate_fn=collate_fn))
 

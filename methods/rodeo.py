@@ -41,29 +41,33 @@ class RODEO(ER):
 
         clad_task_list = [[0,1,2,3],[2,0,3,1],[1,2,3,0]]
         shift_task_list = [[0,1,2,3,4],[2,0,3,1,4],[4,1,3,0,2]]
-
+        
+        self.selected_task_list = None
+        self.sample_cnt = 0
+        self.current_task = 0
+        
         if self.dataset == 'clad':
             assert self.pretrain_task_num <= 4, "pretrain_task_num should be less than 4 in clad"
-            selected_tasks = clad_task_list[int(self.seed_num)-1]
-            selected_tasks = [task+1 for task in selected_tasks] #Since task_num starts from 1
+            self.selected_task_list = clad_task_list[int(self.seed_num)-1]
+            selected_tasks = [task+1 for task in self.selected_task_list] #Since task_num starts from 1
             self.pretrain_task_list = selected_tasks[:self.pretrain_task_num]
 
 
         elif self.dataset == 'shift':
             assert self.pretrain_task_num <= 5, "pretrain_task_num should be less than 5 in shift"
-            selected_tasks = shift_task_list[int(self.seed_num)-1]
-            selected_tasks = [task+1 for task in selected_tasks] #Since task_num starts from 1
+            self.selected_task_list= shift_task_list[int(self.seed_num)-1]
+            selected_tasks = [task+1 for task in self.selected_task_list] #Since task_num starts from 1
             self.pretrain_task_list = selected_tasks[:self.pretrain_task_num]
 
         else:
             raise ValueError("check if the dataset is proper")
         
-        self.memory = select_pq_dataset(self.memory_size, self.pretrain_task_list, self.dataset, self.root)
-
+        self.memory = select_pq_dataset(self.memory_size, self.pretrain_task_list, self.selected_task_list, self.dataset, self.root)
+        
     def create_offline_Dataloader(self, dataset, pretrain_task_list, batch_size, split='train'):
         if dataset == 'clad':
             train_data = SODADataset(root=self.root, task_ids=pretrain_task_list,
-                                        split="train", transforms=transforms.ToTensor(), ssl_required=True)
+                                        split=split, transforms=transforms.ToTensor(), ssl_required=True)
             
         else:
             raise ValueError("Shift dataset is not supported yet")
@@ -80,6 +84,7 @@ class RODEO(ER):
         print("Dataloader created")
 
         return dataloader
+    
     
     def offline_pretrain(self, model, dataloader, optimizer, epochs=16):
         #train the model
@@ -103,7 +108,10 @@ class RODEO(ER):
 
                 if idx % 100 == 0:
                     logger.info(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
-                
+                    
+                if idx == 2:
+                    break
+                    
         print("Offline training is done! successfully!")
         return model
 
@@ -131,17 +139,17 @@ class RODEO(ER):
             *list(backbone.children())[-1][1:])
         model.backbone = chopped_backbone
     
-    def extract_backbone_features(self, front_model, dataloader, split='train'):
+    
+    def extract_backbone_features(self, front_model, dataloader, save_path):
         #initialize transform
         transform = GeneralizedRCNNTransform(min_size=800, max_size=1333, image_mean=[0.485, 0.456, 0.406], image_std=[0.229, 0.224, 0.225])
         front_model.eval()
 
-        feature_path = f'./rodeo_feature/{self.dataset}_{self.pretrain_task_list}_backbone_{split}.h5'
         os.makedirs('./rodeo_feature', exist_ok=True)
-        if os.path.exists(feature_path):
+        if os.path.exists(save_path):
             print("backbone feature file already exists, move onto the next step")
         else: 
-            h5_file = h5py.File(feature_path, 'w')
+            h5_file = h5py.File(save_path, 'w')
             with torch.no_grad():      
                 for idx, (images, _) in enumerate(tqdm(dataloader, desc="Extracting backbone features...")):
                     images = [image.to(self.device) for image in images]
@@ -154,6 +162,50 @@ class RODEO(ER):
                         print(f"iter {idx} feature extraction is done!")
                         
             h5_file.close()
+            
+    
+    def reconstruct_pq_features(self, pq_model, front_model, dataloader, task_index, save_path, data_dim = 2048):
+
+        clad_train_task = [4470, 1329, 1479, 524]
+        shift_train_task = [] 
+        
+        pq = pq_model
+        transform = GeneralizedRCNNTransform(min_size=800, max_size=1333, image_mean=[0.485, 0.456, 0.406], image_std=[0.229, 0.224, 0.225])
+        front_model.eval()
+        
+        target_type = 'train' if task_index is None else 'test'
+        if target_type == 'train':
+            target_task_list = clad_train_task if self.dataset == 'clad' else shift_train_task
+        else:
+            target_task_list = None
+        
+        feature_cnt = 0
+        current_task = 1
+        h5_file = h5py.File(save_path, 'w')
+        with torch.no_grad():      
+            for idx, (images, _) in enumerate(tqdm(dataloader, desc=f"Extracting pq features of {target_type} {task_index}...")):
+                images = [image.to(self.device) for image in images]
+                images, _ = transform(images, None)
+                features = front_model(images.tensors)
+                features = features.cpu().numpy()
+
+                reconstructed_batch = self.reconstruct_direct(features, pq, data_dim=data_dim)
+                reconstructed_container = np.split(reconstructed_batch, reconstructed_batch.shape[0], axis=0)
+                
+                for single_feature in reconstructed_container:
+                    if target_task_list is not None:
+                        if target_task_list[current_task-1] == feature_cnt:
+                            current_task +=1
+                            feature_cnt = 0
+                    
+                        print(f"{current_task} {feature_cnt}")
+                        h5_file.create_dataset(f'{str(current_task)} {str(feature_cnt)}',data=single_feature)
+                    else:
+                        h5_file.create_dataset(str(feature_cnt),data=single_feature)
+                        
+                    feature_cnt +=1
+                    
+        h5_file.close()
 
 
     def train_pq(self, codebook_size=32, data_dim=2048, nbits=8):
@@ -178,19 +230,20 @@ class RODEO(ER):
         pq = faiss.ProductQuantizer(data_dim, codebook_size, nbits)
 
         #remove
-        pq.train(base_train_data)
+        #pq.train(base_train_data)
         print(f"PQ model training is done!")
+        
+        #erase backbone extracted file, since it is not needed anymore
+        os.remove(feature_path)
         return pq
     
     def reconstruct_direct(self, backbone_feature, pq_model, data_dim=2048):
 
         pq = pq_model
-        reconstructed_feature = []
         feature = backbone_feature
         _,dim,r,c = feature.shape
         assert dim == data_dim, "data_dim should be same as feature dim"
-        detached_feature = feature.detach().cpu().numpy()
-        feature_tr = np.transpose(detached_feature, (0,2,3,1)).reshape(-1, data_dim).astype('float32')
+        feature_tr = np.transpose(feature, (0,2,3,1)).reshape(-1, data_dim).astype('float32')
         codes = pq.compute_codes(np.ascontiguousarray(feature_tr))
         codes = pq.decode(codes)
         codes = codes.reshape(-1, r, c, data_dim)
@@ -200,57 +253,22 @@ class RODEO(ER):
         return reconstructed_batch
         
 
-    def reconstruct_pq(self, pq_model, split='train', data_dim=2048):
-        print(f"reconstructing PQ model...")
-        pq = pq_model
-        
-        feature_path = f'./rodeo_feature/{self.dataset}_{self.pretrain_task_list}_backbone_{split}.h5'
-        data_h5 = h5py.File(feature_path, 'r')
-        total_batch_size = len(data_h5.keys())
-        keys = [str(i) for i in range(total_batch_size)]
-        
-        reconstructed_feature_path = feature_path[:-3] + '_reconstructed.h5'
-        if os.path.exists(reconstructed_feature_path):
-            print('reconstruction already exits, move onto the next step')
-        else: 
-            reconstructed_h5 = h5py.File(reconstructed_feature_path, 'w')
-            feature_cnt = 0
-            for idx, batch_id in enumerate(tqdm(keys)):
-                feature = data_h5[batch_id][()]
-                _,dim,r,c = feature.shape
-                assert dim == data_dim, "data_dim should be same as feature dim"
-                feature_tr = np.transpose(feature, (0,2,3,1)).reshape(-1, data_dim).astype('float32')
-                codes = pq.compute_codes(np.ascontiguousarray(feature_tr))
-                codes = pq.decode(codes)
-                codes = codes.reshape(-1, r, c, data_dim)
-                reconstructed_batch = np.transpose(codes, (0,3,1,2))
-                assert feature.shape == reconstructed_batch.shape, "dimension does not fit in reconstruction!"
-                reconstructed_single = np.split(reconstructed_batch, reconstructed_batch.shape[0], axis=0)
-                
-                for single_feature in reconstructed_single:
-                    reconstructed_h5.create_dataset(str(feature_cnt),data=single_feature)
-                    feature_cnt +=1
-                
-                if int(batch_id) % 50 == 0:
-                    print(f"iter {batch_id} feature reconstruction is done!")
-                    
-            data_h5.close()
-            reconstructed_h5.close()
-        return reconstructed_feature_path
+    def reconstruct_all_pq_features(self, pq_model, front_model, train_dataloader, test_dataloader_list, data_dim=2048):
+        print(f"reconstructing all features of data... it will take a while")
     
-    # def save_reconstructed_test_features(self, g_model, pq_model):
-    #     #initialize test dataloader
-    #     test_dataloader = self.create_test_Dataloader(self.dataset, self.pretrain_task_list, self.batch_size, split='test')
+        #train dataset
+        #train dataloader should never be shuffled. Index computed in order.
+        # assert train_dataloader is not list, "train_dataloader should be a total singledataloader"
+        # train_feature_path = f'./rodeo_feature/{self.dataset}_reconstructed_train_features.h5'
+        # self.reconstruct_pq_features(pq_model, front_model, train_dataloader, None, train_feature_path)
         
-    #     for idx, (images, _) in enumerate(tqdm(test_dataloader, desc="saving test pq features...")):
-    #         images = [image.to(self.device) for image in images]
-    #         features = g_model(images)
-    #         features = self.reconstruct_pq(features, pq_model)
-    #         features = features.cpu().numpy()
-    #         data_h5.create_dataset(str(idx),data=features)
-            
-    #         if idx % 100 == 0:
-    #             print(f"iter {idx} feature extraction is done!")
+        #test dataset
+        # assert isinstance(test_dataloader_list, list), "test_dataloader should be prepared in list, with ordered task index"
+        # for idx, test_dataloader in enumerate(test_dataloader_list):
+        #     test_feature_path = f'./rodeo_feature/{self.dataset}_test_{idx+1}.h5'
+        #     self.reconstruct_pq_features(pq_model, front_model, test_dataloader, idx+1, test_feature_path)
+        
+        print("all features reconstruction is done!")
         
 
     def online_step(self, sample, sample_num, n_worker):
@@ -260,29 +278,43 @@ class RODEO(ER):
             start = time.time()
             print('*'*100)
             print(f"Start offline training of Rodeo method... current dataset: {self.dataset}")
+            
             #dataloader for offline training
             assert self.pretrain_task_list is not None, "pretrain_task_list should be initialized. checkout the dataset."
             offline_dataloader = self.create_offline_Dataloader(self.dataset, self.pretrain_task_list, self.batch_size)
             pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=1)
             g_model = self.front_backbone_model(self.model)
             
-            self.extract_backbone_features(g_model, offline_dataloader)
-            pq_model = self.train_pq(codebook_size=32, data_dim=2048, nbits=8)   
-            pq_reconstructed_path = self.reconstruct_pq(pq_model, data_dim=2048)
-            g_model = self.freeze_front_model(g_model)      
+            # #extract backbone features
+            backbone_path = f'./rodeo_feature/{self.dataset}_{self.pretrain_task_list}_backbone_train.h5'
+            self.extract_backbone_features(g_model, offline_dataloader, backbone_path)
             
+            # #train pq model
+            pq_model = self.train_pq(codebook_size=self.codebook_size, data_dim=2048, nbits=8)   
+            
+            # #reconstruct all features and save as h5 file
+            # #prepare dataloaders
+            total_task_num = 4 if self.dataset == 'clad' else 5
+            train_dataloader = self.create_offline_Dataloader(self.dataset,[i+1 for i in range(total_task_num)], self.batch_size, split='train')
+            test_dataloader_list = []
+            for i in range(total_task_num):
+                test_dataloader = self.create_offline_Dataloader(self.dataset,[i+1], self.batch_size, split='test')
+                test_dataloader_list.append(test_dataloader)
+                
+            self.reconstruct_all_pq_features(pq_model, g_model, train_dataloader, test_dataloader_list)
+            
+            #prepare for online training
+            g_model = self.freeze_front_model(g_model)      
             self.model = pretrained_model
             self.pq = pq_model
             self.g_model = g_model
             self.chop_backbone_model(self.model)
             
+            #reinitialize optimizer 
             self.params = [p for p in self.model.parameters() if p.requires_grad]
             self.optimizer = torch.optim.Adam(self.params, lr=0.0001, weight_decay=0.0003)
             logger.info(f"optimizer initialized")
             
-            
-            self.memory.add_pretrained_pq_features(pq_reconstructed_path) #add reconstructed features to the memory. memory size shouldn't be too big
-
             end = time.time()
             print(f"Offline training is done! It took {end-start} seconds")
             print('*'*100)
@@ -295,43 +327,50 @@ class RODEO(ER):
 
 
         if int(sample['task_num']) not in self.pretrain_task_list:
-            assert self.dataset == 'clad', "Shift dataset is not supported yet"
             img_name = sample['file_name'][:-4]
-            ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name + '.npy'), allow_pickle=True)
+            if self.dataset == 'clad': 
+                ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name + '.npy'), allow_pickle=True)
+            
+            elif self.dataset == 'shift':
+                parsed_img_name = img_name.split('/')[-4:]
+                joined_img_name = '_'.join(parsed_img_name) + '.npy'
+                ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_shift', joined_img_name), allow_pickle=True)
+        
             assert ssl_proposals is not None, "Precomputed proposals not found"
             ssl_proposals_tensor = torch.from_numpy(ssl_proposals).to(self.device)
 
             self.num_updates += self.online_iter
-            return_losses, current_pq_feature = self.online_train(sample, ssl_proposals_tensor, self.batch_size, n_worker, iterations=int(self.online_iter))
-            self.report_training(sample_num, return_losses, self.writer)
+            if self.current_task != sample['task_num']:
+                self.current_task = sample['task_num']
+                self.sample_cnt = 0
             
-            self.update_memory(sample, ssl_proposals_tensor, current_pq_feature)
+            train_feature_path = f'./rodeo_feature/{self.dataset}_reconstructed_train_features.h5'
+            losses = self.online_train(sample, ssl_proposals_tensor, self.batch_size, train_feature_path, n_worker, iterations=int(self.online_iter))
+            self.report_training(sample_num, losses, self.writer)
+            self.update_memory(sample)
             self.num_updates -= int(self.num_updates)
+            self.sample_cnt +=1
             
 
     
-    def online_train(self, sample, ssl_proposals,  batch_size, n_worker, iterations=1):
+    def online_train(self, sample, ssl_proposals,  batch_size, train_feature_path, n_worker, iterations=1):
         """
             Traines the model using data from the memory. The data is selected randomly from the memory.
         """
-       
+        h5_file = h5py.File(train_feature_path, 'r')
         total_loss, num_data = 0.0, 0.0
         stream_classname = select_stream(dataset=self.dataset)
-        # sample_dataset = stream_classname([sample], dataset=self.dataset, transform=None, cls_list=None)
         sample_dataset = stream_classname([sample], root=self.root, transform=None, cls_list=None)
         
         #Note that sample_dataset has only 1 item.
+        #prepare all the data for training
         current_data = sample_dataset.get_data()
         current_image = [current_data['images'][0].to(self.device).type(torch.float)]
         current_target = [{'boxes': current_data['boxes'][0].to(self.device), 'labels': current_data['labels'][0].to(self.device)}]
 
-        #get reconstructed feature from current_image
-        transform = GeneralizedRCNNTransform(min_size=800, max_size=1333, image_mean=[0.485, 0.456, 0.406], image_std=[0.229, 0.224, 0.225])
-        current_image_resized, _ = transform(current_image, current_target)
-        current_feature = self.g_model(current_image_resized.tensors)
-        current_pq_feature = self.reconstruct_direct(current_feature, self.pq, data_dim=2048)
-        current_pq_feature_np = current_pq_feature
-        current_pq_feature = [torch.from_numpy(current_pq_feature).to(self.device)]
+        #get reconstructed feature from current_image        
+        current_feature_id = f'{str(self.current_task)} {str(self.sample_cnt)}'
+        current_pq_feature = [torch.from_numpy(h5_file[current_feature_id][()]).to(self.device)]
         current_ssl_proposal = [{'boxes': ssl_proposals}]
 
         if len(self.memory) == 0: 
@@ -344,7 +383,7 @@ class RODEO(ER):
         self.model.train()
         for i in range(iterations):
             memory_data = self.memory.get_batch(memory_batch_size)
-            images_memory = [img.to(self.device) for img in memory_data['images']]
+            images_memory = [img.to(self.device) for img in memory_data['images']] #images are still needed for resizing targets 
             targets_memory = []
             ssl_proposals_memory = []
             
@@ -379,39 +418,37 @@ class RODEO(ER):
             num_data += len(images_memory)
             self.count_log += memory_batch_size
         
-        return (total_loss / iterations) , current_pq_feature_np
+        return (total_loss / iterations)
         
-    def update_memory(self, sample, ssl_proposal, pq_feature):
-        # Updates the memory of the model based on the importance of the samples.
-        ssl_proposal = ssl_proposal.detach()
-        if len(self.memory.images) >= self.memory_size:
-            target_idx = np.random.randint(len(self.memory.images))
-            self.memory.replace_sample(sample, ssl_proposal, pq_feature, target_idx)
+        
+    def update_memory(self, sample):
+   
+        if len(self.memory.datalist) >= self.memory_size:
+            target_idx = np.random.randint(len(self.memory.datalist))
+            self.memory.replace_sample(sample, target_idx)
             self.dropped_idx.append(target_idx)
             self.memory_dropped_idx.append(target_idx)
             
         else:
-            self.memory.replace_sample(sample, ssl_proposal, pq_feature)
+            self.memory.replace_sample(sample)
             self.dropped_idx.append(len(self.memory)- 1)
             self.memory_dropped_idx.append(len(self.memory) - 1)
     
 
     def online_evaluate(self, test_dataloader, sample_num):
-        # task_list = test_dataloader.dataset.task_ids
-        # adjusted_pretrain_list = self.pretrain_task_list
+        task_list = test_dataloader.dataset.task_ids
+        adjusted_pretrain_list = self.pretrain_task_list
 
-        # if set(task_list).issubset(set(adjusted_pretrain_list)):
-        #     return 0.0
+        if set(task_list).issubset(set(adjusted_pretrain_list)):
+            return 0.0
         
-        # else:
-        eval_backbone = backbone_eval(self.g_model, self.pq, self.model.backbone)
-        eval_model = copy.deepcopy(self.model)
-        eval_model.backbone = eval_backbone
-
-        coco_evaluator = evaluate(eval_model, test_dataloader, device=self.device)
-        stats = coco_evaluator.coco_eval['bbox'].stats
-        self.report_test(sample_num, stats[1], self.writer)  # stats[1]: AP @IOU=0.50
-        return stats[1]
+        else:
+            eval_model = copy.deepcopy(self.model)
+            coco_evaluator = evaluate(eval_model, test_dataloader, device=self.device)
+            stats = coco_evaluator.coco_eval['bbox'].stats
+            self.report_test(sample_num, stats[1], self.writer)  # stats[1]: AP @IOU=0.50
+            
+            return stats[1]
 
 
 def collate_fn(batch):
@@ -431,8 +468,7 @@ class backbone_eval(nn.Module):
         feature = backbone_feature
         _,dim,r,c = feature.shape
         assert dim == data_dim, "data_dim should be same as feature dim"
-        detached_feature = feature.detach().cpu().numpy()
-        feature_tr = np.transpose(detached_feature, (0,2,3,1)).reshape(-1, data_dim).astype('float32')
+        feature_tr = np.transpose(feature, (0,2,3,1)).reshape(-1, data_dim).astype('float32')
         codes = pq.compute_codes(np.ascontiguousarray(feature_tr))
         codes = pq.decode(codes)
         codes = codes.reshape(-1, r, c, data_dim)
@@ -448,14 +484,3 @@ class backbone_eval(nn.Module):
         x = self.f_model(x)
 
         return x
-
-
-# def extract_test_features(g_model, pq_model, batch_size, test_dataloader_list, device):
-#     #be aware that idx of dataloader should not be shuffled 
-#     features = []
-#     with torch.no_grad():
-#         for idx, (images, _) in enumerate(tqdm(test_dataloader, desc="Extracting test features...")):
-#             images = [image.to(device) for image in images]
-#             features.append(model(images))
-            
-#     return torch.cat(features, dim=0)

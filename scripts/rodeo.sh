@@ -8,7 +8,7 @@ SEED=$1 # This will now take seed value as a command line argument
 
 if [ "$DATASET" == "clad" ]; then
     MEM_SIZE=13928 ONLINE_ITER=1
-    BATCHSIZE=16
+    BATCHSIZE=4
     TEMP_BATCHSIZE=0
     EVAL_PERIOD=100
     PRETRAIN_TASK_NUM=2

@@ -485,7 +485,7 @@ class CladDistillationMemory(MemoryDataset):
 
 class CladPQDataset(CladDistillationMemory):
 	def __init__(self, root, transform=None, cls_list=None, device=None, test_transform=None,
-			data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False, pretrain_task_list = None, memory_size = None):
+			data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False, pretrain_task_list = None, memory_size = None, total_task_list = None):
 		super().__init__(root, transform, cls_list, device, test_transform, data_dir, transform_on_gpu, save_test, keep_history)
 		self.datalist = [] 
 		self.images = []
@@ -494,10 +494,14 @@ class CladPQDataset(CladDistillationMemory):
 		self.pq_features = []   
 		self.memory_size = memory_size
 		self.random_indices = None
+		self.total_task_list = total_task_list
+		self.pre_data_idx = []
+  
 		# dataset
 		assert bool(pretrain_task_list) * bool(memory_size) != 0, "Pretrain task list and memory size should be given together"
 		self.pretrain_task_list = pretrain_task_list
-		self.prepare_pretrained_data(pretrain_task_list, memory_size=self.memory_size)
+		self.prepare_pretrained_data(self.pretrain_task_list, memory_size=self.memory_size)
+		self.pre_create_data_idx(self.total_task_list)
 
 
 	def prepare_pretrained_data(self, task_ids, memory_size=None, split='train'):
@@ -526,49 +530,29 @@ class CladPQDataset(CladDistillationMemory):
 		else:
 			selected_target_data = target_data
 
-		# Get img_paths and objects
-		for sample in selected_target_data:
-			self.datalist.append(sample)
-			image, target, proposal = self.get_sample_info(sample)
-			self.images.append(image)
-			self.objects.append(target)
-			self.ssl_proposals.append(proposal)
-   
-   
-	def	get_sample_info(self, sample):
-		img_path = os.path.join(self.root, "SSLAD-2D", "labeled", sample['split'], sample['file_name'])
-		img = Image.open(img_path).convert("RGB")
-		img = transforms.ToTensor()(img)
-		target = get_sample_objects(sample['objects'])
-		ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', sample['file_name'][:-4] + '.npy'), allow_pickle=True)
-		assert ssl_proposals is not None, "Precomputed proposals not found"
-		ssl_proposals = torch.from_numpy(ssl_proposals)
+		self.datalist.extend(selected_target_data)
 
-		return img, target, ssl_proposals
- 
- 
-	def __len__(self):
-		return len(self.images)
+	def pre_create_data_idx(self, total_task_list):
+		clad_train_task = np.array([4470, 1329, 1479, 524])
+		arranged_train_task = clad_train_task[np.array(total_task_list)]
   
+		for idx, num in enumerate(arranged_train_task):
+			task_id = total_task_list[idx]+1
+			for j in range(num):
+				pre_idx = {"task_id": task_id, "idx": j}
+				self.pre_data_idx.append(pre_idx)
+
+	def __len__(self):
+		return len(self.datalist)
 					
 	def __getitem__(self, idx):
 		pass
-	  
-	def add_pretrained_pq_features(self, pq_feature_path):
-		assert self.memory_size < 1000, "memory size is too big for storing whole features"
-		assert os.path.exists(pq_feature_path), "pq feature file not found"
 
-		data_h5 = h5py.File(pq_feature_path, 'r')
-		for idx in self.random_indices:
-			self.pq_features.append(data_h5[str(idx)][()])
-		
-		
 	def add_new_class(self, obj_cls_list):
 		'''
 		when appeard new class, check whether to extend obj_cls_count
 		if it is, extend new spaces for new classes('category_id') 
 		'''
-
 		self.obj_cls_list = obj_cls_list 
 		
 		if np.max(obj_cls_list) > len(self.obj_cls_count):
@@ -576,11 +560,8 @@ class CladPQDataset(CladDistillationMemory):
 			self.obj_cls_count = np.pad(self.obj_cls_count, (0,extend_length), constant_values=(0)).flatten()
 			self.obj_cls_train_cnt = np.pad(self.obj_cls_train_cnt, (0,extend_length), constant_values=(0)).flatten()
 	  
-			
-	def replace_sample(self, sample, ssl_proposal, pq_feature, idx=None):
-		
-		assert torch.is_tensor(ssl_proposal), "ssl_proposal should be tensor"
-		assert type(pq_feature) == np.ndarray, "pq_feature should be numpy array"
+ 
+	def replace_sample(self, sample, idx=None):
 
 		#img
 		img_info = sample['img_info']
@@ -594,31 +575,14 @@ class CladPQDataset(CladDistillationMemory):
 		obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_count)-len(obj_cls_id)), constant_values=(0)).flatten()
 		self.obj_cls_count += obj_cls_id #numpy sum
 		
-		#get image, target from new sample
-		try:
-				img_name = sample['file_name']
-		except KeyError:
-				img_name = sample['filepath']
-		
-		if self.data_dir is None:
-				img_path = os.path.join(self.root, "SSLAD-2D", "labeled", sample['split'], img_name)
-		else:
-				img_path = os.path.join(self.data_dir, sample['split'],img_name)
-		image = PIL.Image.open(img_path).convert('RGB')
-		image = transforms.ToTensor()(image)
-		target = get_sample_objects(sample['objects'])
-		
 		
 		#append new sample at behind(last index)
 		if idx is None: 
 				self.datalist.append(sample)
-				self.images.append(image)
-				self.objects.append(target)
-				self.ssl_proposals.append(ssl_proposal)
-				self.pq_features.append(pq_feature)
+    
 		else: 
 				raise NotImplementedError
-				#clad pq memory is big enough 
+				#clad pq memory is big enough, should not use replacement.
 				'''
 				#remove info of trash sample
 				discard_sample = self.datalist[idx]
@@ -648,33 +612,41 @@ class CladPQDataset(CladDistillationMemory):
 		pass 
   
 	@torch.no_grad()
-	def get_batch(self, batch_size, use_weight=False, transform=None):
-		if use_weight:
-				print('use_weight is not available')
-		else:
-				indices = np.random.choice(range(len(self.images)), size=batch_size, replace=False)
-
-				
-		images = [self.images[idx] for idx in indices]
-		boxes = [self.objects[idx]['boxes'] for idx in indices]
-		labels = [self.objects[idx]['labels'] for idx in indices]
-		ssl_proposals = [self.ssl_proposals[idx] for idx in indices]
-		pq_features = [torch.from_numpy(self.pq_features[idx]) for idx in indices]
-		
-		# for obj in np.array(self.objects)[indices]:
-		# 	obj_cls_id = np.bincount(np.array(obj['labels'].tolist()))[1:]
-
-		# 	if len(self.obj_cls_train_cnt) > len(obj_cls_id):
-		# 		obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_train_cnt)-len(obj_cls_id)), constant_values=(0)).flatten()
+	def get_batch(self, batch_size, h5_file, transform=None):
+     
+		images = []
+		boxes = []
+		labels = []
+		ssl_proposals = []
+		pq_features = []
+  
+		indices = np.random.choice(range(len(self.datalist)), size=batch_size, replace=False)
+		batch_container = [self.datalist[idx] for idx in indices]
+		batch_idx_container = [self.pre_data_idx[idx] for idx in indices]
+  
+		for sample, idx_info in zip(batch_container, batch_idx_container):
+			img_name = sample['file_name']
+			img_path = os.path.join(self.root, "SSLAD-2D", "labeled", sample['split'], img_name)
+			image = PIL.Image.open(img_path).convert('RGB')
+			image = transforms.ToTensor()(image)
+			target = get_sample_objects(sample['objects'])
+			ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name[-4:] + '.npy'), allow_pickle=True)
+			ssl_proposals = torch.from_numpy(ssl_proposals)
 			
-			
-		# 	self.obj_cls_train_cnt += obj_cls_id
-				
-		# if self.keep_history:
-		# 		#total history of indices selected for batch
-		# 		self.previous_idx = np.append(self.previous_idx, indices) 
-		
+			assert sample['task_num'] == idx_info['task_id'], "Task id is not matched"
+			task_id = idx_info['task_id']
+			index = idx_info['idx']
+			img_id = f'{task_id} {index}'
+			pq_features = torch.from_numpy(h5_file[img_id][()])
+
+			images.append(image)
+			boxes.append(target['boxes'])
+			labels.append(target['labels'])
+			ssl_proposals.append(ssl_proposals)
+			pq_features.append(pq_features)
+   
 		return {'images': images, 'boxes': boxes, 'labels': labels, 'ssl_proposals': ssl_proposals, 'pq_features': pq_features}
+
 
 class SODADataset(Dataset):
 	"""
@@ -689,7 +661,7 @@ class SODADataset(Dataset):
 			transforms (callable, optional): Optional transform to be applied on a sample
 	"""
 
-	def __init__(self, root="./dataset", task_ids=[1], split="train", transforms=None, ssl_required=False):
+	def __init__(self, root="./dataset", task_ids=[1], split="train", transforms=None, ssl_required=False, pq_required=False):
 		self.split = split
 		self.task_ids = task_ids
 		self.root = root
@@ -698,6 +670,17 @@ class SODADataset(Dataset):
 		self.objects = []
 		self.organize_paths(self.split, self.task_ids)
 		self.ssl_required = ssl_required
+		self.pq_required = pq_required
+		self.pq_path = None
+  
+		# if self.pq_required:
+		# 	pq_features_path = f'./rodeo_feature/clad_test_{self.task_ids[0]}.h5'
+		# 	if os.exists(pq_features_path):
+		# 		data_h5 = h5py.File(pq_features_path, 'r')
+		# 		data_num = len(data_h5.keys())
+		# 		assert data_num == len(self.img_paths), "PQ features are not available for all images"
+		# 		self.pq_path = pq_features_path
+		# 		data_h5.close()
 
 
 	def organize_paths(self, split, task_ids):
@@ -769,6 +752,11 @@ class SODADataset(Dataset):
 			assert ssl_proposals is not None, "Precomputed proposals not found"
 			ssl_proposals = torch.from_numpy(ssl_proposals)
 			target["ssl_proposals"] = ssl_proposals
-			
-
+   
+		if self.pq_required:
+			data_h5 = h5py.File(self.pq_path, 'r')
+			pq_features = data_h5[str(idx)][()]
+			pq_features = torch.from_numpy(pq_features)
+			target['pq_features'] = pq_features
+   
 		return img, target

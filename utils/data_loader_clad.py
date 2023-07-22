@@ -573,7 +573,7 @@ class CladPQDataset(CladDistillationMemory):
 		obj_cls_info = np.array(sample['objects']['category_id'])
 		obj_cls_id = np.bincount(obj_cls_info)[1:] #from 1 to max. [3,3] -> [0,0,2]
 		obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_count)-len(obj_cls_id)), constant_values=(0)).flatten()
-		self.obj_cls_count += obj_cls_id #numpy sum
+		self.obj_cls_count += obj_cls_id 
 		
 		
 		#append new sample at behind(last index)
@@ -612,17 +612,18 @@ class CladPQDataset(CladDistillationMemory):
 		pass 
   
 	@torch.no_grad()
-	def get_batch(self, batch_size, h5_file, transform=None):
+	def get_batch(self, batch_size, train_feature_path, transform=None):
      
 		images = []
 		boxes = []
 		labels = []
-		ssl_proposals = []
-		pq_features = []
+		ssl_proposals_list = []
+		pq_features_list = []
   
 		indices = np.random.choice(range(len(self.datalist)), size=batch_size, replace=False)
 		batch_container = [self.datalist[idx] for idx in indices]
 		batch_idx_container = [self.pre_data_idx[idx] for idx in indices]
+		h5_file = h5py.File(train_feature_path, 'r')
   
 		for sample, idx_info in zip(batch_container, batch_idx_container):
 			img_name = sample['file_name']
@@ -630,7 +631,7 @@ class CladPQDataset(CladDistillationMemory):
 			image = PIL.Image.open(img_path).convert('RGB')
 			image = transforms.ToTensor()(image)
 			target = get_sample_objects(sample['objects'])
-			ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name[-4:] + '.npy'), allow_pickle=True)
+			ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', img_name[:-4] + '.npy'), allow_pickle=True)
 			ssl_proposals = torch.from_numpy(ssl_proposals)
 			
 			assert sample['task_num'] == idx_info['task_id'], "Task id is not matched"
@@ -642,10 +643,10 @@ class CladPQDataset(CladDistillationMemory):
 			images.append(image)
 			boxes.append(target['boxes'])
 			labels.append(target['labels'])
-			ssl_proposals.append(ssl_proposals)
-			pq_features.append(pq_features)
+			ssl_proposals_list.append(ssl_proposals)
+			pq_features_list.append(pq_features)
    
-		return {'images': images, 'boxes': boxes, 'labels': labels, 'ssl_proposals': ssl_proposals, 'pq_features': pq_features}
+		return {'images': images, 'boxes': boxes, 'labels': labels, 'ssl_proposals': ssl_proposals_list, 'pq_features': pq_features_list}
 
 
 class SODADataset(Dataset):
@@ -673,16 +674,17 @@ class SODADataset(Dataset):
 		self.pq_required = pq_required
 		self.pq_path = None
   
-		# if self.pq_required:
-		# 	pq_features_path = f'./rodeo_feature/clad_test_{self.task_ids[0]}.h5'
-		# 	if os.exists(pq_features_path):
-		# 		data_h5 = h5py.File(pq_features_path, 'r')
-		# 		data_num = len(data_h5.keys())
-		# 		assert data_num == len(self.img_paths), "PQ features are not available for all images"
-		# 		self.pq_path = pq_features_path
-		# 		data_h5.close()
-
-
+		if self.pq_required:
+			pq_features_path = f'./rodeo_feature/clad_test_{self.task_ids[0]}.h5'
+			if os.path.exists(pq_features_path):
+				data_h5 = h5py.File(pq_features_path, 'r')
+				data_num = len(data_h5.keys())
+				assert data_num == len(self.img_paths), "PQ features are not available for all images"
+				self.pq_path = pq_features_path
+				data_h5.close()
+			else:
+				self.pq_path = pq_features_path
+    
 	def organize_paths(self, split, task_ids):
 		train_num = [0, 4470, 5799, 7278, 7802]
 		val_num = [0, 497, 645, 810, 869]

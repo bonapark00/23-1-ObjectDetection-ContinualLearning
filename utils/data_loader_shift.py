@@ -284,15 +284,10 @@ class SHIFTDistillationMemory(MemoryDataset):
             
             if idx is None:
                 self.datalist.append(sample)
-				
                 self.images.append(image)
-				
                 self.objects.append(target)
-				
                 self.proposals.append(logit['proposals'])
-				
                 self.class_logits.append(logit['class_logits'])
-				
                 self.box_regression.append(logit['box_regression'])
             else:
     
@@ -348,7 +343,8 @@ class SHIFTDistillationMemory(MemoryDataset):
             # self.others_loss_decrease = np.append(self.others_loss_decrease, 0)
 
         return {'images': images, 'boxes': boxes, 'labels': labels, 'proposals': proposals, 'class_logits': class_logits, 'box_regression': box_regression}
-    
+
+#class ShiftPQDataset(
     
     
 

@@ -230,7 +230,7 @@ class RODEO(ER):
         pq = faiss.ProductQuantizer(data_dim, codebook_size, nbits)
 
         #remove
-        #pq.train(base_train_data)
+        pq.train(base_train_data)
         print(f"PQ model training is done!")
         
         #erase backbone extracted file, since it is not needed anymore
@@ -258,15 +258,15 @@ class RODEO(ER):
     
         #train dataset
         #train dataloader should never be shuffled. Index computed in order.
-        # assert train_dataloader is not list, "train_dataloader should be a total singledataloader"
-        # train_feature_path = f'./rodeo_feature/{self.dataset}_reconstructed_train_features.h5'
-        # self.reconstruct_pq_features(pq_model, front_model, train_dataloader, None, train_feature_path)
+        assert train_dataloader is not list, "train_dataloader should be a total singledataloader"
+        train_feature_path = f'./rodeo_feature/{self.dataset}_reconstructed_train_features.h5'
+        self.reconstruct_pq_features(pq_model, front_model, train_dataloader, None, train_feature_path)
         
         #test dataset
-        # assert isinstance(test_dataloader_list, list), "test_dataloader should be prepared in list, with ordered task index"
-        # for idx, test_dataloader in enumerate(test_dataloader_list):
-        #     test_feature_path = f'./rodeo_feature/{self.dataset}_test_{idx+1}.h5'
-        #     self.reconstruct_pq_features(pq_model, front_model, test_dataloader, idx+1, test_feature_path)
+        assert isinstance(test_dataloader_list, list), "test_dataloader should be prepared in list, with ordered task index"
+        for idx, test_dataloader in enumerate(test_dataloader_list):
+            test_feature_path = f'./rodeo_feature/{self.dataset}_test_{idx+1}.h5'
+            self.reconstruct_pq_features(pq_model, front_model, test_dataloader, idx+1, test_feature_path)
         
         print("all features reconstruction is done!")
         
@@ -353,7 +353,7 @@ class RODEO(ER):
             
 
     
-    def online_train(self, sample, ssl_proposals,  batch_size, train_feature_path, n_worker, iterations=1):
+    def online_train(self, sample, ssl_proposals, batch_size, train_feature_path, n_worker, iterations=1):
         """
             Traines the model using data from the memory. The data is selected randomly from the memory.
         """
@@ -382,7 +382,7 @@ class RODEO(ER):
 
         self.model.train()
         for i in range(iterations):
-            memory_data = self.memory.get_batch(memory_batch_size)
+            memory_data = self.memory.get_batch(memory_batch_size, train_feature_path)
             images_memory = [img.to(self.device) for img in memory_data['images']] #images are still needed for resizing targets 
             targets_memory = []
             ssl_proposals_memory = []

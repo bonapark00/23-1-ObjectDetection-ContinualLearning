@@ -42,6 +42,9 @@ class RODEO(ER):
         clad_task_list = [[0,1,2,3],[2,0,3,1],[1,2,3,0]]
         shift_task_list = [[0,1,2,3,4],[2,0,3,1,4],[4,1,3,0,2]]
         
+        #the order will be changed according to the seed
+        self.shift_domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy'] 
+        
         self.selected_task_list = None
         self.sample_cnt = 0
         self.current_task = 0
@@ -58,38 +61,44 @@ class RODEO(ER):
             self.selected_task_list= shift_task_list[int(self.seed_num)-1]
             selected_tasks = [task+1 for task in self.selected_task_list] #Since task_num starts from 1
             self.pretrain_task_list = selected_tasks[:self.pretrain_task_num]
+            
+            #modify shift domain list according to the selected task list
+            modified_domain = np.array(self.shift_domain_list).reshape(-1,1)[self.selected_task_list] 
+            self.shift_domain_list = list(modified_domain.reshape(-1))
 
         else:
             raise ValueError("check if the dataset is proper")
         
         self.memory = select_pq_dataset(self.memory_size, self.pretrain_task_list, self.selected_task_list, self.dataset, self.root)
         
+        
     def create_offline_Dataloader(self, dataset, pretrain_task_list, batch_size, split='train'):
         if dataset == 'clad':
             train_data = SODADataset(root=self.root, task_ids=pretrain_task_list,
                                         split=split, transforms=transforms.ToTensor(), ssl_required=True)
             
+        elif dataset == 'shift':
+            print("Rodeo only assumes that shift dataset is splitted into weather coarse. if not please modify the code")
+            
+            dataset_list = []
+            for idx, domain in zip(pretrain_task_list, self.shift_domain_list) :
+                single_dataset = SHIFTDataset(root=self.root, task_num=idx, domain_dict={'weather_coarse': domain},
+                                            split="train", transforms=transforms.ToTensor(), ssl_required=True)
+                dataset_list.append(single_dataset)
+                
+            train_data = ConcatDataset(*dataset_list)
+        
         else:
-            raise ValueError("Shift dataset is not supported yet")
-            # TODO: Create Shift offline dataloader.
-            # domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
-            # assert pretrain_task_num <= len(domain_list), "pretrain_task_num should be less than 5 in clad"
-            # task_seed_list = [[0,1,2,3,4],[2,0,3,1,4],[4,1,3,0,2]]
-            # target_train_tasks = task_seed_list[seed_num-1][:pretrain_task_num]
-            # target_domain_dict = {'weather_coarse': [domain_list[i] for i in target_train_tasks]}
-            # train_data = SHIFTDataset(domain_dict=target_domain_dict,
-            #                             split="train", transforms=transforms.ToTensor())
-
+            raise ValueError("check if the dataset is proper")
+            
         dataloader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, collate_fn=collate_fn)
         print("Dataloader created")
-
         return dataloader
     
     
     def offline_pretrain(self, model, dataloader, optimizer, epochs=16):
         #train the model
         model.train()
-        
         for epoch in range(epochs):
             for idx, (images, targets) in enumerate(tqdm(dataloader, desc=f"Epoch {epoch} offline training...")):
             
@@ -109,8 +118,8 @@ class RODEO(ER):
                 if idx % 100 == 0:
                     logger.info(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
                     
-                if idx == 2:
-                    break
+                # if idx == 2:
+                #     break
                     
         print("Offline training is done! successfully!")
         return model
@@ -167,7 +176,7 @@ class RODEO(ER):
     def reconstruct_pq_features(self, pq_model, front_model, dataloader, task_index, save_path, data_dim = 2048):
 
         clad_train_task = [4470, 1329, 1479, 524]
-        shift_train_task = [] 
+        shift_train_task = [37041, 25433, 13596, 39016, 25966]
         
         pq = pq_model
         transform = GeneralizedRCNNTransform(min_size=800, max_size=1333, image_mean=[0.485, 0.456, 0.406], image_std=[0.229, 0.224, 0.225])
@@ -204,7 +213,6 @@ class RODEO(ER):
                         h5_file.create_dataset(str(feature_cnt),data=single_feature)
                         
                     feature_cnt +=1
-                    
         h5_file.close()
 
 
@@ -351,7 +359,6 @@ class RODEO(ER):
             self.num_updates -= int(self.num_updates)
             self.sample_cnt +=1
             
-
     
     def online_train(self, sample, ssl_proposals, batch_size, train_feature_path, n_worker, iterations=1):
         """
@@ -453,6 +460,7 @@ class RODEO(ER):
 
 def collate_fn(batch):
     return tuple(zip(*batch))
+    
 
 class backbone_eval(nn.Module):
     def __init__(self, g_model, pq_model, f_model):
@@ -484,3 +492,14 @@ class backbone_eval(nn.Module):
         x = self.f_model(x)
 
         return x
+
+
+class ConcatDataset(torch.utils.data.Dataset):
+    def __init__(self, *datasets):
+        self.datasets = datasets
+
+    def __getitem__(self, i):
+        return tuple(d[i] for d in self.datasets)
+
+    def __len__(self):
+        return min(len(d) for d in self.datasets)

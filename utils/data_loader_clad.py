@@ -679,11 +679,10 @@ class SODADataset(Dataset):
 			if os.path.exists(pq_features_path):
 				data_h5 = h5py.File(pq_features_path, 'r')
 				data_num = len(data_h5.keys())
-				assert data_num == len(self.img_paths), "PQ features are not available for all images"
-				self.pq_path = pq_features_path
+				assert data_num == len(self.img_paths), "PQ features and data num is not matched"
 				data_h5.close()
-			else:
-				self.pq_path = pq_features_path
+			
+			self.pq_path = pq_features_path
     
 	def organize_paths(self, split, task_ids):
 		train_num = [0, 4470, 5799, 7278, 7802]
@@ -750,7 +749,7 @@ class SODADataset(Dataset):
 		target["iscrowd"] = torch.zeros((len(self.objects[idx]['bbox']),), dtype=torch.int64)
 
 		if self.ssl_required:
-			ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_clad', self.img_paths[idx][:-4] + '.npy'), allow_pickle=True)
+			ssl_proposals = np.load(target["proposal_path"], allow_pickle=True)
 			assert ssl_proposals is not None, "Precomputed proposals not found"
 			ssl_proposals = torch.from_numpy(ssl_proposals)
 			target["ssl_proposals"] = ssl_proposals

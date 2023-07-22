@@ -6,10 +6,9 @@ from torchvision import transforms
 from utils.data_loader import MemoryDataset
 from torch.utils.data import Dataset
 from PIL import Image
-
 import os
 import sys
-
+import h5py
 import torch
 from torch.utils.data import DataLoader
 from utils.preprocess_shift import get_sample_objects, get_shift_datalist, load_label_img_dic
@@ -344,18 +343,80 @@ class SHIFTDistillationMemory(MemoryDataset):
 
         return {'images': images, 'boxes': boxes, 'labels': labels, 'proposals': proposals, 'class_logits': class_logits, 'box_regression': box_regression}
 
-#class ShiftPQDataset(
+
+
+class ShiftPQDataset(SHIFTDistillationMemory):
+    def __init__(self, root, transform=None, cls_list=None, device=None, test_transform=None,
+             data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
+        super().__init__(root, transform, cls_list, device, test_transform,
+             data_dir, transform_on_gpu, save_test, keep_history)
+        self.datalist = []
+        self.images=[]
+        self.objects=[]
+        self.proposals=[]
+        self.class_logits=[]
+        self.box_regression=[]
+
+        self.root = root
+
+        self.obj_cls_list=[1]
+        self.obj_cls_count = np.zeros(np.max(self.obj_cls_list), dtype=int)
+        self.obj_cls_train_cnt = np.zeros(np.max(self.obj_cls_list),dtype=int)
+        self.others_loss_decrease = np.array([])
+        self.previous_idx = np.array([], dtype=int)
+        self.device = device
+
+        self.data_dir =  data_dir
+        self.keep_history = keep_history
+
+    def __len__(self):
+        return len(self.images)
     
+    def __getitem__(self, idx):
+       
+        if torch.is_tensor(idx):
+           idx = idx.value()
+        image=self.images[idx]
+
+        if self.transform:
+            image=self.transform(image)
+        
+        target=self.objects[idx]
+        target={'boxes':target['boxes'], 'labels':target['labels']}
+        return image, target
+    
+    def add_new_class(self, obj_cls_list):
+        # breakpoint()
+        self.obj_cls_list = obj_cls_list
+
+        if np.max(obj_cls_list) > len(self.obj_cls_count):
+            extend_length = np.max(obj_cls_list)-len(self.obj_cls_count)
+            self.obj_cls_count = np.pad(self.obj_cls_count, (0,extend_length), constant_values=(0)).flatten()
+            self.obj_cls_train_cnt = np.pad(self.obj_cls_train_cnt, (0,extend_length), constant_values=(0)).flatten()
+
+    def replace_sample(self, sample, logit, idx=None):
+            
+            obj_cls_info=np.array(sample['objects']['category_id'])
+            obj_cls_id=np.bincount(obj_cls_info)[1:]
+            obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_count)-len(obj_cls_id)), constant_values=(0)).flatten()
+            self.obj_cls_count += obj_cls_id
+    
+            try:
+                img_name=sample['file_name']
+                
+            except KeyError:
+                img_name=sample['filepath']
     
 
 class SHIFTDataset(Dataset):
 
     def __init__(self, root='./dataset',
-                 task_num=1, domain_dict={'weather_coarse':'clear'}, split="train", transforms=None, ssl_required=False):
+                 task_num=1, domain_dict={'weather_coarse':'clear'}, split="train", transforms=None, ssl_required=False, pq_required=False):
         self.root=root
         self.split=split
         self.transforms=transforms
         self.ssl_required = ssl_required
+        self.task_num = task_num
 
         self.img_paths=[]
         json_path = os.path.join(self.root, 'SHIFT_dataset', 'discrete', 'images', self.split, 'front', 'det_2d.json')
@@ -369,6 +430,19 @@ class SHIFTDataset(Dataset):
                     self.data_infos.append(data_info)
         else:
             self.data_infos = self.data_infos_total # If domain_dict is None, use all data
+
+        self.pq_required = pq_required
+        self.pq_path = None
+        
+        if self.pq_required:
+            pq_features_path = f'./rodeo_feature/shift_test_{self.task_num}.h5'
+            if os.path.exists(pq_features_path):
+                data_h5 = h5py.File(pq_features_path, 'r')
+                data_num = len(data_h5.keys())
+                assert data_num == len(self.img_paths), "PQ features and data num is not matched"
+                data_h5.close()
+
+            self.pq_path = pq_features_path
 
     def __len__(self):
         return len(self.data_infos)
@@ -386,20 +460,25 @@ class SHIFTDataset(Dataset):
         target={}
 
         # target['img_path'] = img_path # No need to pass img_path
-        target['proposal_path'] = f"precomputed_proposals/ssl_shift/{self.split}_front_{self.data_infos[idx]['videoName']}_{self.data_infos[idx]['name'][:-4]}.npy"
+        target['p/home/vision/dj/i_blurry_clad/results/shiftroposal_path'] = f"precomputed_proposals/ssl_shift/{self.split}_front_{self.data_infos[idx]['videoName']}_{self.data_infos[idx]['name'][:-4]}.npy"
         target['boxes'] = torch.as_tensor(self.data_infos[idx]["bboxes"], dtype=torch.float32)
         target['labels'] = torch.tensor(self.data_infos[idx]["labels"], dtype=torch.int64)
         target['image_id'] = torch.tensor([idx])
         target['area'] = (target['boxes'][:,3]-target['boxes'][:,1])*(target['boxes'][:,2]-target['boxes'][:,0])
         target['iscrowd'] = torch.zeros((len(target['boxes']),), dtype=torch.int64)
 
-        # TODO: Add support for SSL
         if self.ssl_required:
             ssl_proposals = np.load(target['proposal_path'], allow_pickle=True)
             assert ssl_proposals is not None, "Precomputed proposals not found"
             ssl_proposals = torch.from_numpy(ssl_proposals)
             target["ssl_proposals"] = ssl_proposals
-
+        
+        if self.pq_required:
+            data_h5 = h5py.File(self.pq_path, 'r')
+            pq_features = data_h5[str(idx)][()]
+            pq_features = torch.from_numpy(pq_features)
+            target['pq_features'] = pq_features
+   
         return img, target
 
 

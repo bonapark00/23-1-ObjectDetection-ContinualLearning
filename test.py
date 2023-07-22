@@ -10,5 +10,12 @@ import h5py
 
 
 
-path = i_blurry_clad/precomputed_proposals/ssl_clad/HT_TRAIN_000001_SH_000.npy
+domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
+root = './dataset'
+train_task = []
+for i, domain in enumerate(domain_list):
+    cur_train_datalist = get_shift_datalist(data_type="train", task_num=i+1, domain_dict=
+                                            {'weather_coarse': domain}, root=root)
+    train_task.append(len(cur_train_datalist))
 
+breakpoint()

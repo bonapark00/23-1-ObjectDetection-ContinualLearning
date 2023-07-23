@@ -683,7 +683,7 @@ class SODADataset(Dataset):
 				data_h5.close()
 			
 			self.pq_path = pq_features_path
-    
+       
 	def organize_paths(self, split, task_ids):
 		train_num = [0, 4470, 5799, 7278, 7802]
 		val_num = [0, 497, 645, 810, 869]
@@ -709,7 +709,7 @@ class SODADataset(Dataset):
 				item['objects']['bbox'][i] = [box[0], box[1], box[0] + box[2], box[1] + box[3]]
 			self.objects.append(item['objects'])
 
-
+	
 	def __len__(self):
 		return len(self.img_paths)
 	

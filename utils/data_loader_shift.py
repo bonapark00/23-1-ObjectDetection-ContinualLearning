@@ -347,30 +347,53 @@ class SHIFTDistillationMemory(MemoryDataset):
 
 class ShiftPQDataset(SHIFTDistillationMemory):
     def __init__(self, root, transform=None, cls_list=None, device=None, test_transform=None,
-             data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False):
-        super().__init__(root, transform, cls_list, device, test_transform,
-             data_dir, transform_on_gpu, save_test, keep_history)
+             data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False,
+             pretrain_task_list = None, memory_size = None, total_task_list = None):
+        super().__init__(root, transform, cls_list, device, test_transform, data_dir, transform_on_gpu, save_test, keep_history)
         self.datalist = []
         self.images=[]
         self.objects=[]
-        self.proposals=[]
-        self.class_logits=[]
-        self.box_regression=[]
+        self.ssl_proposals = []
+        self.pq_features = []
+        self.memory_size = memory_size
+        self.random_indices = None
+        self.total_task_list = total_task_list
+        self.total_sample_cnt = 0
+        #self.pre_data_idx = [] unlike clad, it is inefficient to track all indexes. calculate_task_idx does this job
+        self.shift_train_task = np.array([37041, 25433, 13596, 39016, 25966]) #num of data from task 0
+        self.accumulated_train_task = []
 
-        self.root = root
+        # dataset
+        assert bool(pretrain_task_list) * bool(memory_size) != 0, "Pretrain task list and memory size should be given together"
+        self.pretrain_task_list = pretrain_task_list
+        self.prepare_pretrained_data(self.pretrain_task_list, memory_size=self.memory_size)
+        self.pre_create_data_idx(self.total_task_list)
 
-        self.obj_cls_list=[1]
-        self.obj_cls_count = np.zeros(np.max(self.obj_cls_list), dtype=int)
-        self.obj_cls_train_cnt = np.zeros(np.max(self.obj_cls_list),dtype=int)
-        self.others_loss_decrease = np.array([])
-        self.previous_idx = np.array([], dtype=int)
-        self.device = device
+        #rearrange tasklist
+        self.shift_train_task = self.shift_train_task[np.array(self.total_task_list)]
+        
+        num_cnt = 0
+        for num in self.shift_train_task:
+            self.accumulated_train_task.append(num_cnt)
+            num_cnt += num
+        
 
-        self.data_dir =  data_dir
-        self.keep_history = keep_history
+    def prepare_pretrained_data(self, pretrain_task_list, memory_size):
+        pass
+    
+    # call whenever new sample is passed
+    def calculate_task_idx(self, data_cnt):
+        #index starts with 0.
+        task_id = np.digitize(data_cnt, self.accumulated_train_task)
+        data_boundary = self.accumulated_train_task[task_id-1]
+        idx = data_cnt - data_boundary
+        data_cnt +=1 
+        
+        return {'task_id': task_id, "idx": idx}
+           
 
     def __len__(self):
-        return len(self.images)
+        return len(self.datalist)
     
     def __getitem__(self, idx):
        
@@ -460,7 +483,7 @@ class SHIFTDataset(Dataset):
         target={}
 
         # target['img_path'] = img_path # No need to pass img_path
-        target['p/home/vision/dj/i_blurry_clad/results/shiftroposal_path'] = f"precomputed_proposals/ssl_shift/{self.split}_front_{self.data_infos[idx]['videoName']}_{self.data_infos[idx]['name'][:-4]}.npy"
+        target['proposal_path'] = f"precomputed_proposals/ssl_shift/{self.split}_front_{self.data_infos[idx]['videoName']}_{self.data_infos[idx]['name'][:-4]}.npy"
         target['boxes'] = torch.as_tensor(self.data_infos[idx]["bboxes"], dtype=torch.float32)
         target['labels'] = torch.tensor(self.data_infos[idx]["labels"], dtype=torch.int64)
         target['image_id'] = torch.tensor([idx])

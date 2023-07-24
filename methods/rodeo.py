@@ -290,7 +290,7 @@ class RODEO(ER):
             #dataloader for offline training
             assert self.pretrain_task_list is not None, "pretrain_task_list should be initialized. checkout the dataset."
             offline_dataloader = self.create_offline_Dataloader(self.dataset, self.pretrain_task_list, self.batch_size)
-            pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=1)
+            pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=self.batch_size)
             g_model = self.front_backbone_model(self.model)
             
             # #extract backbone features
@@ -446,16 +446,15 @@ class RODEO(ER):
         task_list = test_dataloader.dataset.task_ids
         adjusted_pretrain_list = self.pretrain_task_list
 
-        if set(task_list).issubset(set(adjusted_pretrain_list)):
-            return 0.0
+        # if set(task_list).issubset(set(adjusted_pretrain_list)):
+        #     return 0.0
         
-        else:
-            eval_model = copy.deepcopy(self.model)
-            coco_evaluator = evaluate(eval_model, test_dataloader, device=self.device)
-            stats = coco_evaluator.coco_eval['bbox'].stats
-            self.report_test(sample_num, stats[1], self.writer)  # stats[1]: AP @IOU=0.50
-            
-            return stats[1]
+        eval_model = copy.deepcopy(self.model)
+        coco_evaluator = evaluate(eval_model, test_dataloader, device=self.device)
+        stats = coco_evaluator.coco_eval['bbox'].stats
+        self.report_test(sample_num, stats[1], self.writer)  # stats[1]: AP @IOU=0.50
+
+        return stats[1]
 
 
 def collate_fn(batch):

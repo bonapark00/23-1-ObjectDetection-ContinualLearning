@@ -32,3 +32,6 @@ logs/*.txt
 
 # Ignore everyting in logs_backup directory
 logs_backup/*
+
+# Ignore txt files in main directory
+*.txt

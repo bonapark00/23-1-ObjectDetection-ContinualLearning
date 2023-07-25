@@ -165,6 +165,7 @@ class TwoMLPHead(nn.Module):
             self.fc6 = nn.Linear(in_channels, representation_size)
         else:
             self.mode = 'rodeo'
+            print("rodeo type fast rcnn has been initialized")
             self.fc6 = nn.Linear(in_channels, 12544)
             self.fc_new = nn.Linear(12544, representation_size)
             

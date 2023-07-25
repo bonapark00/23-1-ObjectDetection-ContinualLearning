@@ -4,9 +4,12 @@ from methods.mir import MIR
 from methods.der import DER
 from methods.baseline import BASELINE
 from methods.filod import FILOD
+from methods.filod_random import FILOD_RANDOM
+from methods.filod_random_ema import FILOD_RANDOM_EMA   
 from methods.ilod import ILOD
 from methods.finetune import FINETUNE
 from methods.rodeo import RODEO
+
 
 logger = logging.getLogger()
 
@@ -54,6 +57,28 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
             writer=writer,
             **kwargs,
         )
+        
+    elif args.mode == "filod_random":
+        method = FILOD_RANDOM(
+            criterion=None,
+            device=device,
+            train_transform=train_transform,
+            test_transform=test_transform,
+            n_classes=n_classes,
+            writer=writer,
+            **kwargs,
+        )
+        
+    elif args.mode == "filod_random_ema":
+        method = FILOD_RANDOM_EMA(
+            criterion=None,
+            device=device,
+            train_transform=train_transform,
+            test_transform=test_transform,
+            n_classes=n_classes,
+            writer=writer,
+            **kwargs,
+        )
     
     elif args.mode == "ilod":
         method = ILOD(
@@ -78,16 +103,15 @@ def select_method(args, criterion, device, train_transform, test_transform, n_cl
         )
 
     elif args.mode == "rodeo":
-            method = RODEO(
-                criterion=None,
-                device=device,
-                train_transform=train_transform,
-                test_transform=test_transform,
-                n_classes=n_classes,
-                writer=writer,
-                **kwargs,
-            )
-
+        method = RODEO(
+            criterion=None,
+            device=device,
+            train_transform=train_transform,
+            test_transform=test_transform,
+            n_classes=n_classes,
+            writer=writer,
+            **kwargs,
+        )
 
     # elif args.mode == "clad_der":
     #     method = CLAD_DER(

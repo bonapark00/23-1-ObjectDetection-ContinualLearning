@@ -78,6 +78,7 @@ class RODEO(ER):
                                         split=split, transforms=transforms.ToTensor(), ssl_required=True)
             
         elif dataset == 'shift':
+            initial_domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy'] 
             if split == 'train':
                 print("Rodeo only assumes that shift dataset is splitted into weather coarse. if not please modify the code")
                 data_list = []
@@ -89,7 +90,7 @@ class RODEO(ER):
                 train_data = ConcatDataset(*data_list)
 
             elif split == 'minival':
-                train_data = SHIFTDataset(root=self.root, task_num=idx, domain_dict={'weather_coarse': domain},
+                train_data = SHIFTDataset(root=self.root, task_num=pretrain_task_list[0], domain_dict={'weather_coarse': initial_domain_list[pretrain_task_list[0]-1]},
                                           split="minival", transforms=transforms.ToTensor(), ssl_required=True)
             else:
                 raise ValueError("check if the dataset is proper")
@@ -123,8 +124,8 @@ class RODEO(ER):
                 if idx % 100 == 0:
                     logger.info(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
                     
-                if idx == 2:
-                    break
+                # if idx == 1:
+                #     break
                     
         print("Offline training is done! successfully!")
         return model
@@ -176,6 +177,7 @@ class RODEO(ER):
                         print(f"iter {idx} feature extraction is done!")
                         
             h5_file.close()
+     
             
     
     def reconstruct_pq_features(self, pq_model, front_model, dataloader, task_index, save_path, data_dim = 2048):
@@ -212,7 +214,6 @@ class RODEO(ER):
                             current_task +=1
                             feature_cnt = 0
                     
-                        print(f"{current_task} {feature_cnt}")
                         h5_file.create_dataset(f'{str(current_task)} {str(feature_cnt)}',data=single_feature)
                     else:
                         h5_file.create_dataset(str(feature_cnt),data=single_feature)
@@ -241,10 +242,11 @@ class RODEO(ER):
    
         #train the PQ model
         pq = faiss.ProductQuantizer(data_dim, codebook_size, nbits)
-
+        start = time.time()
         #remove
-        #pq.train(base_train_data)
-        print(f"PQ model training is done!")
+        pq.train(base_train_data)
+        end = time.time()
+        print(f"PQ model training is done! It took {end-start} seconds")
         
         #erase backbone extracted file, since it is not needed anymore
         os.remove(feature_path)
@@ -295,7 +297,7 @@ class RODEO(ER):
             #dataloader for offline training
             assert self.pretrain_task_list is not None, "pretrain_task_list should be initialized. checkout the dataset."
             offline_dataloader = self.create_offline_Dataloader(self.dataset, self.pretrain_task_list, self.batch_size)
-            pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=self.batch_size)
+            pretrained_model = self.offline_pretrain(self.model, offline_dataloader, self.optimizer, epochs=16) #self.batch_size
             g_model = self.front_backbone_model(self.model)
             
             # #extract backbone features
@@ -453,15 +455,15 @@ class RODEO(ER):
         task_list = test_dataloader.dataset.task_ids
         adjusted_pretrain_list = self.pretrain_task_list
 
-        # if set(task_list).issubset(set(adjusted_pretrain_list)):
-        #     return 0.0
-        
-        eval_model = copy.deepcopy(self.model)
-        coco_evaluator = evaluate(eval_model, test_dataloader, device=self.device)
-        stats = coco_evaluator.coco_eval['bbox'].stats
-        self.report_test(sample_num, stats[1], self.writer)  # stats[1]: AP @IOU=0.50
+        if set(task_list).issubset(set(adjusted_pretrain_list)):
+            return 0.0
+        else:         
+            eval_model = copy.deepcopy(self.model)
+            coco_evaluator = evaluate(eval_model, test_dataloader, device=self.device)
+            stats = coco_evaluator.coco_eval['bbox'].stats
+            self.report_test(sample_num, stats[1], self.writer)  # stats[1]: AP @IOU=0.50
 
-        return stats[1]
+            return stats[1]
 
 
 def collate_fn(batch):

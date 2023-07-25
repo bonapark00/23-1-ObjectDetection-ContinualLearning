@@ -4,9 +4,10 @@
 src_dir="./detection"
 dest_dir="/opt/conda/lib/python3.7/site-packages/torchvision/models/detection"
 dest_dir2="venv/lib/python3.10/site-packages/torchvision/models/detection"
+dest_dir3='/home/vision/anaconda3/envs/dongjae/lib/python3.7/site-packages/torchvision/models/detection'
 
 # Delete the existing destination directory
-rm -rf "$dest_dir"
+rm -rf "$dest_dir3"
 
 # Copy the source directory to the destination
-cp -R "$src_dir" "$dest_dir"
+cp -R "$src_dir" "$dest_dir3"

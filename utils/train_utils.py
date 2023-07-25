@@ -5,7 +5,7 @@ import torchvision
 from models import mnist, cifar, imagenet
 from fast_rcnn.fast_rcnn import fastrcnn_resnet50_fpn, fastrcnn_resnet50
 from utils.data_loader_clad import CladMemoryDataset, CladStreamDataset, CladDistillationMemory, CladPQDataset
-from utils.data_loader_shift import SHIFTMemoryDataset, SHIFTStreamDataset, SHIFTDistillationMemory
+from utils.data_loader_shift import SHIFTMemoryDataset, SHIFTStreamDataset, SHIFTDistillationMemory, ShiftPQDataset
 
 default_config = {
     'rpn_pre_nms_top_n_train': 2000,
@@ -74,7 +74,7 @@ def select_pq_dataset(memory_size, pretrain_task_list, total_task_list, dataset=
         return CladPQDataset(root = root, memory_size = memory_size, pretrain_task_list = pretrain_task_list, total_task_list = total_task_list)
 
     elif dataset == "shift":
-        raise NotImplementedError("shift is not prepared yet")
+        return ShiftPQDataset(root = root, memory_size = memory_size, pretrain_task_list = pretrain_task_list, total_task_list = total_task_list)
 
 
 #method to select learning rate schedulaer.

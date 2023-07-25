@@ -350,24 +350,24 @@ class ShiftPQDataset(SHIFTDistillationMemory):
              data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False,
              pretrain_task_list = None, memory_size = None, total_task_list = None):
         super().__init__(root, transform, cls_list, device, test_transform, data_dir, transform_on_gpu, save_test, keep_history)
+        
         self.datalist = []
-        self.images=[]
-        self.objects=[]
-        self.ssl_proposals = []
-        self.pq_features = []
+        self.indexlist = []
+
+        self.obj_cls_list=[1,2,3,4,5,6]
+        self.obj_cls_count = np.zeros(np.max(self.obj_cls_list), dtype=int)
+        self.obj_cls_train_cnt = np.zeros(np.max(self.obj_cls_list),dtype=int)
+        self.others_loss_decrease = np.array([])
+        self.previous_idx = np.array([], dtype=int)
+        self.device = device
+        
+        
         self.memory_size = memory_size
         self.random_indices = None
         self.total_task_list = total_task_list
         self.total_sample_cnt = 0
-        #self.pre_data_idx = [] unlike clad, it is inefficient to track all indexes. calculate_task_idx does this job
         self.shift_train_task = np.array([37041, 25433, 13596, 39016, 25966]) #num of data from task 0
         self.accumulated_train_task = []
-
-        # dataset
-        assert bool(pretrain_task_list) * bool(memory_size) != 0, "Pretrain task list and memory size should be given together"
-        self.pretrain_task_list = pretrain_task_list
-        self.prepare_pretrained_data(self.pretrain_task_list, memory_size=self.memory_size)
-        self.pre_create_data_idx(self.total_task_list)
 
         #rearrange tasklist
         self.shift_train_task = self.shift_train_task[np.array(self.total_task_list)]
@@ -376,16 +376,48 @@ class ShiftPQDataset(SHIFTDistillationMemory):
         for num in self.shift_train_task:
             self.accumulated_train_task.append(num_cnt)
             num_cnt += num
+            
+        # dataset
+        assert bool(pretrain_task_list) * bool(memory_size) != 0, "Pretrain task list and memory size should be given together"
+        self.pretrain_task_list = pretrain_task_list
+        self.prepare_pretrained_data(memory_size=self.memory_size)
         
 
-    def prepare_pretrained_data(self, pretrain_task_list, memory_size):
-        pass
+    def prepare_pretrained_data(self, memory_size=None, split='train'):
+        
+        total_domain_list = np.array(['clear', 'cloudy', 'overcast', 'rainy', 'foggy'])
+        selected_domain_idx = np.array(self.pretrain_task_list) - 1
+        selected_domain_list = total_domain_list[selected_domain_idx]
+        
+        total_data = []
+        for i, domain in enumerate(selected_domain_list):
+            data_list = get_shift_datalist(data_type=split, task_num=selected_domain_idx[i], 
+                                           domain_dict={'weather_coarse': domain}, root=self.root)
+        
+            total_data.extend(data_list)
+        
+        if len(total_data) > memory_size:
+            selected_indexes = sorted(np.random.choice(len(total_data), size=memory_size, replace=False))
+        else:
+            selected_indexes = np.arange(len(total_data))
+            
+        #inserting data with appropriate index (used for pq feature)
+        for random_idx in selected_indexes:
+            self.total_sample_cnt = random_idx
+            sample = total_data[random_idx]
+            self.replace_sample(sample)
+
+        #since all the indexes of pretrained tasks are used, update total data count to trainable task
+        #this allows to return appropriate indexes for upcoming data
+        self.total_sample_cnt = len(total_data)
     
     # call whenever new sample is passed
-    def calculate_task_idx(self, data_cnt):
+    def calculate_task_idx(self):
         #index starts with 0.
-        task_id = np.digitize(data_cnt, self.accumulated_train_task)
-        data_boundary = self.accumulated_train_task[task_id-1]
+        data_cnt = self.total_sample_cnt
+        task_chunk = np.digitize(data_cnt, self.accumulated_train_task)
+        task_id = self.total_task_list[task_chunk-1] + 1
+        data_boundary = self.accumulated_train_task[task_chunk-1]
         idx = data_cnt - data_boundary
         data_cnt +=1 
         
@@ -395,18 +427,9 @@ class ShiftPQDataset(SHIFTDistillationMemory):
     def __len__(self):
         return len(self.datalist)
     
+    
     def __getitem__(self, idx):
-       
-        if torch.is_tensor(idx):
-           idx = idx.value()
-        image=self.images[idx]
-
-        if self.transform:
-            image=self.transform(image)
-        
-        target=self.objects[idx]
-        target={'boxes':target['boxes'], 'labels':target['labels']}
-        return image, target
+        pass
     
     def add_new_class(self, obj_cls_list):
         # breakpoint()
@@ -417,19 +440,75 @@ class ShiftPQDataset(SHIFTDistillationMemory):
             self.obj_cls_count = np.pad(self.obj_cls_count, (0,extend_length), constant_values=(0)).flatten()
             self.obj_cls_train_cnt = np.pad(self.obj_cls_train_cnt, (0,extend_length), constant_values=(0)).flatten()
 
-    def replace_sample(self, sample, logit, idx=None):
+    def replace_sample(self, sample, idx=None):
+                
+        #update object class info
+        obj_cls_info = np.array(sample['objects']['category_id'])
+        obj_cls_id = np.bincount(obj_cls_info)[1:] #from 1 to max. [3,3] -> [0,0,2]
+        obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_count)-len(obj_cls_id)), constant_values=(0)).flatten()
+        self.obj_cls_count += obj_cls_id 
+        
+        #append new sample at behind(last index)
+        if idx is None: 
+            self.datalist.append(sample)
+            sample_idx = self.calculate_task_idx()
+            self.indexlist.append(sample_idx)
+
+        else: 
+            discard_sample=self.datalist[idx]
+            dis_sample_obj=discard_sample['objects']
             
-            obj_cls_info=np.array(sample['objects']['category_id'])
+            # breakpoint()cont
+            obj_cls_info=np.array(dis_sample_obj["category_id"])
             obj_cls_id=np.bincount(obj_cls_info)[1:]
             obj_cls_id = np.pad(obj_cls_id, (0,len(self.obj_cls_count)-len(obj_cls_id)), constant_values=(0)).flatten()
-            self.obj_cls_count += obj_cls_id
-    
-            try:
-                img_name=sample['file_name']
+            self.obj_cls_count -= obj_cls_id
+
+            self.datalist[idx]=sample
+            sample_idx = self.calculate_task_idx()
+            self.indexlist[idx]=sample_idx
+
+        @torch.no_grad()
+        def get_batch(self, batch_size, train_feature_path, transform=None):
+     
+            images = []
+            boxes = []
+            labels = []
+            ssl_proposals_list = []
+            pq_features_list = []
+
+            indices = np.random.choice(range(len(self.datalist)), size=batch_size, replace=False)
+            batch_container = [self.datalist[idx] for idx in indices]
+            batch_idx_container = [self.indexlist[idx] for idx in indices]
+            h5_file = h5py.File(train_feature_path, 'r')
+
+            for sample, idx_info in zip(batch_container, batch_idx_container):
+                img_name = sample['file_name']
+                image = PIL.Image.open(img_name).convert('RGB')
+                image = transforms.ToTensor()(image)
+                target = get_sample_objects(sample['objects'])
                 
-            except KeyError:
-                img_name=sample['filepath']
-    
+                ssl_path = '_'.join(img_name.split('/')[-4:])
+                ssl_proposals = np.load(os.path.join('precomputed_proposals/ssl_shift', ssl_path[:-4] + '.npy'), allow_pickle=True)
+                ssl_proposals = torch.from_numpy(ssl_proposals)
+                
+                assert sample['task_num'] == idx_info['task_id'], "Task id is not matched"
+                task_id = idx_info['task_id']
+                index = idx_info['idx']
+                img_id = f'{task_id} {index}'
+                pq_features = torch.from_numpy(h5_file[img_id][()])
+
+                images.append(image)
+                boxes.append(target['boxes'])
+                labels.append(target['labels'])
+                ssl_proposals_list.append(ssl_proposals)
+                pq_features_list.append(pq_features)
+
+            return {'images': images, 'boxes': boxes, 'labels': labels, 'ssl_proposals': ssl_proposals_list, 'pq_features': pq_features_list}
+
+
+
+
 
 class SHIFTDataset(Dataset):
 

@@ -3,7 +3,7 @@
 # CIL CONFIG
 NOTE="default_13928" # Short description of the experiment. (WARNING: logs/results with the same note will be overwritten!)
 MODE="rodeo"
-DATASET="clad" # clad, shift
+DATASET="shift" # clad, shift
 SEED=$1 # This will now take seed value as a command line argument
 
 if [ "$DATASET" == "clad" ]; then
@@ -16,9 +16,11 @@ if [ "$DATASET" == "clad" ]; then
 
 # TODO: Change these values for shift dataset
 elif [ "$DATASET" == "shift" ]; then
-    MEM_SIZE=500 ONLINE_ITER=1
-    BATCHSIZE=16
-    TEMP_BATCHSIZE=8
+    MEM_SIZE=13928 ONLINE_ITER=1
+    BATCHSIZE=4
+    TEMP_BATCHSIZE=0
+    PRETRAIN_TASK_NUM=2
+    CODEBOOK_SIZE=64
     EVAL_PERIOD=1000
 
 else

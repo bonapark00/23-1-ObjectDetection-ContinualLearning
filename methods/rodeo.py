@@ -78,16 +78,21 @@ class RODEO(ER):
                                         split=split, transforms=transforms.ToTensor(), ssl_required=True)
             
         elif dataset == 'shift':
-            print("Rodeo only assumes that shift dataset is splitted into weather coarse. if not please modify the code")
-            
-            dataset_list = []
-            for idx, domain in zip(pretrain_task_list, self.shift_domain_list) :
-                single_dataset = SHIFTDataset(root=self.root, task_num=idx, domain_dict={'weather_coarse': domain},
-                                            split="train", transforms=transforms.ToTensor(), ssl_required=True)
-                dataset_list.append(single_dataset)
-                
-            train_data = ConcatDataset(*dataset_list)
-        
+            if split == 'train':
+                print("Rodeo only assumes that shift dataset is splitted into weather coarse. if not please modify the code")
+                data_list = []
+                for idx, domain in zip(pretrain_task_list, self.shift_domain_list) :
+                    single_dataset = SHIFTDataset(root=self.root, task_num=idx, domain_dict={'weather_coarse': domain},
+                                                split="train", transforms=transforms.ToTensor(), ssl_required=True)
+                    data_list.append(single_dataset)
+                    
+                train_data = ConcatDataset(*data_list)
+
+            elif split == 'minival':
+                train_data = SHIFTDataset(root=self.root, task_num=idx, domain_dict={'weather_coarse': domain},
+                                          split="minival", transforms=transforms.ToTensor(), ssl_required=True)
+            else:
+                raise ValueError("check if the dataset is proper")
         else:
             raise ValueError("check if the dataset is proper")
             
@@ -101,7 +106,7 @@ class RODEO(ER):
         model.train()
         for epoch in range(epochs):
             for idx, (images, targets) in enumerate(tqdm(dataloader, desc=f"Epoch {epoch} offline training...")):
-            
+                
                 images = [image.to(self.device) for image in images]
                 targets_modified = [{'boxes': target['boxes'], 'labels': target['labels']} for target in targets]
                 ssl_proposals = [target['ssl_proposals'] for target in targets]
@@ -118,8 +123,8 @@ class RODEO(ER):
                 if idx % 100 == 0:
                     logger.info(f"Epoch {epoch} Iter {idx} loss: {losses.item()}")
                     
-                # if idx == 2:
-                #     break
+                if idx == 2:
+                    break
                     
         print("Offline training is done! successfully!")
         return model
@@ -238,7 +243,7 @@ class RODEO(ER):
         pq = faiss.ProductQuantizer(data_dim, codebook_size, nbits)
 
         #remove
-        pq.train(base_train_data)
+        #pq.train(base_train_data)
         print(f"PQ model training is done!")
         
         #erase backbone extracted file, since it is not needed anymore
@@ -306,10 +311,12 @@ class RODEO(ER):
             train_dataloader = self.create_offline_Dataloader(self.dataset,[i+1 for i in range(total_task_num)], self.batch_size, split='train')
             test_dataloader_list = []
             for i in range(total_task_num):
-                test_dataloader = self.create_offline_Dataloader(self.dataset,[i+1], self.batch_size, split='test')
+                split_category = 'minival' if self.dataset == 'shift' else 'test'
+                test_dataloader = self.create_offline_Dataloader(self.dataset,[i+1], self.batch_size, split=split_category)
                 test_dataloader_list.append(test_dataloader)
                 
             self.reconstruct_all_pq_features(pq_model, g_model, train_dataloader, test_dataloader_list)
+            
             
             #prepare for online training
             g_model = self.freeze_front_model(g_model)      
@@ -497,9 +504,14 @@ class backbone_eval(nn.Module):
 class ConcatDataset(torch.utils.data.Dataset):
     def __init__(self, *datasets):
         self.datasets = datasets
-
+        self.accumulated_size = [0] + np.cumsum([len(d) for d in self.datasets]).tolist()
+          
     def __getitem__(self, i):
-        return tuple(d[i] for d in self.datasets)
+        dataset_idx = np.digitize(i, self.accumulated_size) - 1
+        image_idx = i - self.accumulated_size[dataset_idx]
+        image, target = self.datasets[dataset_idx].__getitem__(image_idx)
+    
+        return image, target
 
     def __len__(self):
-        return min(len(d) for d in self.datasets)
+        return sum(len(d) for d in self.datasets)

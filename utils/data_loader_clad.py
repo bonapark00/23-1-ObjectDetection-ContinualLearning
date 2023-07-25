@@ -487,11 +487,7 @@ class CladPQDataset(CladDistillationMemory):
 	def __init__(self, root, transform=None, cls_list=None, device=None, test_transform=None,
 			data_dir=None, transform_on_gpu=False, save_test=None, keep_history=False, pretrain_task_list = None, memory_size = None, total_task_list = None):
 		super().__init__(root, transform, cls_list, device, test_transform, data_dir, transform_on_gpu, save_test, keep_history)
-		self.datalist = [] 
-		self.images = []
-		self.objects = [] 
-		self.ssl_proposals = [] 
-		self.pq_features = []   
+		self.datalist = []  
 		self.memory_size = memory_size
 		self.random_indices = None
 		self.total_task_list = total_task_list

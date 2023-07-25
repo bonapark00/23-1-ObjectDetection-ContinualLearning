@@ -12,10 +12,11 @@ import h5py
 
 domain_list = ['clear', 'cloudy', 'overcast', 'rainy', 'foggy']
 root = './dataset'
-train_task = []
+train_data_list= []
 for i, domain in enumerate(domain_list):
     cur_train_datalist = get_shift_datalist(data_type="train", task_num=i+1, domain_dict=
                                             {'weather_coarse': domain}, root=root)
-    train_task.append(len(cur_train_datalist))
+    train_data_list.extend(cur_train_datalist)
+    break
 
 breakpoint()

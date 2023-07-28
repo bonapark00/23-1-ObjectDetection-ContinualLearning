@@ -13,7 +13,7 @@ if [ "$DATASET" == "clad" ]; then
     EVAL_PERIOD=100
 
 elif [ "$DATASET" == "shift" ]; then
-    MEM_SIZE=150 ONLINE_ITER=1
+    MEM_SIZE=500 ONLINE_ITER=1
     BATCHSIZE=16
     TEMP_BATCHSIZE=8
     EVAL_PERIOD=1000

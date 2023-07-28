@@ -29,10 +29,7 @@ class FILOD_RANDOM_EMA(ER):
         self.model_teacher.roi_heads.generate_soft_proposals = True
         
         # filod_ema hyperparameters init
-        self.sdp_mean = 10000
-        self.sdp_varcoeff = 0.75
-        assert 0.5 - 1 / self.sdp_mean < self.sdp_varcoeff < 1 - 1 / self.sdp_mean
-        self.ema_ratio = (1 - np.sqrt(2 * self.sdp_varcoeff - 1 + 2 / self.sdp_mean)) / (self.sdp_mean - 1 - self.sdp_mean * self.sdp_varcoeff)
+        self.ema_ratio = 0.01 #0.001
         
         #ema teacher update
         self.ema_update = 0
@@ -101,7 +98,7 @@ class FILOD_RANDOM_EMA(ER):
             self.optimizer.step()
             total_loss += loss.item()
             
-            self.update_ema_model(num_updates=1.0)
+            self.update_ema_model()
             
         return_losses = {
             'loss': total_loss / iterations,
@@ -114,8 +111,8 @@ class FILOD_RANDOM_EMA(ER):
         return return_losses
     
     @torch.no_grad()
-    def update_ema_model(self, num_updates=1.0):
-        ema_inv_ratio = (1 - self.ema_ratio) ** num_updates
+    def update_ema_model(self):
+        ema_inv_ratio = (1 - self.ema_ratio) 
         model_params = OrderedDict(self.model.named_parameters())
         ema_params = OrderedDict(self.model_teacher.named_parameters())
         assert model_params.keys() == ema_params.keys()
@@ -124,6 +121,11 @@ class FILOD_RANDOM_EMA(ER):
         for name, param in model_params.items():
             ema_params[name].sub_((1. - ema_inv_ratio) * (ema_params[name] - param))
     
+        model_buffers = OrderedDict(self.model.named_buffers())
+        shadow_buffers = OrderedDict(self.model_teacher.named_buffers())
+        assert model_buffers.keys() == shadow_buffers.keys()
+        for name, buffer in model_buffers.items():
+            shadow_buffers[name].copy_(buffer)
     
     def report_training(self, sample_num, losses, writer, log_interval=10):
         """Reports the training progress to the console.
